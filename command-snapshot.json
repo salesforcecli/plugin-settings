@@ -1,7 +1,26 @@
 [
   {
-    "command": "hello:world",
-    "plugin": "@salesforce/plugin-template-sf",
-    "flags": ["json", "name"]
+    "command": "config:get",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["json", "verbose"],
+    "alias": []
+  },
+  {
+    "command": "config:list",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["json"],
+    "alias": []
+  },
+  {
+    "command": "config:set",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["global", "json"],
+    "alias": []
+  },
+  {
+    "command": "config:unset",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["global", "hola", "json", "num"],
+    "alias": []
   }
 ]
