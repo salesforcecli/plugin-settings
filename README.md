@@ -2,7 +2,11 @@
 
 [![NPM](https://img.shields.io/npm/v/@salesforce/plugin-settings.svg?label=@salesforce/plugin-settings)](https://www.npmjs.com/package/@salesforce/plugin-settings) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-settings.svg)](https://npmjs.org/package/@salesforce/plugin-settings) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-settings/main/LICENSE.txt)
 
-Config and alias commands for Salesforce CLI
+Config and alias commands for the `sf` Salesforce CLI
+
+> NOTE: This repo combines `plugin-config` and `plugin-alias` for `sf`.
+>
+> If you are looking for the `sfdx` command repos, they can be found here: [plugin-config](https://github.com/salesforcecli/plugin-config) and [plugin-alias](https://github.com/salesforcecli/plugin-alias)
 
 This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
 
