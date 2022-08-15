@@ -31,7 +31,7 @@ describe('config:set', () => {
   }
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:set', `${OrgConfigProperties.ORG_API_VERSION}=49.0`, '--global', '--json'])
     .it('should return values for all configured properties', (ctx) => {

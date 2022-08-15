@@ -40,7 +40,7 @@ describe('config:get', () => {
   }
 
   test
-    .do(async () => await prepareStubs(true))
+    .do(async () => prepareStubs(true))
     .stdout()
     .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for globally configured properties', (ctx) => {
@@ -52,7 +52,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs(false))
+    .do(async () => prepareStubs(false))
     .stdout()
     .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
     .it('should return values for locally configured properties', (ctx) => {
@@ -64,7 +64,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', OrgConfigProperties.ORG_API_VERSION, '--json'])
     .it('should gracefully handle unconfigured properties', (ctx) => {
@@ -78,7 +78,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', '--json'])
     .it('should throw an error when no keys are provided', (ctx) => {
@@ -87,7 +87,7 @@ describe('config:get', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:get', SfConfigProperties.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
