@@ -25,13 +25,6 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
       char: 'g',
       summary: messages.getMessage('flags.global.summary'),
     }),
-    hola: Flags.boolean({
-      char: 'h',
-      summary: 'Greeting',
-    }),
-    num: Flags.integer({
-      char: 'x',
-    }),
   };
 
   public async run(): Promise<ConfigResponses> {

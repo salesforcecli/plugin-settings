@@ -20,7 +20,7 @@
   {
     "command": "config:unset",
     "plugin": "@salesforce/plugin-settings",
-    "flags": ["global", "hola", "json", "num"],
+    "flags": ["global", "json"],
     "alias": []
   }
 ]
