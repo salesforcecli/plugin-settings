@@ -1,52 +1,12 @@
-**NOTE: This template for sf plugins is not yet offical. Please consult with the Platform CLI team before using this template.**
+# plugin-settings
 
-# plugin-template-sf
+[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-settings.svg?label=@salesforce/plugin-settings)](https://www.npmjs.com/package/@salesforce/plugin-settings) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-settings.svg)](https://npmjs.org/package/@salesforce/plugin-settings) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-settings/main/LICENSE.txt)
 
-[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-template-sf.svg?label=@salesforce/plugin-template-sf)](https://www.npmjs.com/package/@salesforce/plugin-template-sf) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-template-sf/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-template-sf/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-template-sf.svg)](https://npmjs.org/package/@salesforce/plugin-template-sf) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-template-sf/main/LICENSE.txt)
+Config and alias commands for the `sf` Salesforce CLI
 
-## Using the template
-
-This repository provides a template for creating a plugin for the Salesforce CLI. To convert this template to a working plugin:
-
-1. Please get in touch with the Platform CLI team. We want to help you develop your plugin.
-2. Generate your plugin:
-
-   ```
-   sf plugins install dev
-   sf dev generate plugin
-
-   git init -b main
-   git add . && git commit -m "chore: initial commit"
-   ```
-
-3. Create your plugin's repo in the salesforcecli github org
-4. When you're ready, replace the contents of this README with the information you want.
-
-## Learn about `sf` plugins
-
-Salesforce CLI plugins are based on the [oclif plugin framework](<(https://oclif.io/docs/introduction.html)>). Read the [plugin developer guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_plugins.meta/sfdx_cli_plugins/cli_plugins_architecture_sf_cli.htm) to learn about Salesforce CLI plugin development.
-
-This repository contains a lot of additional scripts and tools to help with general Salesforce node development and enforce coding standards. You should familiarize yourself with some of the [node developer packages](#tooling) used by Salesforce. There is also a default circleci config using the [release management orb](https://github.com/forcedotcom/npm-release-management-orb) standards.
-
-Additionally, there are some additional tests that the Salesforce CLI will enforce if this plugin is ever bundled with the CLI. These test are included by default under the `posttest` script and it is required to keep these tests active in your plugin if you plan to have it bundled.
-
-### Tooling
-
-- [@salesforce/core](https://github.com/forcedotcom/sfdx-core)
-- [@salesforce/kit](https://github.com/forcedotcom/kit)
-- [@salesforce/sf-plugins-core](https://github.com/salesforcecli/sf-plugins-core)
-- [@salesforce/ts-types](https://github.com/forcedotcom/ts-types)
-- [@salesforce/ts-sinon](https://github.com/forcedotcom/ts-sinon)
-- [@salesforce/dev-config](https://github.com/forcedotcom/dev-config)
-- [@salesforce/dev-scripts](https://github.com/forcedotcom/dev-scripts)
-
-### Hooks
-
-For cross clouds commands, e.g. `sf env list`, we utilize [oclif hooks](https://oclif.io/docs/hooks) to get the relevant information from installed plugins.
-
-This plugin includes sample hooks in the [src/hooks directory](src/hooks). You'll just need to add the appropriate logic. You can also delete any of the hooks if they aren't required for your plugin.
-
-# Everything past here is only a suggestion as to what should be in your specific plugin's description
+> NOTE: This repo combines `plugin-config` and `plugin-alias` for `sf`.
+>
+> If you are looking for the `sfdx` command repos, they can be found here: [plugin-config](https://github.com/salesforcecli/plugin-config) and [plugin-alias](https://github.com/salesforcecli/plugin-alias)
 
 This plugin is bundled with the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli). For more information on the CLI, read the [getting started guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm).
 
@@ -55,7 +15,7 @@ We always recommend using the latest version of these commands bundled with the 
 ## Install
 
 ```bash
-sf plugins install @salesforce/plugin-template-sf@x.y.z
+sf plugins install settings@x.y.z
 ```
 
 ## Issues
@@ -87,17 +47,18 @@ To build the plugin locally, make sure to have yarn installed and run the follow
 
 ```bash
 # Clone the repository
-git clone git@github.com:salesforcecli/plugin-template-sf
+git clone git@github.com:salesforcecli/plugin-settings
 
 # Install the dependencies and compile
-yarn && yarn build
+yarn install
+yarn build
 ```
 
-To use your plugin, run using the local `./bin/dev` or `./bin/dev.cmd` file.
+To use your plugin, run using the local `./bin/run` or `./bin/run.cmd` file.
 
 ```bash
 # Run using local run file.
-./bin/dev hello world
+./bin/run config
 ```
 
 There should be no differences when running via the Salesforce CLI or using the local run file. However, it can be useful to link the plugin to do some additional testing or run your commands from anywhere on your machine.
@@ -109,39 +70,145 @@ sf plugins link .
 sf plugins
 ```
 
-## Commands
+# Commands
 
 <!-- commands -->
 
-- [`sf hello world`](#sf-hello-world)
+- [`sf config get`](#sf-config-get)
+- [`sf config list`](#sf-config-list)
+- [`sf config set`](#sf-config-set)
+- [`sf config unset`](#sf-config-unset)
 
-## `sf hello world`
+## `sf config get`
 
-Say hello either to the world or someone you know.
+Get the value of a configuration variable.
 
 ```
 USAGE
-  $ sf hello world [--json] [-n <value>]
+  $ sf config get [--json] [--verbose]
 
 FLAGS
-  -n, --name=<value>  [default: World] The name of the person you'd like to say hello to.
+  --verbose  Display whether the configuration variables are set locally or globally.
 
 GLOBAL FLAGS
   --json  Format output as json.
 
 DESCRIPTION
-  Say hello either to the world or someone you know.
+  Get the value of a configuration variable.
 
-  Say hello either to the world or someone you know.
+  Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always
+  displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a
+  configuration variable.
 
 EXAMPLES
-  Say hello to the world:
+  Get the value of the "target-org" configuration variable.
 
-    $ sf hello world
+    $ sf config get target-org
 
-  Say hello to someone you know:
+  Get multiple configuration variables and display whether they're set locally or globally:
 
-    $ sf hello world --name Astro
+    $ sf config get target-org api-version --verbose
+```
+
+## `sf config list`
+
+List the configuration variables that you've previously set.
+
+```
+USAGE
+  $ sf config list [--json]
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  List the configuration variables that you've previously set.
+
+  Global configuration variables apply to any directory and are always displayed. If you run this command from a project
+  directory, local configuration variables are also displayed.
+
+EXAMPLES
+  List both global configuration variables and those local to your project:
+
+    $ sf config list
+```
+
+## `sf config set`
+
+Set one or more configuration variables, such as your default org.
+
+```
+USAGE
+  $ sf config set [--json] [-g]
+
+FLAGS
+  -g, --global  Set the configuration variables globally, so they can be used from any directory.
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Set one or more configuration variables, such as your default org.
+
+  Use configuration variables to set CLI defaults, such as your default org or the API version you want the CLI to use.
+  For example, if you set the "target-org" configuration variable, you don't need to specify it as a "sf deploy
+  metadata" flag if you're deploying to your default org.
+
+  Local configuration variables apply only to your current project. Global variables, specified with the --global flag,
+  apply in any directory.
+
+  The resolution order if you've set a flag value in multiple ways is as follows:
+
+  1. Flag value specified at the command line.
+
+  2. Local (project-level) configuration variable.
+
+  3. Global configuration variable.
+
+  Run "sf config list" to see the configuration variables you've already set and their level (local or global).
+
+EXAMPLES
+  Set the local target-org configuration variable to an org username:
+
+    $ sf config set target-org=me@my.org
+
+  Set the local target-org configuration variable to an alias:
+
+    $ sf config set target-org=my-scratch-org
+
+  Set the global target-org configuration variable:
+
+    $ sf config set --global target-org=my-scratch-org
+```
+
+## `sf config unset`
+
+Unset local or global configuration variables.
+
+```
+USAGE
+  $ sf config unset [--json] [-g]
+
+FLAGS
+  -g, --global  Unset the configuration variables globally, so they can no longer be used from any directory.
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Unset local or global configuration variables.
+
+  Local configuration variables apply only to your current project. Global configuration variables apply in any
+  directory.
+
+EXAMPLES
+  Unset the local "target-org" configuration variable:
+
+    $ sf config unset target-org
+
+  Unset multiple configuration variables globally:
+
+    $ sf config unset target-org api-version --global
 ```
 
 <!-- commandsstop -->

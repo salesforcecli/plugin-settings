@@ -10,6 +10,7 @@ module.exports = {
   // Allow describe and it
   env: { mocha: true },
   rules: {
+    '@typescript-eslint/no-misused-promises': 'off',
     // Allow assert style expressions. i.e. expect(true).to.be.true
     'no-unused-expressions': 'off',
 
@@ -21,5 +22,8 @@ module.exports = {
     '@typescript-eslint/no-empty-function': 'off',
     // Easily return a promise in a mocked method.
     '@typescript-eslint/require-await': 'off',
+    '@typescript-eslint/no-unsafe-assignment': 'off',
+    '@typescript-eslint/no-unsafe-member-access': 'off',
+    '@typescript-eslint/restrict-template-expressions': 'off',
   },
 };
