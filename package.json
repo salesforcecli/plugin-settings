@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-settings",
   "description": "configure the Salesforce CLI",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
@@ -32,7 +32,7 @@
     "eslint-config-salesforce-license": "^0.1.6",
     "eslint-config-salesforce-typescript": "^0.2.8",
     "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-import": "2.26.0",
     "eslint-plugin-jsdoc": "^35.5.1",
     "eslint-plugin-prettier": "^3.4.1",
     "eslint-plugin-sf-plugin": "^0.3.0",
@@ -48,7 +48,7 @@
     "shx": "0.3.3",
     "sinon": "10.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.3"
   },
   "config": {
     "commitizen": {
