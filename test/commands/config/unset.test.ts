@@ -37,7 +37,7 @@ describe('config:unset', () => {
   }
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global', '--json'])
     .it('should unset values for a single property', (ctx) => {
@@ -47,7 +47,7 @@ describe('config:unset', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command([
       'config:unset',
@@ -66,7 +66,7 @@ describe('config:unset', () => {
     });
 
   test
-    .do(async () => await prepareStubs())
+    .do(async () => prepareStubs())
     .stdout()
     .command(['config:unset', '--json'])
     .it('should throw an error if no properties are provided', (ctx) => {
@@ -75,7 +75,7 @@ describe('config:unset', () => {
     });
 
   test
-    .do(async () => await prepareStubs(true))
+    .do(async () => prepareStubs(true))
     .stdout()
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global', '--json'])
     .it('should handle errors with --json flag', (ctx) => {
@@ -95,7 +95,7 @@ describe('config:unset', () => {
     });
 
   test
-    .do(async () => await prepareStubs(true))
+    .do(async () => prepareStubs(true))
     .stdout()
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global'])
     .it('should handle errors with no --json flag', (ctx) => {

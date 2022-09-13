@@ -30,16 +30,18 @@ export class Set extends ConfigCommand<ConfigResponses> {
 
   public async run(): Promise<ConfigResponses> {
     const { flags } = await this.parse(Set);
-    const config: Config = await this.loadConfig(flags.global);
-    let value = '';
+    const config: Config = await loadConfig(flags.global);
     const configs = await this.parseConfigKeysAndValues();
     for (const name of Object.keys(configs)) {
+      // We need to allow `undefined` here so that we can support unsetting with set=''
+      // See the "use set to unset a config key" NUT
+      const value = configs[name];
       try {
-        value = configs[name];
         // core's builtin config validation requires synchronous functions but there's
         // currently no way to validate an org synchronously. Therefore, we have to manually
         // validate the org here and manually set the error message if it fails
-        if (this.isOrgKey(name) && value) await this.validateOrg(value);
+        // eslint-disable-next-line no-await-in-loop
+        if (isOrgKey(name) && value) await validateOrg(value);
         config.set(name, value);
         this.responses.push({ name, value, success: true });
       } catch (err) {
@@ -92,31 +94,29 @@ export class Set extends ConfigCommand<ConfigResponses> {
 
     return configs;
   }
-
-  protected async loadConfig(global: boolean): Promise<Config> {
-    try {
-      const config = await Config.create(Config.getDefaultOptions(global));
-      await config.read();
-      return config;
-    } catch (error) {
-      if (error instanceof SfdxError) {
-        error.actions = error.actions || [];
-        error.actions.push('Run with --global to set for your entire workspace.');
-      }
-      throw error;
-    }
-  }
-
-  private isOrgKey(name: string): boolean {
-    const orgKeys = [OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG] as string[];
-    return orgKeys.includes(name);
-  }
-
-  private async validateOrg(value: string): Promise<void> {
-    try {
-      await Org.create({ aliasOrUsername: value });
-    } catch {
-      throw new Error(`Invalid config value: org "${value}" is not authenticated.`);
-    }
-  }
 }
+
+const loadConfig = async (global: boolean): Promise<Config> => {
+  try {
+    const config = await Config.create(Config.getDefaultOptions(global));
+    await config.read();
+    return config;
+  } catch (error) {
+    if (error instanceof SfdxError) {
+      error.actions = error.actions || [];
+      error.actions.push('Run with --global to set for your entire workspace.');
+    }
+    throw error;
+  }
+};
+
+const isOrgKey = (name: string): boolean =>
+  [OrgConfigProperties.TARGET_DEV_HUB as string, OrgConfigProperties.TARGET_ORG as string].includes(name);
+
+const validateOrg = async (value: string): Promise<void> => {
+  try {
+    await Org.create({ aliasOrUsername: value });
+  } catch {
+    throw new Error(`Invalid config value: org "${value}" is not authenticated.`);
+  }
+};
