@@ -14,5 +14,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
+      fail-fast: false
     with:
       os: ${{ matrix.os }}
