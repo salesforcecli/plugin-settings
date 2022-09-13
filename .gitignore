@@ -9,13 +9,10 @@ package-lock.json
 # debug logs
 npm-error.log
 yarn-error.log
-lerna-debug.log
+
 
 # compile source
 lib
-
-# keep test lib dir
-!/test/config-meta-mocks/javascript-lib/lib
 
 # test artifacts
 *xunit.xml
