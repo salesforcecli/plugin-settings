@@ -33,7 +33,9 @@ export class Set extends ConfigCommand<ConfigResponses> {
     const config: Config = await loadConfig(flags.global);
     const configs = await this.parseConfigKeysAndValues();
     for (const name of Object.keys(configs)) {
-      const value = configs[name] ?? '';
+      // We need to allow `undefined` here so that we can support unsetting with set=''
+      // See the "use set to unset a config key" NUT
+      const value = configs[name];
       try {
         // core's builtin config validation requires synchronous functions but there's
         // currently no way to validate an org synchronously. Therefore, we have to manually
