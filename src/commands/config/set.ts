@@ -10,7 +10,7 @@ import { Config, Messages, Org, SfdxError, OrgConfigProperties } from '@salesfor
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-settings', 'set');
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 export class Set extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
