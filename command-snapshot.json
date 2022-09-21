@@ -1,5 +1,11 @@
 [
   {
+    "command": "alias:list",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["json"],
+    "alias": []
+  },
+  {
     "command": "config:get",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json", "verbose"],

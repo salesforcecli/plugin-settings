@@ -1,0 +1,60 @@
+/*
+ * Copyright (c) 2020, salesforce.com, inc.
+ * All rights reserved.
+ * Licensed under the BSD 3-Clause license.
+ * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
+ */
+
+import { SfCommand } from '@salesforce/sf-plugins-core';
+import { SfError } from '@salesforce/core';
+import { Nullable } from '@salesforce/ts-types';
+import { CliUx } from '@oclif/core';
+
+export type AliasResult = {
+  alias: string;
+  value?: Nullable<string>;
+  success?: boolean;
+  error?: SfError;
+};
+
+export enum Command {
+  List = 'List',
+  Set = 'Set',
+  Unset = 'Unset',
+}
+
+// export abstract class ConfigCommand<T> extends SfCommand<T> {
+export abstract class AliasCommand<T> extends SfCommand<T> {
+  // console.log(this)
+  protected static tableColumns: { [key: string]: CliUx.Table.table.Columns<AliasResult> } = {
+    [Command.Unset]: { alias: { header: 'Alias' }, success: { header: 'Success' } },
+    [Command.Set]: { alias: { header: 'Alias' }, value: { header: 'Value' } },
+    [Command.List]: { alias: { header: 'Alias' }, value: { header: 'Value' } },
+  };
+
+  public output(commandName: Command, results: AliasResult[]): void {
+    if (results.length === 0) {
+      this.log('No results found');
+      return;
+    }
+
+    const column = AliasCommand.tableColumns[commandName];
+
+    this.table(results, column, { title: `${commandName} Alias` });
+
+    results.forEach((result) => {
+      if (result.error) {
+        throw result.error;
+      }
+    });
+  }
+
+  public async parseArgs(): Promise<string[]> {
+    const { argv } = await this.parse({
+      flags: this.statics.flags,
+      args: this.statics.args,
+      strict: this.statics.strict,
+    });
+    return argv;
+  }
+}

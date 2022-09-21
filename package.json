@@ -87,6 +87,9 @@
     "topics": {
       "config": {
         "description": "Commands to configure Salesforce CLI."
+      },
+      "alias": {
+        "description": "Use the alias commands to manage your aliases."
       }
     }
   },
