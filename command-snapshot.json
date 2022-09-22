@@ -6,6 +6,12 @@
     "alias": []
   },
   {
+    "command": "alias:set",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["json", "name"],
+    "alias": []
+  },
+  {
     "command": "config:get",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json", "verbose"],

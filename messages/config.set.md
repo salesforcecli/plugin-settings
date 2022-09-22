@@ -30,6 +30,9 @@ Run "sf config list" to see the configuration variables you've already set and t
 
   <%= config.bin %> <%= command.id %> --global target-org=my-scratch-org
 
+- Single config values can be set without an equal sign
+  <%= config.bin %> <%= command.id %> target-org me@my.com
+
 # flags.global.summary
 
 Set the configuration variables globally, so they can be used from any directory.
