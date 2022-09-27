@@ -14,8 +14,8 @@ import { Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'error.ArgumentsRequired',
-  // 'error.DuplicateArgument',
-  // 'error.InvalidArgumentFormat',
+  'error.DuplicateArgument',
+  'error.InvalidArgumentFormat',
   'error.ValueRequired',
 ]);
 
@@ -38,12 +38,12 @@ describe('alias set NUTs', () => {
     await session?.clean();
   });
 
-  describe('initial alias setup', () => {
+  describe('alias set basics', () => {
     beforeEach(() => {
       unsetAll();
     });
 
-    it('alias set multiple values and json', () => {
+    it('alias set multiple values json', () => {
       const { result } = execCmd('alias set DevHub=devhuborg@salesforce.com Admin=admin@salesforce.com --json', {
         ensureExitCode: 0,
       }).jsonOutput;
@@ -63,6 +63,46 @@ describe('alias set NUTs', () => {
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub devhuborg@salesforce.com');
       expect(res).to.include('Admin  admin@salesforce.com');
+    });
+
+    it('alias set with spaces in value', () => {
+      const { result } = execCmd('alias set foo="alias with spaces" --json', {
+        ensureExitCode: 0,
+      }).jsonOutput;
+
+      expect(result).to.deep.equal([{ alias: 'foo', value: 'alias with spaces' }]);
+    });
+
+    it('allow setting a single alias without an equal sign', () => {
+      const { result } = execCmd('alias set theKey theValue --json', {
+        ensureExitCode: 0,
+      }).jsonOutput;
+
+      expect(result).to.deep.equal([{ alias: 'theKey', value: 'theValue' }]);
+    });
+
+    it('throws an error if format is not correct', () => {
+      const res = execCmd('alias set this=is=wrong', {
+        ensureExitCode: 1,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.InvalidArgumentFormat'));
+    });
+
+    it('throws an error when duplicate key is passed', () => {
+      const res = execCmd('alias set foo=bar foo=baz', {
+        ensureExitCode: 1,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.DuplicateArgument', ['foo']));
+    });
+
+    it('alias set DevHub= shows error to use alias unset command', () => {
+      const res = execCmd('alias set DevHub=', {
+        ensureExitCode: 1,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.ValueRequired'));
     });
   });
 
@@ -94,14 +134,6 @@ describe('alias set NUTs', () => {
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub newdevhub@salesforce.com');
       expect(res).to.include('Admin  admin@salesforce.com');
-    });
-
-    it('alias set DevHub= shows error to use alias unset command', () => {
-      const res = execCmd('alias set DevHub=', {
-        ensureExitCode: 1,
-      }).shellOutput.stderr;
-
-      expect(res).to.include(messages.getMessages('error.ValueRequired'));
     });
   });
 

@@ -8,7 +8,13 @@
   {
     "command": "alias:set",
     "plugin": "@salesforce/plugin-settings",
-    "flags": ["json", "name"],
+    "flags": ["json"],
+    "alias": []
+  },
+  {
+    "command": "alias:unset",
+    "plugin": "@salesforce/plugin-settings",
+    "flags": ["all", "json", "no-prompt"],
     "alias": []
   },
   {

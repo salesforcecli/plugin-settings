@@ -12,13 +12,8 @@ import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
-  // 'summary',
-  // 'description',
-  // 'examples',
-  // 'flags.all.summary',
-  // 'flags.no-prompt.summary',
-  // 'error.NameRequired',
-  // 'error.NoAliasesSet',
+  'error.NameRequired',
+  'error.NoAliasesSet',
   'warning.AliasIsNotSet',
 ]);
 
@@ -92,6 +87,27 @@ describe('alias unset NUTs', () => {
       expect(res).to.include(`Alias Unset${os.EOL}=====`); // Table header
       expect(res).to.include('Alias  Value                      Success');
       expect(res).to.include('DevHub mydevhuborg@salesforce.com true');
+    });
+  });
+
+  describe('alias unset error cases', () => {
+    it('throws an error if key is missing', () => {
+      const res = execCmd('alias unset', {
+        ensureExitCode: 1,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.NameRequired'));
+    });
+
+    it('throws a (non-zero) error if --all is passed but no aliases are set', () => {
+      execCmd('alias unset --all --no-prompt');
+
+      const res = execCmd('alias unset --all --no-prompt', {
+        // NOTE: exitcode 0 since the end goal is accomplished (no aliases being set)
+        ensureExitCode: 0,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.NoAliasesSet'));
     });
   });
 

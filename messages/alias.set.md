@@ -16,6 +16,9 @@ You can associate an alias with only one value at a time. If you’ve set an ali
 - Set multiple aliases with a single command:
   <%= config.bin %> <%= command.id %> my-alias=username@example.com my-other-alias=devhub@example.com
 
+- Set an alias that contains spaces:
+  <%= config.bin %> <%= command.id %> my-alias='alias with spaces'
+
 - Single aliases can be set without an equal sign
   <%= config.bin %> <%= command.id %> my-alias username@example.com
 
