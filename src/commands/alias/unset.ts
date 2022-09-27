@@ -17,6 +17,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'flags.no-prompt.summary',
   'error.NameRequired',
   'error.NoAliasesSet',
+  'warning.AliasIsNotSet',
 ]);
 
 export type AliasUnsetResult = {
@@ -72,7 +73,7 @@ export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
       const value = aliases[alias];
       try {
         if (value === undefined) {
-          this.warn(`Alias '${alias}' was not set. Skipping.`);
+          this.warn(messages.getMessage('warning.AliasIsNotSet', [alias]));
         } else {
           stateAggregator.aliases.unset(alias);
           results.push({ alias, value, success: true });
@@ -92,7 +93,11 @@ export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
       success: { header: 'Success' },
     };
 
-    this.table(results, columns, { title: 'Alias Unset', 'no-truncate': true });
+    if (results.length === 0) {
+      this.warn('No aliases unset');
+    } else {
+      this.table(results, columns, { title: 'Alias Unset', 'no-truncate': true });
+    }
 
     return results;
   }

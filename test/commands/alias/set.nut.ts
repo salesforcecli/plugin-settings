@@ -13,9 +13,6 @@ import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
-  // 'summary',
-  // 'description',
-  // 'examples',
   'error.ArgumentsRequired',
   // 'error.DuplicateArgument',
   // 'error.InvalidArgumentFormat',
@@ -23,6 +20,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
 ]);
 
 function unsetAll() {
+  // putting these in a single `execCmd` speeds up NUTs
   execCmd('alias unset DevHub Admin user');
 }
 
@@ -63,10 +61,8 @@ describe('alias set NUTs', () => {
 
       expect(res).to.include(`Alias Set${os.EOL}=====`); // Table header
       expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub');
-      expect(res).to.include('devhuborg@salesforce.com');
-      expect(res).to.include('Admin');
-      expect(res).to.include('admin@salesforce.com');
+      expect(res).to.include('DevHub devhuborg@salesforce.com');
+      expect(res).to.include('Admin  admin@salesforce.com');
     });
   });
 
@@ -93,12 +89,11 @@ describe('alias set NUTs', () => {
       const res: string = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com', {
         ensureExitCode: 0,
       }).shellOutput;
+
       expect(res).to.include(`Alias Set${os.EOL}=====`); // Table header
       expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub');
-      expect(res).to.include('newdevhub@salesforce.com');
-      expect(res).to.include('Admin');
-      expect(res).to.include('admin@salesforce.com');
+      expect(res).to.include('DevHub newdevhub@salesforce.com');
+      expect(res).to.include('Admin  admin@salesforce.com');
     });
 
     it('alias set DevHub= shows error to use alias unset command', () => {

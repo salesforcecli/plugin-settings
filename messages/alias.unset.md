@@ -30,3 +30,7 @@ You must provide an alias name when removing an alias.
 # error.NoAliasesSet
 
 The `--all` flag was passed, but no aliases are currently set. Exiting.
+
+# warning.AliasIsNotSet
+
+Alias '%s' was not set. Skipping.

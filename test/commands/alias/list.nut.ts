@@ -10,9 +10,8 @@ import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 
 function unsetAll() {
-  execCmd('sf alias unset DevHub');
-  execCmd('sf alias unset Admin');
-  execCmd('sf alias unset user');
+  // putting these in a single `execCmd` speeds up NUTs
+  execCmd('alias unset DevHub Admin user');
 }
 
 describe('alias list NUTs', () => {
@@ -64,17 +63,16 @@ describe('alias list NUTs', () => {
     it('lists singular result correctly stdout', () => {
       const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
       expect(res).to.include(`Alias List${os.EOL}=====`); // Table header
-      expect(res).to.include('DevHub');
-      expect(res).to.include('mydevhuborg@salesforce.com');
+      expect(res).to.include('Alias  Value');
+      expect(res).to.include('DevHub mydevhuborg@salesforce.com');
     });
   });
 
   describe('alias list with multiple results', () => {
     beforeEach(() => {
       unsetAll();
-      execCmd('alias set DevHub=mydevhuborg@salesforce.com');
-      execCmd('alias set Admin=admin@salesforce.com');
-      execCmd('alias set user=user@salesforce.com');
+      // putting these in a single `execCmd` speeds up NUTs
+      execCmd('alias set DevHub=mydevhuborg@salesforce.com Admin=admin@salesforce.com user=user@salesforce.com');
     });
 
     it('lists multiple results correctly JSON', () => {
@@ -98,12 +96,10 @@ describe('alias list NUTs', () => {
     it('lists multiple results correctly stdout', () => {
       const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
       expect(res).to.include(`Alias List${os.EOL}=====`); // Table header
-      expect(res).to.include('DevHub');
-      expect(res).to.include('mydevhuborg@salesforce.com');
-      expect(res).to.include('Admin');
-      expect(res).to.include('admin@salesforce.com');
-      expect(res).to.include('user');
-      expect(res).to.include('user@salesforce.com');
+      expect(res).to.include('Alias  Value');
+      expect(res).to.include('DevHub mydevhuborg@salesforce.com');
+      expect(res).to.include('Admin  admin@salesforce.com');
+      expect(res).to.include('user   user@salesforce.com');
     });
   });
 });
