@@ -6,10 +6,6 @@ Set one or more aliases.
 
 You can associate an alias with only one value at a time. If you’ve set an alias multiple times, the alias points to the most recent value.
 
-# flags.name.summary
-
-Description of a flag.
-
 # examples
 
 - <%= config.bin %> <%= command.id %>

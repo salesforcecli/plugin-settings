@@ -20,7 +20,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'error.ValueRequired',
 ]);
 
-type AliasSetResult = {
+export type AliasSetResult = {
   alias: string;
   value?: Nullable<string>;
 };
@@ -31,13 +31,14 @@ export default class AliasSet extends SfCommand<AliasSetResult[]> {
   public static examples = messages.getMessages('examples');
 
   // This allows varargs
+  // TODO: This causes issues with flag spelling mistakes. Typing `bin/dev alias set --hekp` takes '--hekp' as an arg and not an unknown flag
   public static readonly strict = false;
 
   public async run(): Promise<AliasSetResult[]> {
     const stateAggregator = await StateAggregator.getInstance();
     // TODO: add success: true ?
     // TODO: add example of `alias set foo bar` to both alias and config
-    // TODO: add error to `config:set`
+    // TODO: add error to `config set`
     const args = await this.parseConfigKeysAndValues();
 
     const results = Object.keys(args).map((key) => {
@@ -53,7 +54,7 @@ export default class AliasSet extends SfCommand<AliasSetResult[]> {
       value: { header: 'Value' },
     };
 
-    this.table(results, columns, { title: 'Set Aliases' });
+    this.table(results, columns, { title: 'Alias Set' });
 
     return results;
   }

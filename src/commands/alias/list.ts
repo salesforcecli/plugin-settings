@@ -6,15 +6,14 @@
  */
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import { Nullable } from '@salesforce/ts-types';
 import { StateAggregator, Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.list', ['summary', 'description', 'examples']);
 
-type AliasListResult = {
+export type AliasListResult = {
   alias: string;
-  value?: Nullable<string>;
+  value: string;
 };
 
 export default class AliasList extends SfCommand<AliasListResult[]> {
@@ -24,7 +23,7 @@ export default class AliasList extends SfCommand<AliasListResult[]> {
 
   public async run(): Promise<AliasListResult[]> {
     const stateAggregator = await StateAggregator.getInstance();
-    const aliases = stateAggregator.aliases.getAll() || {};
+    const aliases = stateAggregator.aliases.getAll();
 
     const results = Object.keys(aliases).map((key) => ({ alias: key, value: aliases[key] }));
 
@@ -33,7 +32,13 @@ export default class AliasList extends SfCommand<AliasListResult[]> {
       value: { header: 'Value' },
     };
 
-    this.table(results, columns, { title: 'List Aliases' });
+    // TODO: Add an "no results" option to ux.table?
+    if (results.length === 0) {
+      // TODO: Should this be a 'log' or 'warn'? A warn will show up in the json `warnings` array
+      this.warn('No aliases found');
+    } else {
+      this.table(results, columns, { title: 'Alias List', 'no-truncate': true });
+    }
 
     return results;
   }
