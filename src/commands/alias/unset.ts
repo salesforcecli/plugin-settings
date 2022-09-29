@@ -56,10 +56,9 @@ export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
       if (flags.all) {
         // We will exit 0 here since the end goal is accomplished (no aliases being set)
         throw messages.createError('error.NoAliasesSet', undefined, undefined, 0);
-      } else {
-        // No arg was passed, we don't know what to unset.
-        throw messages.createError('error.NameRequired');
       }
+      // No arg was passed, we don't know what to unset.
+      throw messages.createError('error.NameRequired');
     }
 
     if (flags.all && !flags['no-prompt'] && !(await this.confirm('Remove all aliases?'))) {

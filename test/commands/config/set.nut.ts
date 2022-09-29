@@ -67,6 +67,15 @@ describe('config set NUTs', async () => {
       expect(result[0].message).to.equal('Unknown config name: randomKey.');
       expect(result[0].success).to.be.false;
     });
+
+    it('don\'t allow using "set=" to unset a config key', () => {
+      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      const res = execCmd<ConfigResponses>('config set org-api-version= --json', {
+        ensureExitCode: 1,
+        cli: 'sf',
+      }).jsonOutput;
+      expect(res.name).to.include('ValueRequired');
+    });
   });
 
   describe('setting valid configs and values', () => {
@@ -203,13 +212,6 @@ describe('config set NUTs', async () => {
       expect(res2).to.include('100');
 
       execCmd('config unset org-api-version org-max-query-limit');
-    });
-  });
-
-  describe('use set to unset a config key', () => {
-    it('should unset config key when no value is provided', () => {
-      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
-      verifyKeysAndValuesJson('org-api-version', '');
     });
   });
 });

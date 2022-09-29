@@ -48,3 +48,7 @@ Found duplicate argument %s. You can specify a configuration variable only one t
 # error.ArgumentsRequired
 
 You must provide one or more configuration variables to set. Use the --help flag to view the available configuration variables.
+
+# error.ValueRequired
+
+You must provide a value when setting an config. Use `sf config unset my-alias-name` to remove existing configs.

@@ -8,6 +8,7 @@
 import { Flags } from '@oclif/core';
 import { Config, Messages, Org, SfdxError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
+import validateArgs from '../../shared/validate-args';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
@@ -29,13 +30,12 @@ export class Set extends ConfigCommand<ConfigResponses> {
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<ConfigResponses> {
-    const { flags } = await this.parse(Set);
-    const config: Config = await loadConfig(flags.global);
-    const configs = await this.parseConfigKeysAndValues();
-    for (const name of Object.keys(configs)) {
-      // We need to allow `undefined` here so that we can support unsetting with set=''
-      // See the "use set to unset a config key" NUT
-      const value = configs[name];
+    const parsed = await this.parse(Set);
+    const config: Config = await loadConfig(parsed.flags.global);
+    const args = validateArgs(parsed, messages);
+
+    for (const name of Object.keys(args)) {
+      const value = args[name];
       try {
         // core's builtin config validation requires synchronous functions but there's
         // currently no way to validate an org synchronously. Therefore, we have to manually
@@ -53,46 +53,6 @@ export class Set extends ConfigCommand<ConfigResponses> {
       this.output('Set Config', false);
     }
     return this.responses;
-  }
-
-  protected async resolveArguments(): Promise<string[]> {
-    const { args, argv } = await this.parse(Set);
-
-    const argVals = Object.values(args);
-    return argv.filter((val) => !argVals.includes(val));
-  }
-
-  protected async parseConfigKeysAndValues(): Promise<{ [index: string]: string }> {
-    const configs: { [index: string]: string } = {};
-    const args = await this.resolveArguments();
-
-    if (!args.length) {
-      throw messages.createError('error.ArgumentsRequired');
-    }
-
-    // Support `config set key value`
-    if (args.length === 2 && !args[0].includes('=')) {
-      return { [args[0]]: args[1] };
-    }
-
-    // Ensure that all args are in the right format (e.g. key=value key1=value1)
-    args.forEach((arg) => {
-      const split = arg.split('=');
-
-      if (split.length !== 2) {
-        throw messages.createError('error.InvalidArgumentFormat', [arg]);
-      }
-
-      const [name, value] = split;
-
-      if (configs[name]) {
-        throw messages.createError('error.DuplicateArgument', [name]);
-      }
-
-      configs[name] = value || undefined;
-    });
-
-    return configs;
   }
 }
 
