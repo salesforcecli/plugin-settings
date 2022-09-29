@@ -7,21 +7,16 @@
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
+import { AliasResults } from '../../types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.list', ['summary', 'description', 'examples']);
-
-export type AliasListResult = {
-  alias: string;
-  value: string;
-};
-
-export default class AliasList extends SfCommand<AliasListResult[]> {
+export default class AliasList extends SfCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
 
-  public async run(): Promise<AliasListResult[]> {
+  public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
 

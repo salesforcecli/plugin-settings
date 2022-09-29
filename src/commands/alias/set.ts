@@ -6,9 +6,9 @@
  */
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import { Nullable } from '@salesforce/ts-types';
 import { StateAggregator, Messages } from '@salesforce/core';
 import validateArgs from '../../shared/validate-args';
+import { AliasResults } from '../../types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
@@ -21,12 +21,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'error.ValueRequired',
 ]);
 
-export type AliasSetResult = {
-  alias: string;
-  value?: Nullable<string>;
-};
-
-export default class AliasSet extends SfCommand<AliasSetResult[]> {
+export default class AliasSet extends SfCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
@@ -35,7 +30,7 @@ export default class AliasSet extends SfCommand<AliasSetResult[]> {
   // TODO: This causes issues with flag spelling mistakes. Typing `bin/dev alias set --hekp` takes '--hekp' as an arg and not an unknown flag
   public static readonly strict = false;
 
-  public async run(): Promise<AliasSetResult[]> {
+  public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
 
     const parsed = await this.parse(AliasSet);

@@ -7,6 +7,7 @@
 
 import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages, SfError } from '@salesforce/core';
+import { AliasResults } from '../../types';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
@@ -20,14 +21,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'warning.AliasIsNotSet',
 ]);
 
-export type AliasUnsetResult = {
-  alias: string;
-  value?: string;
-  success?: boolean;
-  error?: SfError;
-};
-
-export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
+export default class AliasUnset extends SfCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
@@ -44,7 +38,7 @@ export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
     }),
   };
 
-  public async run(): Promise<AliasUnsetResult[]> {
+  public async run(): Promise<AliasResults> {
     const { flags, argv } = await this.parse(AliasUnset);
 
     const stateAggregator = await StateAggregator.getInstance();
@@ -65,7 +59,7 @@ export default class AliasUnset extends SfCommand<AliasUnsetResult[]> {
       return;
     }
 
-    const results: AliasUnsetResult[] = [];
+    const results: AliasResults = [];
 
     toRemove.forEach((alias) => {
       // We will log the value in the output in case an alias was unset by mistake.
