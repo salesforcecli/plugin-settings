@@ -27,9 +27,7 @@ export default class AliasList extends SfCommand<AliasResults> {
       value: { header: 'Value' },
     };
 
-    // TODO: Add an "no results" option to ux.table?
     if (results.length === 0) {
-      // TODO: Should this be a 'log' or 'warn'? A warn will show up in the json `warnings` array
       this.warn('No aliases found');
     } else {
       this.table(results, columns, { title: 'Alias List', 'no-truncate': true });

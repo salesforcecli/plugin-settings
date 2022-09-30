@@ -27,7 +27,6 @@ export default class AliasSet extends SfCommand<AliasResults> {
   public static examples = messages.getMessages('examples');
 
   // This allows varargs
-  // TODO: This causes issues with flag spelling mistakes. Typing `bin/dev alias set --hekp` takes '--hekp' as an arg and not an unknown flag
   public static readonly strict = false;
 
   public async run(): Promise<AliasResults> {
