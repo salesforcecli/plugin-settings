@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 
@@ -62,7 +61,7 @@ describe('alias list NUTs', () => {
 
     it('lists singular result correctly stdout', () => {
       const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
-      expect(res).to.include(`Alias List${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias List\n====='); // Table header
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub mydevhuborg@salesforce.com');
     });
@@ -95,7 +94,7 @@ describe('alias list NUTs', () => {
 
     it('lists multiple results correctly stdout', () => {
       const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
-      expect(res).to.include(`Alias List${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias List\n====='); // Table header
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub mydevhuborg@salesforce.com');
       expect(res).to.include('Admin  admin@salesforce.com');

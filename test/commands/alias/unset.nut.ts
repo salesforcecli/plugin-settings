@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
@@ -84,7 +83,7 @@ describe('alias unset NUTs', () => {
         ensureExitCode: 0,
       }).shellOutput;
 
-      expect(res).to.include(`Alias Unset${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias Unset\n====='); // Table header
       expect(res).to.include('Alias  Value                      Success');
       expect(res).to.include('DevHub mydevhuborg@salesforce.com true');
     });
@@ -148,7 +147,7 @@ describe('alias unset NUTs', () => {
         ensureExitCode: 0,
       }).shellOutput;
 
-      expect(res).to.include(`Alias Unset${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias Unset\n====='); // Table header
       expect(res).to.include('Alias  Value                      Success');
       expect(res).to.include('DevHub mydevhuborg@salesforce.com true');
       expect(res).to.include('user   user@salesforce.com        true');

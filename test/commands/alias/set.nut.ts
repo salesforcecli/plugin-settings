@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as os from 'os';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { getNumber, getString } from '@salesforce/ts-types';
 import { expect } from 'chai';
@@ -59,7 +58,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 0,
       }).shellOutput;
 
-      expect(res).to.include(`Alias Set${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias Set\n====='); // Table header
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub devhuborg@salesforce.com');
       expect(res).to.include('Admin  admin@salesforce.com');
@@ -130,7 +129,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 0,
       }).shellOutput;
 
-      expect(res).to.include(`Alias Set${os.EOL}=====`); // Table header
+      expect(res).to.include('Alias Set\n====='); // Table header
       expect(res).to.include('Alias  Value');
       expect(res).to.include('DevHub newdevhub@salesforce.com');
       expect(res).to.include('Admin  admin@salesforce.com');
