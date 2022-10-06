@@ -11,21 +11,26 @@ import { SfdxPropertyKeys, OrgConfigProperties } from '@salesforce/core';
 import { env } from '@salesforce/kit';
 import { AnyJson, ensureString } from '@salesforce/ts-types';
 import { expect } from 'chai';
-import { exec } from 'shelljs';
 import { ConfigResponses, Msg } from '../src/config';
 
 let testSession: TestSession;
 
 describe('Interoperability NUTs', async () => {
   ensureString(env.getString('TESTKIT_AUTH_URL'), 'TESTKIT_AUTH_URL must be set in the environment');
-  env.setString('TESTKIT_EXECUTABLE_PATH', path.join(process.cwd(), 'bin', 'dev'));
 
   const ORG_ALIAS = 'my-org';
 
   before(async () => {
     testSession = await TestSession.create({
       project: { name: 'interoperabilityNUTs' },
-      setupCommands: [`sfdx force:org:create -f config/project-scratch-def.json -a ${ORG_ALIAS}`],
+      devhubAuthStrategy: 'AUTH_URL',
+      scratchOrgs: [
+        {
+          executable: 'sfdx',
+          config: path.join('config', 'project-scratch-def.json'),
+          alias: ORG_ALIAS,
+        }
+      ],
     });
   });
 
@@ -53,7 +58,6 @@ describe('Interoperability NUTs', async () => {
     it('should set target-org in .sf and defaultusername in .sfdx', async () => {
       const { result } = execCmd<ConfigResponses>(`config set target-org ${ORG_ALIAS} --json`, {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true }];
       expect(result).to.deep.equal(expected);
@@ -65,7 +69,6 @@ describe('Interoperability NUTs', async () => {
     it('should set target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
       const { result } = execCmd<ConfigResponses>(`config set target-dev-hub ${ORG_ALIAS} --json`, {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true }];
       expect(result).to.deep.equal(expected);
@@ -77,7 +80,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to set defaultusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config set defaultusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_USERNAME);
@@ -86,7 +88,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to set defaultdevhubusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config set defaultdevhubusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
@@ -95,15 +96,15 @@ describe('Interoperability NUTs', async () => {
 
   describe('sf config list', () => {
     it('should list target-org when defaultusername is set by sfdx', async () => {
-      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
-      const { result } = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
+      execCmd(`config:set defaultusername=${ORG_ALIAS}`, { cli: 'sfdx' });
+      const { result } = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0 }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' }];
       expect(result).to.deep.equal(expected);
     });
 
     it('should list target-dev-hub when defaultdevhubusername is set by sfdx', async () => {
-      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
-      const { result } = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
+      execCmd(`config:set defaultdevhubusername=${ORG_ALIAS}`, { cli: 'sfdx' });
+      const { result } = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0 }).jsonOutput;
       const expected = [
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true, location: 'Local' },
       ];
@@ -113,15 +114,15 @@ describe('Interoperability NUTs', async () => {
 
   describe('sf config get', () => {
     it('should get target-org when defaultusername is set by sfdx', async () => {
-      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
-      const { result } = execCmd<Msg>('config get target-org --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
+      execCmd(`config:set defaultusername=${ORG_ALIAS}`, { cli: 'sfdx' });
+      const { result } = execCmd<Msg>('config get target-org --json', { ensureExitCode: 0 }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' }];
       expect(result).to.deep.equal(expected);
     });
 
     it('should get target-dev-hub when defaultdevhubusername is set by sfdx', async () => {
-      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
-      const { result } = execCmd<Msg>('config get target-dev-hub --json', { ensureExitCode: 0, cli: 'sf' }).jsonOutput;
+      execCmd(`config:set defaultdevhubusername=${ORG_ALIAS}`, { cli: 'sfdx' });
+      const { result } = execCmd<Msg>('config get target-dev-hub --json', { ensureExitCode: 0 }).jsonOutput;
       const expected = [
         {
           name: OrgConfigProperties.TARGET_DEV_HUB,
@@ -136,7 +137,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to get defaultusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config get defaultusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_USERNAME);
@@ -145,7 +145,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to get defaultdevhubusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config get defaultdevhubusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
@@ -154,10 +153,9 @@ describe('Interoperability NUTs', async () => {
 
   describe('sf config unset', () => {
     it('should unset target-org in .sf and defaultusername in .sfdx', async () => {
-      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       const { result } = execCmd<ConfigResponses>('config unset target-org --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_ORG, success: true }];
       expect(result).to.deep.equal(expected);
@@ -167,10 +165,9 @@ describe('Interoperability NUTs', async () => {
     });
 
     it('should unset target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
-      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultdevhubusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       const { result } = execCmd<ConfigResponses>('config unset target-dev-hub --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       const expected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, success: true }];
       expect(result).to.deep.equal(expected);
@@ -182,7 +179,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to unset defaultusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config unset defaultusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_USERNAME);
@@ -191,7 +187,6 @@ describe('Interoperability NUTs', async () => {
     it('should fail to unset defaultdevhubusername', async () => {
       const { result } = execCmd<ConfigResponses>(`config unset defaultdevhubusername ${ORG_ALIAS} --json`, {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].success).to.be.false;
       expect(result[0].name).to.equal(SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
@@ -200,14 +195,13 @@ describe('Interoperability NUTs', async () => {
 
   describe('sfdx config:set', () => {
     it('should set target-org in .sf and defaultusername in .sfdx', async () => {
-      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME, ORG_ALIAS);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-org --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [
         { name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' },
@@ -216,14 +210,13 @@ describe('Interoperability NUTs', async () => {
     });
 
     it('should set target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
-      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultdevhubusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, ORG_ALIAS);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true, location: 'Local' },
@@ -234,18 +227,16 @@ describe('Interoperability NUTs', async () => {
     it('should overwrite existing .sf configs', async () => {
       execCmd<ConfigResponses>('config set org-api-version=51.0 --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       });
       await configShouldHave('.sf', OrgConfigProperties.ORG_API_VERSION, '51.0');
 
-      exec('sfdx config:set apiVersion=52.0', { silent: true });
+      execCmd('config:set apiVersion=52.0', { cli: 'sfdx' });
       await configShouldHave('.sfdx', SfdxPropertyKeys.API_VERSION, '52.0');
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [
         { name: OrgConfigProperties.ORG_API_VERSION, value: '52.0', success: true, location: 'Local' },
@@ -259,14 +250,13 @@ describe('Interoperability NUTs', async () => {
       await writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
       await configShouldHave('.sf', OrgConfigProperties.TARGET_ORG, 'foobar');
 
-      exec(`sfdx config:set defaultusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME, ORG_ALIAS);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-org --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [
         { name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true, location: 'Local' },
@@ -280,14 +270,13 @@ describe('Interoperability NUTs', async () => {
       await writeJson(path.join(testSession.project.dir, '.sf', 'config.json'), config);
       await configShouldHave('.sf', OrgConfigProperties.TARGET_DEV_HUB, 'foobar');
 
-      exec(`sfdx config:set defaultdevhubusername=${ORG_ALIAS}`, { silent: true });
+      execCmd(`config:set defaultdevhubusername=${ORG_ALIAS}`, { cli: 'sfdx' });
       await configShouldHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME, ORG_ALIAS);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [
         { name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true, location: 'Local' },
@@ -300,19 +289,17 @@ describe('Interoperability NUTs', async () => {
     it('should unset target-org in .sf and defaultusername in .sfdx', async () => {
       const setResult = execCmd<ConfigResponses>(`config set target-org ${ORG_ALIAS} --json`, {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const setExpected = [{ name: OrgConfigProperties.TARGET_ORG, value: ORG_ALIAS, success: true }];
       expect(setResult).to.deep.equal(setExpected);
 
-      exec('sfdx config:unset defaultusername', { silent: true });
+      execCmd('config:unset defaultusername', { cli: 'sfdx' });
       await configShouldNotHave('.sfdx', SfdxPropertyKeys.DEFAULT_USERNAME);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-org --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [{ name: OrgConfigProperties.TARGET_ORG, success: true }];
       expect(getResult).to.deep.equal(getExpected);
@@ -321,19 +308,17 @@ describe('Interoperability NUTs', async () => {
     it('should unset target-dev-hub in .sf and defaultdevhubusername in .sfdx', async () => {
       const setResult = execCmd<ConfigResponses>(`config set target-dev-hub ${ORG_ALIAS} --json`, {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const setExpected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, value: ORG_ALIAS, success: true }];
       expect(setResult).to.deep.equal(setExpected);
 
-      exec('sfdx config:unset defaultdevhubusername', { silent: true });
+      execCmd('config:unset defaultdevhubusername', { cli: 'sfdx' });
       await configShouldNotHave('.sfdx', SfdxPropertyKeys.DEFAULT_DEV_HUB_USERNAME);
 
       // We can't check .sf/config.json directly because sfdx doesn't write back to sf
       // Instead we test this by running `config get`
       const getResult = execCmd<ConfigResponses>('config get target-dev-hub --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput.result;
       const getExpected = [{ name: OrgConfigProperties.TARGET_DEV_HUB, success: true }];
       expect(getResult).to.deep.equal(getExpected);

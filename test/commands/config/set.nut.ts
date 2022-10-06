@@ -46,13 +46,11 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
 describe('config set NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
-    authStrategy: 'NONE',
   });
 
   describe('config set errors', () => {
     it('fails to set a randomKey with InvalidArgumentFormat error', () => {
       const res = execCmd('config set randomKey --json', {
-        cli: 'sf',
         ensureExitCode: 1,
       }).jsonOutput;
       expect(res.name).to.include('InvalidArgumentFormat');
@@ -61,7 +59,6 @@ describe('config set NUTs', async () => {
     it('fails to set randomKey=randomValue', () => {
       const { result } = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].name).to.equal('randomKey');
       expect(result[0].message).to.equal('Unknown config name: randomKey.');
@@ -208,7 +205,7 @@ describe('config set NUTs', async () => {
 
   describe('use set to unset a config key', () => {
     it('should unset config key when no value is provided', () => {
-      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { ensureExitCode: 0 }).jsonOutput;
       verifyKeysAndValuesJson('org-api-version', '');
     });
   });
