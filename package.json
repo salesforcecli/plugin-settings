@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-settings",
   "description": "configure the Salesforce CLI",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
@@ -11,7 +11,7 @@
     "tslib": "^2"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^3.2.0",
+    "@oclif/plugin-command-snapshot": "^3.2.2",
     "@oclif/test": "^2.2.1",
     "@salesforce/cli-plugins-testkit": "^3.2.0",
     "@salesforce/dev-config": "^3.1.0",
@@ -26,7 +26,7 @@
     "@typescript-eslint/eslint-plugin": "^5.38.1",
     "@typescript-eslint/parser": "^5.38.1",
     "chai": "^4.3.6",
-    "eslint": "^8.24.0",
+    "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-salesforce": "^1.1.0",
     "eslint-config-salesforce-license": "^0.1.6",
