@@ -6,12 +6,19 @@
  */
 
 import { Flags } from '@oclif/core';
-import { Config, Messages, Org, SfdxError, OrgConfigProperties } from '@salesforce/core';
+import { parseVarArgs } from '@salesforce/sf-plugins-core';
+import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
-import validateArgs from '../../shared/validate-args';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
+const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
+  'summary',
+  'description',
+  'examples',
+  'flags.global.summary',
+  'error.ArgumentsRequired',
+  'error.ValueRequired',
+]);
 
 export class Set extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
@@ -30,12 +37,16 @@ export class Set extends ConfigCommand<ConfigResponses> {
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<ConfigResponses> {
-    const parsed = await this.parse(Set);
-    const config: Config = await loadConfig(parsed.flags.global);
-    const args = validateArgs(parsed, messages);
+    const { args, argv, flags } = await this.parse(Set);
+    const config: Config = await loadConfig(flags.global);
 
-    for (const name of Object.keys(args)) {
-      const value = args[name];
+    if (!argv.length) throw messages.createError('error.ArgumentsRequired');
+
+    const parsed = parseVarArgs(args, argv);
+
+    for (const name of Object.keys(parsed)) {
+      const value = parsed[name];
+      if (!value) throw messages.createError('error.ValueRequired');
       try {
         // core's builtin config validation requires synchronous functions but there's
         // currently no way to validate an org synchronously. Therefore, we have to manually
@@ -62,7 +73,7 @@ const loadConfig = async (global: boolean): Promise<Config> => {
     await config.read();
     return config;
   } catch (error) {
-    if (error instanceof SfdxError) {
+    if (error instanceof SfError) {
       error.actions = error.actions || [];
       error.actions.push('Run with --global to set for your entire workspace.');
     }

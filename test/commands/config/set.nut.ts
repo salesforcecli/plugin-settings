@@ -4,9 +4,17 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
+import { Messages } from '@salesforce/core';
 import { ConfigResponses } from '../../../src/config';
+
+Messages.importMessagesDirectory(__dirname);
+const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
+  'error.ArgumentsRequired',
+  'error.ValueRequired',
+]);
 
 let testSession: TestSession;
 
@@ -68,13 +76,22 @@ describe('config set NUTs', async () => {
       expect(result[0].success).to.be.false;
     });
 
+    it('throws an error if no varargs are passed', () => {
+      const res: string = execCmd('config set', {
+        ensureExitCode: 1,
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.ArgumentsRequired'));
+    });
+
     it('don\'t allow using "set=" to unset a config key', () => {
       execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
-      const res = execCmd<ConfigResponses>('config set org-api-version= --json', {
+      const res = execCmd<ConfigResponses>('config set org-api-version=', {
         ensureExitCode: 1,
         cli: 'sf',
-      }).jsonOutput;
-      expect(res.name).to.include('ValueRequired');
+      }).shellOutput.stderr;
+
+      expect(res).to.include(messages.getMessages('error.ValueRequired'));
     });
   });
 

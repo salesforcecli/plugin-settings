@@ -27,7 +27,7 @@ Don't prompt the user to confirm the deletion.
 
 You must provide an alias name when removing an alias.
 
-# error.NoAliasesSet
+# warning.NoAliasesSet
 
 The `--all` flag was passed, but no aliases are currently set. Exiting.
 

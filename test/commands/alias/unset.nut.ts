@@ -12,7 +12,7 @@ import { Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'error.NameRequired',
-  'error.NoAliasesSet',
+  'warning.NoAliasesSet',
   'warning.AliasIsNotSet',
 ]);
 
@@ -98,15 +98,12 @@ describe('alias unset NUTs', () => {
       expect(res).to.include(messages.getMessages('error.NameRequired'));
     });
 
-    it('throws a (non-zero) error if --all is passed but no aliases are set', () => {
+    it('shows a warning if --all is passed but no aliases are set', () => {
       execCmd('alias unset --all --no-prompt');
 
-      const res = execCmd('alias unset --all --no-prompt', {
-        // NOTE: exitcode 0 since the end goal is accomplished (no aliases being set)
-        ensureExitCode: 0,
-      }).shellOutput.stderr;
+      const res = execCmd('alias unset --all --no-prompt --json', { ensureExitCode: 0 }).shellOutput.stdout;
 
-      expect(res).to.include(messages.getMessages('error.NoAliasesSet'));
+      expect(res).to.include(messages.getMessages('warning.NoAliasesSet'));
     });
   });
 

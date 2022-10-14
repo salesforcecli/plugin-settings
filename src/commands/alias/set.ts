@@ -5,9 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfCommand } from '@salesforce/sf-plugins-core';
+import { SfCommand, parseVarArgs } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import validateArgs from '../../shared/validate-args';
 import { AliasResults } from '../../types';
 
 Messages.importMessagesDirectory(__dirname);
@@ -16,8 +15,6 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'description',
   'examples',
   'error.ArgumentsRequired',
-  'error.DuplicateArgument',
-  'error.InvalidArgumentFormat',
   'error.ValueRequired',
 ]);
 
@@ -32,12 +29,16 @@ export default class AliasSet extends SfCommand<AliasResults> {
   public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
 
-    const parsed = await this.parse(AliasSet);
-    const args = validateArgs(parsed, messages);
+    const { args, argv } = await this.parse(AliasSet);
 
-    const results = Object.keys(args).map((key) => {
-      const value = args[key];
-      stateAggregator.aliases.set(key, value ?? 'undefined');
+    if (!argv.length) throw messages.createError('error.ArgumentsRequired');
+
+    const parsed = parseVarArgs(args, argv);
+
+    const results = Object.keys(parsed).map((key) => {
+      const value = parsed[key];
+      if (!value) throw messages.createError('error.ValueRequired');
+      stateAggregator.aliases.set(key, value);
       return { alias: key, value };
     });
 

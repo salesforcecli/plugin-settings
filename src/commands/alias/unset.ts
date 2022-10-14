@@ -17,7 +17,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'flags.all.summary',
   'flags.no-prompt.summary',
   'error.NameRequired',
-  'error.NoAliasesSet',
+  'warning.NoAliasesSet',
   'warning.AliasIsNotSet',
 ]);
 
@@ -48,8 +48,8 @@ export default class AliasUnset extends SfCommand<AliasResults> {
 
     if (toRemove.length === 0) {
       if (flags.all) {
-        // We will exit 0 here since the end goal is accomplished (no aliases being set)
-        throw messages.createError('error.NoAliasesSet', undefined, undefined, 0);
+        this.warn(messages.getMessage('warning.NoAliasesSet'));
+        return [];
       }
       // No arg was passed, we don't know what to unset.
       throw messages.createError('error.NameRequired');

@@ -13,8 +13,6 @@ import { Messages } from '@salesforce/core';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'error.ArgumentsRequired',
-  'error.DuplicateArgument',
-  'error.InvalidArgumentFormat',
   'error.ValueRequired',
 ]);
 
@@ -85,7 +83,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 1,
       }).shellOutput.stderr;
 
-      expect(res).to.include(messages.getMessages('error.InvalidArgumentFormat'));
+      expect(res).to.include('Set varargs with this format');
     });
 
     it('throws an error when duplicate key is passed', () => {
@@ -93,7 +91,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 1,
       }).shellOutput.stderr;
 
-      expect(res).to.include(messages.getMessages('error.DuplicateArgument', ['foo']));
+      expect(res).to.include('Found duplicate argument');
     });
 
     it('alias set DevHub= shows error to use alias unset command', () => {

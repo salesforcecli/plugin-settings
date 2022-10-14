@@ -22,14 +22,6 @@ You can associate an alias with only one value at a time. If you’ve set an ali
 - Single aliases can be set without an equal sign
   <%= config.bin %> <%= command.id %> my-alias username@example.com
 
-# error.InvalidArgumentFormat
-
-Set aliases with this format: key=value or key="value with spaces". Use the --help flag to see more examples.
-
-# error.DuplicateArgument
-
-Found duplicate argument '%s'. You can only specify an alias one time in a single command execution. Remove the duplicate and try again.
-
 # error.ArgumentsRequired
 
 You must provide one or more aliases to set. Use the --help flag to see more examples.
