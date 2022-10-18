@@ -86,7 +86,6 @@ describe('config set NUTs', async () => {
 
       const { result } = execCmd<ConfigResponses>('config set org-api-version= --json', {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
 
       expect(result).to.deep.equal([
