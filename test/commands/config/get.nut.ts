@@ -13,14 +13,12 @@ let testSession: TestSession;
 describe('config get NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configGetNUTs' },
-    authStrategy: 'NONE',
   });
 
   describe('config get errors', () => {
     it('attempt to config get without keys', () => {
       const result = execCmd('config get --json', {
         ensureExitCode: 1,
-        cli: 'sf',
       }).jsonOutput;
       expect(result.name).to.include('NoConfigKeysFound');
       expect(result.status).to.equal(1);
@@ -42,7 +40,6 @@ describe('config get NUTs', async () => {
     it('gets singular config correctly', () => {
       const { result } = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       expect(result[0].name).to.equal('org-api-version');
       expect(result[0].location).to.equal('Global');
@@ -54,7 +51,6 @@ describe('config get NUTs', async () => {
       execCmd('config set org-api-version=52.0');
       const { result } = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       }).jsonOutput;
       expect(result).to.deep.equal([
         {
@@ -85,7 +81,6 @@ describe('config get NUTs', async () => {
       execCmd('config set org-api-version=51.0');
       const res = execCmd<ConfigResponses>('config get org-api-version org-max-query-limit disable-telemetry --json', {
         ensureExitCode: 0,
-        cli: 'sf',
       });
 
       expect(res.jsonOutput.result).to.deep.equal([

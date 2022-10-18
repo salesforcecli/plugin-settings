@@ -1,19 +1,19 @@
 {
   "name": "@salesforce/plugin-settings",
   "description": "configure the Salesforce CLI",
-  "version": "1.0.5",
+  "version": "1.0.9",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
     "@oclif/core": "^1.17.0",
     "@salesforce/core": "^3.31.9",
-    "@salesforce/sf-plugins-core": "^1.15.1",
+    "@salesforce/sf-plugins-core": "^1.15.2",
     "tslib": "^2"
   },
   "devDependencies": {
     "@oclif/plugin-command-snapshot": "^3.2.4",
     "@oclif/test": "^2.2.3",
-    "@salesforce/cli-plugins-testkit": "^2.5.3",
+    "@salesforce/cli-plugins-testkit": "^3.2.3",
     "@salesforce/dev-config": "^3.1.0",
     "@salesforce/dev-scripts": "^3.1.0",
     "@salesforce/kit": "^1.7.0",
