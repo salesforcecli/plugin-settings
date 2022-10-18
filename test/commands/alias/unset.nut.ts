@@ -13,7 +13,6 @@ Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'error.NameRequired',
   'warning.NoAliasesSet',
-  'warning.AliasIsNotSet',
 ]);
 
 describe('alias unset NUTs', () => {
@@ -30,20 +29,26 @@ describe('alias unset NUTs', () => {
     await session?.clean();
   });
 
-  describe('alias unset non-existent key', () => {
-    it("will skip a key if it doesn't exist", () => {
+  describe('unsetting non-existent key is a success (json)', () => {
+    it('unsetting a non-existent key will report success', () => {
       const { result } = execCmd('alias unset noAlias --json', { ensureExitCode: 0 }).jsonOutput;
 
-      expect(result).to.deep.equal([]);
+      expect(result).to.deep.equal([
+        {
+          alias: 'noAlias',
+          success: true,
+        },
+      ]);
     });
 
-    it("will skip a key if it doesn't exist stdout", () => {
+    it('unsetting non-existent key is a success (stdout)', () => {
       const res: string = execCmd('alias unset noAlias', {
         ensureExitCode: 0,
       }).shellOutput;
 
-      expect(res).to.include(messages.getMessage('warning.AliasIsNotSet', ['noAlias']));
-      expect(res).to.include('No aliases unset');
+      expect(res).to.include('Alias Unset\n====='); // Table header
+      expect(res).to.include('Alias   Value Success');
+      expect(res).to.include('noAlias       true');
     });
   });
 

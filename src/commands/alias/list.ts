@@ -5,13 +5,12 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfCommand } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasResults } from '../../types';
+import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.list', ['summary', 'description', 'examples']);
-export default class AliasList extends SfCommand<AliasResults> {
+export default class AliasList extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
@@ -20,18 +19,9 @@ export default class AliasList extends SfCommand<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
 
-    const results = Object.keys(aliases).map((key) => ({ alias: key, value: aliases[key] }));
+    const results = Object.entries(aliases).map(([alias, value]) => ({ alias, value }));
 
-    const columns = {
-      alias: { header: 'Alias' },
-      value: { header: 'Value' },
-    };
-
-    if (results.length === 0) {
-      this.warn('No aliases found');
-    } else {
-      this.table(results, columns, { title: 'Alias List', 'no-truncate': true });
-    }
+    this.output('Alias List', results);
 
     return results;
   }

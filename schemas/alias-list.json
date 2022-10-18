@@ -20,6 +20,9 @@
         "success": {
           "type": "boolean"
         },
+        "message": {
+          "type": "string"
+        },
         "error": {
           "$ref": "#/definitions/SfError"
         }

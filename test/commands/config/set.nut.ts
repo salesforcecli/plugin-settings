@@ -86,12 +86,23 @@ describe('config set NUTs', async () => {
 
     it('don\'t allow using "set=" to unset a config key', () => {
       execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
-      const res = execCmd<ConfigResponses>('config set org-api-version=', {
+
+      const { result } = execCmd<ConfigResponses>('config set org-api-version= --json', {
         ensureExitCode: 1,
         cli: 'sf',
-      }).shellOutput.stderr;
+      }).jsonOutput;
 
-      expect(res).to.include(messages.getMessages('error.ValueRequired'));
+      expect(result).to.deep.equal([
+        {
+          name: 'org-api-version',
+          success: false,
+          error: {
+            name: 'ValueRequiredError',
+            exitCode: 1,
+          },
+          message: messages.getMessage('error.ValueRequired'),
+        },
+      ]);
     });
   });
 

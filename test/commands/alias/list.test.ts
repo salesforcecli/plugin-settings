@@ -16,7 +16,7 @@ describe('alias list', () => {
       .stdout()
       .command(['alias list'])
       .it('shows no results', (ctx) => {
-        expect(ctx.stdout).to.contain('No aliases found');
+        expect(ctx.stdout).to.contain('No results');
       });
 
     test

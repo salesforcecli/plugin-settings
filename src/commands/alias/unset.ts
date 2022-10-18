@@ -5,9 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfCommand, Flags } from '@salesforce/sf-plugins-core';
+import { Flags } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages, SfError } from '@salesforce/core';
-import { AliasResults } from '../../types';
+import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
@@ -18,10 +18,10 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
   'flags.no-prompt.summary',
   'error.NameRequired',
   'warning.NoAliasesSet',
-  'warning.AliasIsNotSet',
+  'prompt.RemoveAllAliases',
 ]);
 
-export default class AliasUnset extends SfCommand<AliasResults> {
+export default class AliasUnset extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
@@ -55,42 +55,26 @@ export default class AliasUnset extends SfCommand<AliasResults> {
       throw messages.createError('error.NameRequired');
     }
 
-    if (flags.all && !flags['no-prompt'] && !(await this.confirm('Remove all aliases?'))) {
+    // Confirm the users wants to remove all aliases. Supports --no-prompt.
+    if (flags.all && !flags['no-prompt'] && !(await this.confirm(messages.getMessage('prompt.RemoveAllAliases')))) {
       return;
     }
 
-    const results: AliasResults = [];
-
-    toRemove.forEach((alias) => {
+    const results = toRemove.map((alias) => {
       // We will log the value in the output in case an alias was unset by mistake.
       const value = aliases[alias];
       try {
-        if (value === undefined) {
-          this.warn(messages.getMessage('warning.AliasIsNotSet', [alias]));
-        } else {
-          stateAggregator.aliases.unset(alias);
-          results.push({ alias, value, success: true });
-        }
+        stateAggregator.aliases.unset(alias);
+        return { alias, value, success: true };
       } catch (err) {
         const error = err as SfError;
-        process.exitCode = 1;
-        results.push({ alias, value, success: false, error });
+        return { alias, value, success: false, error };
       }
     });
 
     await stateAggregator.aliases.write();
 
-    const columns = {
-      alias: { header: 'Alias' },
-      value: { header: 'Value' },
-      success: { header: 'Success' },
-    };
-
-    if (results.length === 0) {
-      this.warn('No aliases unset');
-    } else {
-      this.table(results, columns, { title: 'Alias Unset', 'no-truncate': true });
-    }
+    this.output('Alias Unset', results);
 
     return results;
   }

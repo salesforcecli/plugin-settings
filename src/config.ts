@@ -85,7 +85,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       };
     }
 
-    if (this.responses.find((msg) => msg.error)) {
+    if (this.responses.some((msg) => msg.error)) {
       columns.message = {
         header: 'Message',
         get: (row): string => row.message ?? '',

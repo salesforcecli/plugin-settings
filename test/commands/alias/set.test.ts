@@ -16,6 +16,7 @@ describe('alias set', () => {
       expect(response.result).to.deep.equal([
         {
           alias: 'Coffee',
+          success: true,
           value: 'espresso',
         },
       ]);

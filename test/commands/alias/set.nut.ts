@@ -46,8 +46,8 @@ describe('alias set NUTs', () => {
       }).jsonOutput;
 
       expect(result).to.deep.equal([
-        { alias: 'DevHub', value: 'devhuborg@salesforce.com' },
-        { alias: 'Admin', value: 'admin@salesforce.com' },
+        { alias: 'DevHub', success: true, value: 'devhuborg@salesforce.com' },
+        { alias: 'Admin', success: true, value: 'admin@salesforce.com' },
       ]);
     });
 
@@ -67,7 +67,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 0,
       }).jsonOutput;
 
-      expect(result).to.deep.equal([{ alias: 'foo', value: 'alias with spaces' }]);
+      expect(result).to.deep.equal([{ alias: 'foo', success: true, value: 'alias with spaces' }]);
     });
 
     it('allow setting a single alias without an equal sign', () => {
@@ -75,7 +75,7 @@ describe('alias set NUTs', () => {
         ensureExitCode: 0,
       }).jsonOutput;
 
-      expect(result).to.deep.equal([{ alias: 'theKey', value: 'theValue' }]);
+      expect(result).to.deep.equal([{ alias: 'theKey', success: true, value: 'theValue' }]);
     });
 
     it('throws an error if format is not correct', () => {
@@ -94,12 +94,33 @@ describe('alias set NUTs', () => {
       expect(res).to.include('Found duplicate argument');
     });
 
-    it('alias set DevHub= shows error to use alias unset command', () => {
+    it('alias set DevHub= shows error message to use alias unset command', () => {
       const res = execCmd('alias set DevHub=', {
         ensureExitCode: 1,
-      }).shellOutput.stderr;
+      }).shellOutput;
 
-      expect(res).to.include(messages.getMessages('error.ValueRequired'));
+      expect(res).to.include('Alias Set\n====='); // Table header
+      expect(res).to.include('Alias  Value Success Message');
+      expect(res).to.include(`DevHub       false   ${messages.getMessages('error.ValueRequired')}`);
+    });
+
+    it('alias set DevHub= shows error to use alias unset command (json)', () => {
+      const { result } = execCmd('alias set DevHub= --json', {
+        ensureExitCode: 1,
+      }).jsonOutput;
+
+      expect(result).to.deep.equal([
+        {
+          alias: 'DevHub',
+          success: false,
+          error: {
+            name: 'ValueRequiredError',
+            exitCode: 1,
+          },
+          message:
+            'You must provide a value when setting an alias. Use `sf alias unset my-alias-name` to remove existing aliases.',
+        },
+      ]);
     });
   });
 
@@ -110,15 +131,13 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set overwrites existing entry correctly json', () => {
-      // overwriting DevHub entry to point to newdevhub
       const { result } = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com --json', {
         ensureExitCode: 0,
       }).jsonOutput;
 
       expect(result).to.deep.equal([
-        // newdevhub verified
-        { alias: 'DevHub', value: 'newdevhub@salesforce.com' },
-        { alias: 'Admin', value: 'admin@salesforce.com' },
+        { alias: 'DevHub', success: true, value: 'newdevhub@salesforce.com' },
+        { alias: 'Admin', success: true, value: 'admin@salesforce.com' },
       ]);
     });
 

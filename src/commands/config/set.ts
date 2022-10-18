@@ -46,15 +46,19 @@ export class Set extends ConfigCommand<ConfigResponses> {
 
     for (const name of Object.keys(parsed)) {
       const value = parsed[name];
-      if (!value) throw messages.createError('error.ValueRequired');
       try {
-        // core's builtin config validation requires synchronous functions but there's
-        // currently no way to validate an org synchronously. Therefore, we have to manually
-        // validate the org here and manually set the error message if it fails
-        // eslint-disable-next-line no-await-in-loop
-        if (isOrgKey(name) && value) await validateOrg(value);
-        config.set(name, value);
-        this.responses.push({ name, value, success: true });
+        if (!value) {
+          // Push a failure if users are try to unset a value with `set=`.
+          this.pushFailure(name, messages.createError('error.ValueRequired'), value);
+        } else {
+          // core's builtin config validation requires synchronous functions but there's
+          // currently no way to validate an org synchronously. Therefore, we have to manually
+          // validate the org here and manually set the error message if it fails
+          // eslint-disable-next-line no-await-in-loop
+          if (isOrgKey(name) && value) await validateOrg(value);
+          config.set(name, value);
+          this.responses.push({ name, value, success: true });
+        }
       } catch (err) {
         this.pushFailure(name, err as Error, value);
       }

@@ -31,6 +31,6 @@ You must provide an alias name when removing an alias.
 
 The `--all` flag was passed, but no aliases are currently set. Exiting.
 
-# warning.AliasIsNotSet
+# prompt.RemoveAllAliases
 
-Alias '%s' was not set. Skipping.
+Remove all aliases?

@@ -5,9 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfCommand, parseVarArgs } from '@salesforce/sf-plugins-core';
-import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasResults } from '../../types';
+import { parseVarArgs } from '@salesforce/sf-plugins-core';
+import { StateAggregator, Messages, SfError } from '@salesforce/core';
+import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
@@ -18,7 +18,7 @@ const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
   'error.ValueRequired',
 ]);
 
-export default class AliasSet extends SfCommand<AliasResults> {
+export default class AliasSet extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
@@ -35,21 +35,23 @@ export default class AliasSet extends SfCommand<AliasResults> {
 
     const parsed = parseVarArgs(args, argv);
 
-    const results = Object.keys(parsed).map((key) => {
-      const value = parsed[key];
-      if (!value) throw messages.createError('error.ValueRequired');
-      stateAggregator.aliases.set(key, value);
-      return { alias: key, value };
+    const results = Object.entries(parsed).map(([alias, value]) => {
+      try {
+        if (!value) {
+          return { alias, success: false, error: messages.createError('error.ValueRequired'), value };
+        } else {
+          stateAggregator.aliases.set(alias, value);
+          return { alias, success: true, value };
+        }
+      } catch (err) {
+        const error = err as SfError;
+        return { alias, success: false, error, value };
+      }
     });
 
     await stateAggregator.aliases.write();
 
-    const columns = {
-      alias: { header: 'Alias' },
-      value: { header: 'Value' },
-    };
-
-    this.table(results, columns, { title: 'Alias Set' });
+    this.output('Alias Set', results);
 
     return results;
   }
