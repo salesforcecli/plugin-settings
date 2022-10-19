@@ -1,31 +1,36 @@
 # summary
 
-Unset one or more aliases.
+Unset one or more aliases that are currently set on your local computer.
 
 # description
 
-Use this command to remove aliases that are currently set on your machine.
+Aliases are global, so when you unset one it's no longer available in any Salesforce DX project.
 
 # flags.all.summary
 
-Remove all currently set aliases.
+Unset all currently set aliases.
 
 # flags.no-prompt.summary
 
-Don't prompt the user to confirm the deletion.
+Don't prompt the user for confirmation when unsetting all aliases.
 
 # examples
 
 - Unset an alias:
+
   <%= config.bin %> <%= command.id %> my-alias
+
 - Unset multiple aliases with a single command:
+
   <%= config.bin %> <%= command.id %> my-alias my-other-alias
-- Unset ALL aliases:
+
+- Unset all aliases:
+
   <%= config.bin %> <%= command.id %> --all [--no-prompt]
 
 # error.NameRequired
 
-You must provide an alias name when removing an alias.
+You must provide an alias name when unsetting an alias.
 
 # warning.NoAliasesSet
 
@@ -33,4 +38,4 @@ The `--all` flag was passed, but no aliases are currently set. Exiting.
 
 # prompt.RemoveAllAliases
 
-Remove all aliases?
+Are you sure you want to unset all aliases?
