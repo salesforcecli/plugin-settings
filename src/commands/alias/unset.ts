@@ -25,7 +25,9 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
+
   public static readonly strict = false; // This allows varargs
+  public static readonly state = 'beta';
 
   public static flags = {
     all: Flags.boolean({
