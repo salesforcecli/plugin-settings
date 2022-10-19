@@ -49,6 +49,6 @@ describe('alias unset', () => {
     .stderr()
     .command(['alias unset'])
     .it('throws error when no aliases provided', (ctx) => {
-      expect(ctx.stderr).to.contain('You must provide an alias name when removing an alias.');
+      expect(ctx.stderr).to.contain('You must provide an alias name when unsetting an alias.');
     });
 });
