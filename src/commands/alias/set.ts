@@ -23,8 +23,8 @@ export default class AliasSet extends AliasCommand<AliasResults> {
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
 
-  // This allows varargs
-  public static readonly strict = false;
+  public static readonly strict = false; // This allows varargs
+  public static readonly state = 'beta';
 
   public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();

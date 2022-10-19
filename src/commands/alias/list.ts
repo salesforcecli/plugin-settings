@@ -15,6 +15,8 @@ export default class AliasList extends AliasCommand<AliasResults> {
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
 
+  public static readonly state = 'beta';
+
   public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
