@@ -4,7 +4,7 @@ Unset local or global configuration variables.
 
 # description
 
-Local configuration variables apply only to your current project. Global configuration variables apply in any directory.
+Local configuration variables apply only to your current project. Global configuration variables apply in any Salesforce DX project.
 
 # examples
 
@@ -18,7 +18,7 @@ Local configuration variables apply only to your current project. Global configu
 
 # flags.global.summary
 
-Unset the configuration variables globally, so they can no longer be used from any directory.
+Unset the configuration variables globally, so they can no longer be used from any Salesforce DX project.
 
 # error.NoConfigKeysFound
 

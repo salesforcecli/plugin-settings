@@ -29,7 +29,7 @@ describe('Interoperability NUTs', async () => {
           executable: 'sfdx',
           config: path.join('config', 'project-scratch-def.json'),
           alias: ORG_ALIAS,
-        }
+        },
       ],
     });
   });

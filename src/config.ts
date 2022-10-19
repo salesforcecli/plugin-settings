@@ -7,7 +7,7 @@
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { CliUx } from '@oclif/core';
-import { ConfigInfo, OrgConfigProperties, SfdxError, SfdxPropertyKeys } from '@salesforce/core';
+import { ConfigInfo, OrgConfigProperties, SfError, SfdxPropertyKeys } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
 
 export type Msg = {
@@ -46,7 +46,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
   }
 
   protected pushFailure(name: string, err: string | Error, value?: string): void {
-    const error = SfdxError.wrap(err);
+    const error = SfError.wrap(err);
     this.responses.push({
       name,
       success: false,
@@ -85,7 +85,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       };
     }
 
-    if (this.responses.find((msg) => msg.error)) {
+    if (this.responses.some((msg) => msg.error)) {
       columns.message = {
         header: 'Message',
         get: (row): string => row.message ?? '',

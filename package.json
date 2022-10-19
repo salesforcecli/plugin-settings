@@ -5,26 +5,26 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@oclif/core": "^1.16.5",
-    "@salesforce/core": "^3.30.8",
+    "@oclif/core": "^1.19.0",
+    "@salesforce/core": "^3.31.12",
     "@salesforce/sf-plugins-core": "^1.15.2",
     "tslib": "^2"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^3.2.4",
-    "@oclif/test": "^2.2.3",
+    "@oclif/plugin-command-snapshot": "^3.2.5",
+    "@oclif/test": "^2.2.4",
     "@salesforce/cli-plugins-testkit": "^3.2.3",
     "@salesforce/dev-config": "^3.1.0",
     "@salesforce/dev-scripts": "^3.1.0",
-    "@salesforce/kit": "^1.6.1",
+    "@salesforce/kit": "^1.7.0",
     "@salesforce/plugin-command-reference": "^2.2.8",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.0",
-    "@salesforce/ts-types": "^1.5.20",
+    "@salesforce/ts-types": "^1.5.21",
     "@types/fs-extra": "^9.0.13",
     "@types/shelljs": "^0.8.11",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
-    "@typescript-eslint/parser": "^5.40.0",
+    "@typescript-eslint/eslint-plugin": "^5.40.1",
+    "@typescript-eslint/parser": "^5.40.1",
     "chai": "^4.3.6",
     "eslint": "^8.25.0",
     "eslint-config-prettier": "^8.5.0",
@@ -33,7 +33,7 @@
     "eslint-config-salesforce-typescript": "^1.1.1",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsdoc": "^39.3.6",
+    "eslint-plugin-jsdoc": "^39.3.13",
     "eslint-plugin-sf-plugin": "^0.3.0",
     "fs-extra": "^10.1.0",
     "husky": "^7.0.4",
@@ -87,6 +87,9 @@
     "topics": {
       "config": {
         "description": "Commands to configure Salesforce CLI."
+      },
+      "alias": {
+        "description": "Use the alias commands to manage your aliases."
       }
     }
   },
@@ -110,7 +113,7 @@
     "test:command-reference": "./bin/dev commandreference:generate --erroronwarnings",
     "test:deprecation-policy": "./bin/dev snapshot:compare",
     "test:json-schema": "./bin/dev schema:compare",
-    "test:nuts": "nyc mocha \"**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
+    "test:nuts": "nyc mocha \"test/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel",
     "version": "oclif readme"
   },
   "publishConfig": {

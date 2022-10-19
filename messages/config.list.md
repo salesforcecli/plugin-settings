@@ -4,7 +4,7 @@ List the configuration variables that you've previously set.
 
 # description
 
-Global configuration variables apply to any directory and are always displayed. If you run this command from a project directory, local configuration variables are also displayed.
+Global configuration variables apply to any Salesforce DX project and are always displayed. If you run this command from a project directory, local configuration variables are also displayed.
 
 # examples
 

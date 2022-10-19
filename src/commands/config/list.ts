@@ -8,7 +8,7 @@ import { ConfigAggregator, Messages } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.loadMessages('@salesforce/plugin-settings', 'list');
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.list');
 
 export default class List extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
