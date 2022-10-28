@@ -6,7 +6,7 @@ on:
 
 jobs:
   yarn-lockfile-check:
-    uses: salesforcecli/github-workflows/.github/workflows/lockFileCheck.yml@yarn-global-install
+    uses: salesforcecli/github-workflows/.github/workflows/lockFileCheck.yml@main
   # Since the Windows unit tests take much longer, we run the linux unit tests first and then run the windows unit tests in parallel with NUTs
   linux-unit-tests:
     needs: yarn-lockfile-check
@@ -16,7 +16,7 @@ jobs:
     uses: salesforcecli/github-workflows/.github/workflows/unitTestsWindows.yml@ew/split-unit-tests
   nuts:
     needs: linux-unit-tests
-    uses: salesforcecli/github-workflows/.github/workflows/nut.yml@yarn-global-install
+    uses: salesforcecli/github-workflows/.github/workflows/nut.yml@main
     secrets: inherit
     strategy:
       matrix:
