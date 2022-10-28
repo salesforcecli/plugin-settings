@@ -38,7 +38,7 @@ describe('alias list NUTs', () => {
 
     it('lists no aliases stdout', () => {
       const res: string = execCmd('alias list').shellOutput;
-      expect(res).to.include('No results');
+      expect(res).to.include('No foo results');
     });
   });
 
