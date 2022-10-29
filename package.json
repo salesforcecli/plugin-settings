@@ -20,7 +20,7 @@
     "@salesforce/plugin-command-reference": "^2.2.8",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.0",
-    "@salesforce/ts-types": "^1.5.21",
+    "@salesforce/ts-types": "^1.7.0",
     "@types/fs-extra": "^9.0.13",
     "@types/shelljs": "^0.8.11",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
