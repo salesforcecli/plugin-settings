@@ -5,8 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags } from '@oclif/core';
-import { parseVarArgs } from '@salesforce/sf-plugins-core';
+import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
