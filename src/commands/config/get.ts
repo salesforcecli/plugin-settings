@@ -32,7 +32,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
     } else {
       const aggregator = await ConfigAggregator.create();
 
-      argv.forEach((configName) => {
+      (argv as string[]).forEach((configName) => {
         try {
           this.pushSuccess(aggregator.getInfo(configName, true));
         } catch (err) {

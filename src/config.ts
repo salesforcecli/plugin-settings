@@ -6,7 +6,7 @@
  */
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
-import { CliUx } from '@oclif/core';
+import { ux } from '@oclif/core';
 import { ConfigInfo, OrgConfigProperties, SfError, SfdxPropertyKeys } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
 
@@ -63,7 +63,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       return;
     }
 
-    const columns: CliUx.Table.table.Columns<Msg> = {
+    const columns: ux.Table.table.Columns<Msg> = {
       name: { header: 'Name' },
     };
 

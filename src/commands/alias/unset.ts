@@ -46,7 +46,7 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
 
-    const toRemove = flags.all ? Object.keys(aliases) : argv;
+    const toRemove = flags.all ? Object.keys(aliases) : (argv as string[]);
 
     if (toRemove.length === 0) {
       if (flags.all) {

@@ -6,7 +6,7 @@
  */
 
 import { SfError } from '@salesforce/core';
-import { CliUx } from '@oclif/core';
+import { ux } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 
 export type AliasResult = {
@@ -26,7 +26,7 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
       return;
     }
 
-    const columns: CliUx.Table.table.Columns<AliasResult> = {
+    const columns: ux.Table.table.Columns<AliasResult> = {
       alias: { header: 'Alias' },
       value: { header: 'Value' },
     };

@@ -41,7 +41,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
 
     if (!argv.length) throw messages.createError('error.ArgumentsRequired');
 
-    const parsed = parseVarArgs(args, argv);
+    const parsed = parseVarArgs(args, argv as string[]);
 
     for (const name of Object.keys(parsed)) {
       const value = parsed[name];
