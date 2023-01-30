@@ -33,7 +33,7 @@ export default class AliasSet extends AliasCommand<AliasResults> {
 
     if (!argv.length) throw messages.createError('error.ArgumentsRequired');
 
-    const parsed = parseVarArgs(args, argv);
+    const parsed = parseVarArgs(args, argv as string[]);
 
     const results = Object.entries(parsed).map(([alias, value]) => {
       try {

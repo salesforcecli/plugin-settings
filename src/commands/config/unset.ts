@@ -36,7 +36,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
       const config: Config = await Config.create(Config.getDefaultOptions(flags.global));
 
       await config.read();
-      argv.forEach((key) => {
+      (argv as string[]).forEach((key) => {
         try {
           config.unset(key);
           this.responses.push({ name: key, success: true });
