@@ -15,6 +15,8 @@ export class Get extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
+  public static readonly aliases = ['force:config:get'];
+  public static readonly deprecateAliases = true;
   public static readonly strict = false;
   public static readonly flags = {
     verbose: Flags.boolean({

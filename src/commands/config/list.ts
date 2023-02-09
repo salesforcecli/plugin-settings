@@ -14,6 +14,8 @@ export default class List extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
+  public static readonly aliases = ['force:config:list'];
+  public static readonly deprecateAliases = true;
   public static flags = {};
 
   public async run(): Promise<ConfigResponses> {

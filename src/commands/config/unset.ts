@@ -17,9 +17,9 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
   public static readonly strict = false;
-
+  public static readonly aliases = ['force:config:unset'];
+  public static readonly deprecateAliases = true;
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
-
   public static readonly flags = {
     global: Flags.boolean({
       char: 'g',
