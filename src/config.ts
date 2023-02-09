@@ -12,6 +12,8 @@ import { toHelpSection } from '@salesforce/sf-plugins-core';
 
 export type Msg = {
   name: string;
+  key?: string;
+  deprecated?: boolean;
   value?: string;
   success: boolean;
   location?: string;

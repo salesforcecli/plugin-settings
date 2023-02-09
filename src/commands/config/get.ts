@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { Flags } from '@salesforce/sf-plugins-core';
-import { ConfigAggregator, Messages } from '@salesforce/core';
+import { ConfigAggregator, Messages, SfdxConfigAggregator } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses, CONFIG_HELP_SECTION } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -28,6 +28,8 @@ export class Get extends ConfigCommand<ConfigResponses> {
 
   public async run(): Promise<ConfigResponses> {
     const { argv, flags } = await this.parse(Get);
+    // instantiate a SfdxConfigAggregator to get the restDeploy <-> org-metadata-rest-deploy deprecation linked
+    await SfdxConfigAggregator.create({});
 
     if (!argv || argv.length === 0) {
       throw messages.createError('error.NoConfigKeysFound');
@@ -38,7 +40,24 @@ export class Get extends ConfigCommand<ConfigResponses> {
         try {
           this.pushSuccess(aggregator.getInfo(configName, true));
         } catch (err) {
-          this.pushFailure(configName, err as Error);
+          const error = err as Error;
+          if (error.message.includes('Deprecated config name')) {
+            const info = aggregator.getInfo(aggregator.getPropertyMeta(configName).newKey);
+            // deprecated key, so we'll get the replacement and return the value
+            this.responses.push({
+              name: info.key,
+              key: configName,
+              value: info.value as string,
+              deprecated: true,
+              location: info.location,
+              path: info.path,
+              error,
+              message: error.message,
+              success: true,
+            });
+          } else {
+            this.pushFailure(configName, err as Error);
+          }
         }
       });
 

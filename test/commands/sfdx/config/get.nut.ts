@@ -6,6 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
+import { ConfigResponses } from '../../../../src/config';
 let testSession: TestSession;
 
 describe('config:get NUTs', async () => {
@@ -15,7 +16,7 @@ describe('config:get NUTs', async () => {
 
   describe('config:get errors', () => {
     it('attempt to config get without keys', () => {
-      const res = execCmd('config:get --json', {
+      const res = execCmd<ConfigResponses>('config:get --json', {
         ensureExitCode: 1,
       }).jsonOutput;
       expect(res.stack).to.include('NoConfigKeysFound');
@@ -24,7 +25,7 @@ describe('config:get NUTs', async () => {
     });
 
     it('attempt to config get without keys stdout', () => {
-      const res: string = execCmd('config:get').shellOutput.stderr;
+      const res: string = execCmd<ConfigResponses>('config:get').shellOutput.stderr;
       expect(res).to.include('You must provide one or more configuration variables to get.');
     });
   });
@@ -46,7 +47,7 @@ describe('config:get NUTs', async () => {
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config:set apiVersion=52.0');
-      const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
+      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 });
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(res.jsonOutput.result[0].path).to.include('config.json');
       delete res.jsonOutput.result[0].path;
@@ -72,7 +73,7 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets singular result correctly stdout', () => {
-      const res: string = execCmd('config:get apiVersion').shellOutput.stdout;
+      const res: string = execCmd<ConfigResponses>('config:get apiVersion').shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('52.0');
@@ -140,7 +141,7 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets multiple results correctly stdout', () => {
-      const res: string = execCmd('config:get  apiVersion maxQueryLimit restDeploy').shellOutput.stdout;
+      const res = execCmd<ConfigResponses>('config:get  apiVersion maxQueryLimit restDeploy').shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('apiVersion');
       expect(res).to.include('51.0');

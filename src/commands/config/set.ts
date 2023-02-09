@@ -6,7 +6,7 @@
  */
 
 import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
+import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -59,7 +59,14 @@ export class Set extends ConfigCommand<ConfigResponses> {
           this.responses.push({ name, value, success: true });
         }
       } catch (err) {
-        this.pushFailure(name, err as Error, value);
+        const error = err as Error;
+        if (error.message.includes('Deprecated config name')) {
+          const meta = Config.getPropertyConfigMeta(name);
+          config.set(meta?.key, value);
+          this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+        } else {
+          this.pushFailure(name, err as Error, value);
+        }
       }
     }
     await config.write();
@@ -72,6 +79,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
 
 const loadConfig = async (global: boolean): Promise<Config> => {
   try {
+    await SfdxConfigAggregator.create({});
     const config = await Config.create(Config.getDefaultOptions(global));
     await config.read();
     return config;
