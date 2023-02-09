@@ -41,6 +41,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
   protected pushSuccess(configInfo: ConfigInfo): void {
     this.responses.push({
       name: configInfo.key,
+      key: configInfo.key,
       value: configInfo.value as string | undefined,
       success: true,
       location: configInfo.location,

@@ -4,7 +4,7 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { ConfigAggregator, Messages } from '@salesforce/core';
+import { ConfigAggregator, Messages, SfdxConfigAggregator } from '@salesforce/core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -19,6 +19,7 @@ export default class List extends ConfigCommand<ConfigResponses> {
   public static flags = {};
 
   public async run(): Promise<ConfigResponses> {
+    await SfdxConfigAggregator.create({});
     const aggregator = await ConfigAggregator.create();
 
     aggregator.getConfigInfo().forEach((c) => {

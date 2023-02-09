@@ -9,14 +9,6 @@ import { expect } from 'chai';
 import { ConfigResponses } from '../../../../src/config';
 let testSession: TestSession;
 
-const confirmAndDeletePath = (response: ConfigResponses) => {
-  response.forEach((c) => {
-    expect(c.path).to.include('.sf');
-    expect(c.path).to.include('config.json');
-    delete c.path;
-  });
-};
-
 describe('config:list NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configListNUTs' },
@@ -44,12 +36,9 @@ describe('config:list NUTs', async () => {
 
     it('lists singular config correctly', () => {
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
-      // the path key will vary machine to machine, so we'll ensure it ends with config.json and remove it before the deep comparison
-      confirmAndDeletePath(res.jsonOutput.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             name: 'org-api-version',
             success: true,
             key: 'org-api-version',
@@ -65,11 +54,9 @@ describe('config:list NUTs', async () => {
     it('properly overwrites config values, with local > global', () => {
       execCmd('config:set apiVersion=52.0 --json');
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
-      confirmAndDeletePath(res.jsonOutput.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             key: 'org-api-version',
             name: 'org-api-version',
             success: true,
@@ -101,11 +88,9 @@ describe('config:list NUTs', async () => {
     it('lists multiple results correctly JSON', () => {
       execCmd('config:set restDeploy=false');
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
-      confirmAndDeletePath(res.jsonOutput.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
-            deprecated: false,
             key: 'org-api-version',
             name: 'org-api-version',
             success: true,
@@ -113,7 +98,6 @@ describe('config:list NUTs', async () => {
             value: '52.0',
           },
           {
-            deprecated: false,
             key: 'org-max-query-limit',
             name: 'org-max-query-limit',
             success: true,
@@ -121,7 +105,6 @@ describe('config:list NUTs', async () => {
             value: '100',
           },
           {
-            deprecated: false,
             key: 'org-metadata-rest-deploy',
             name: 'org-metadata-rest-deploy',
             success: true,

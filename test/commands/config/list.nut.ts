@@ -36,6 +36,8 @@ describe('config list NUTs', async () => {
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
+          // the new key to allow plugin-settings in sfdx
+          key: 'org-api-version',
           location: 'Global',
           value: '51.0',
           success: true,
@@ -49,6 +51,7 @@ describe('config list NUTs', async () => {
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
+          key: 'org-api-version',
           location: 'Local',
           value: '52.0',
           success: true,
@@ -78,18 +81,21 @@ describe('config list NUTs', async () => {
       expect(result).to.deep.equal([
         {
           name: 'disable-telemetry',
+          key: 'disable-telemetry',
           location: 'Local',
           value: 'false',
           success: true,
         },
         {
           name: 'org-api-version',
+          key: 'org-api-version',
           location: 'Global',
           value: '51.0',
           success: true,
         },
         {
           name: 'org-max-query-limit',
+          key: 'org-max-query-limit',
           location: 'Global',
           value: '100',
           success: true,
