@@ -6,7 +6,7 @@
  */
 
 import { Flags } from '@salesforce/sf-plugins-core';
-import { Config, Messages } from '@salesforce/core';
+import { Config, Messages, SfdxConfigAggregator } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -29,6 +29,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
 
   public async run(): Promise<ConfigResponses> {
     const { argv, flags } = await this.parse(UnSet);
+    await SfdxConfigAggregator.create({});
 
     if (!argv || argv.length === 0) {
       throw messages.createError('error.NoConfigKeysFound');
@@ -41,7 +42,14 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
           config.unset(key);
           this.responses.push({ name: key, success: true });
         } catch (err) {
-          this.pushFailure(key, err as Error);
+          const error = err as Error;
+          if (error.message.includes('Deprecated config name')) {
+            const meta = Config.getPropertyConfigMeta(key);
+            config.unset(meta?.key);
+            this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          } else {
+            this.pushFailure(key, err as Error);
+          }
         }
       });
       await config.write();
