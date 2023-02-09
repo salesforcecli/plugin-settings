@@ -93,7 +93,8 @@ describe('alias set NUTs', () => {
       expect(res).to.include('Found duplicate argument');
     });
 
-    it('alias set DevHub= shows error message to use alias unset command', () => {
+    // this behavior is now allowed to allow plugin-settings in sfdx
+    it.skip('alias set DevHub= shows error message to use alias unset command', () => {
       const res = execCmd('alias set DevHub=', {
         ensureExitCode: 1,
       }).shellOutput;
@@ -103,7 +104,7 @@ describe('alias set NUTs', () => {
       expect(res).to.include(`DevHub       false   ${messages.getMessages('error.ValueRequired')}`);
     });
 
-    it('alias set DevHub= shows error to use alias unset command (json)', () => {
+    it.skip('alias set DevHub= shows error to use alias unset command (json)', () => {
       const { result } = execCmd('alias set DevHub= --json', {
         ensureExitCode: 1,
       }).jsonOutput;

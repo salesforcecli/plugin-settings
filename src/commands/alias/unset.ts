@@ -27,7 +27,8 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
   public static examples = messages.getMessages('examples');
 
   public static readonly strict = false; // This allows varargs
-  public static readonly state = 'beta';
+  public static readonly aliases = ['force:alias:unset'];
+  public static readonly deprecateAliases = true;
 
   public static flags = {
     all: Flags.boolean({

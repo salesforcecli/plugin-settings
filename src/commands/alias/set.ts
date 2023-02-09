@@ -22,9 +22,9 @@ export default class AliasSet extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
-
   public static readonly strict = false; // This allows varargs
-  public static readonly state = 'beta';
+  public static readonly aliases = ['force:alias:set'];
+  public static readonly deprecateAliases = true;
 
   public async run(): Promise<AliasResults> {
     const stateAggregator = await StateAggregator.getInstance();
@@ -37,12 +37,14 @@ export default class AliasSet extends AliasCommand<AliasResults> {
 
     const results = Object.entries(parsed).map(([alias, value]) => {
       try {
-        if (!value) {
-          return { alias, success: false, error: messages.createError('error.ValueRequired'), value };
-        } else {
-          stateAggregator.aliases.set(alias, value);
-          return { alias, success: true, value };
-        }
+        // This is commented out to support plugin-settings in sfdx. Which allows setting an alias to undefined, which
+        // in reality, becomes the string 'undefined'
+        // if (!value) {
+        //   return { alias, success: false, error: messages.createError('error.ValueRequired'), value };
+        // } else {
+        stateAggregator.aliases.set(alias, value ?? 'undefined');
+        return { alias, success: true, value };
+        // }
       } catch (err) {
         const error = err as SfError;
         return { alias, success: false, error, value };
