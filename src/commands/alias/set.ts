@@ -44,8 +44,8 @@ export default class AliasSet extends AliasCommand<AliasResults> {
           return { alias, success: true, value };
         }
       } catch (err) {
-        const error = err as SfError;
-        return { alias, success: false, error, value };
+        const { name, message } = err as SfError;
+        return { alias, success: false, error: { name, message }, value };
       }
     });
 
