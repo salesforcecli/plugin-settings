@@ -112,7 +112,10 @@ describe('alias set NUTs', () => {
         {
           alias: 'DevHub',
           success: false,
-          error: { name: 'ValueRequiredError' },
+          error: {
+            name: 'ValueRequiredError',
+            exitCode: 1,
+          },
           message:
             'You must provide a value when setting an alias. Use `sf alias unset my-alias-name` to remove existing aliases.',
         },
