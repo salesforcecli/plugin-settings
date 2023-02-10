@@ -46,8 +46,20 @@ describe('config:get', () => {
     .it('should return values for globally configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
-        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Global', success: true },
+        {
+          name: OrgConfigProperties.TARGET_DEV_HUB,
+          key: OrgConfigProperties.TARGET_DEV_HUB,
+          value: 'MyDevhub',
+          location: 'Global',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.TARGET_ORG,
+          key: OrgConfigProperties.TARGET_ORG,
+          value: 'MyUser',
+          location: 'Global',
+          success: true,
+        },
       ]);
     });
 
@@ -58,8 +70,20 @@ describe('config:get', () => {
     .it('should return values for locally configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Local', success: true },
-        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
+        {
+          name: OrgConfigProperties.TARGET_DEV_HUB,
+          key: OrgConfigProperties.TARGET_DEV_HUB,
+          value: 'MyDevhub',
+          location: 'Local',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.TARGET_ORG,
+          key: OrgConfigProperties.TARGET_ORG,
+          value: 'MyUser',
+          location: 'Local',
+          success: true,
+        },
       ]);
     });
 
@@ -70,10 +94,7 @@ describe('config:get', () => {
     .it('should gracefully handle unconfigured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        {
-          name: OrgConfigProperties.ORG_API_VERSION,
-          success: true,
-        },
+        { key: OrgConfigProperties.ORG_API_VERSION, name: OrgConfigProperties.ORG_API_VERSION, success: true },
       ]);
     });
 
@@ -123,6 +144,7 @@ describe('config:get', () => {
         const response = JSON.parse(ctx.stdout);
         expect(response.result).to.deep.equal([
           {
+            key: 'customKey',
             name: 'customKey',
             success: true,
           },

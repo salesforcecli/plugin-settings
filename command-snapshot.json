@@ -3,42 +3,42 @@
     "command": "alias:list",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json"],
-    "alias": []
+    "alias": ["force:alias:list"]
   },
   {
     "command": "alias:set",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json"],
-    "alias": []
+    "alias": ["force:alias:set"]
   },
   {
     "command": "alias:unset",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["all", "json", "no-prompt"],
-    "alias": []
+    "alias": ["force:alias:unset"]
   },
   {
     "command": "config:get",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json", "verbose"],
-    "alias": []
+    "alias": ["force:config:get"]
   },
   {
     "command": "config:list",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["json"],
-    "alias": []
+    "alias": ["force:config:list"]
   },
   {
     "command": "config:set",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["global", "json"],
-    "alias": []
+    "alias": ["force:config:set"]
   },
   {
     "command": "config:unset",
     "plugin": "@salesforce/plugin-settings",
     "flags": ["global", "json"],
-    "alias": []
+    "alias": ["force:config:unset"]
   }
 ]
