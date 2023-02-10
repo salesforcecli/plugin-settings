@@ -61,9 +61,23 @@ export class Set extends ConfigCommand<ConfigResponses> {
       } catch (err) {
         const error = err as Error;
         if (error.message.includes('Deprecated config name')) {
-          const meta = Config.getPropertyConfigMeta(name);
-          config.set(meta?.key, value);
-          this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          const newKey = Config.getPropertyConfigMeta(name).key;
+          try {
+            config.set(newKey, value);
+            this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          } catch (e) {
+            this.responses.push({
+              // sf default of invalid config value e.g. org-metadata-rest-deploy=foo, it must be true/false
+              name,
+              success: false,
+              value,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+              // add sfdx properties
+              successes: [],
+              failures: [{ name, message: error.message.replace(/\.\.$/, '.') }],
+            });
+          }
         } else {
           this.pushFailure(name, err as Error, value);
         }

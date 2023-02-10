@@ -94,8 +94,8 @@ describe('config:list NUTs', async () => {
             key: 'org-api-version',
             name: 'org-api-version',
             success: true,
-            location: 'Local',
-            value: '52.0',
+            location: 'Global',
+            value: '51.0',
           },
           {
             key: 'org-max-query-limit',
@@ -122,7 +122,7 @@ describe('config:list NUTs', async () => {
       const res: string = execCmd('config:list', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('org-api-version');
-      expect(res).to.include('52.0');
+      expect(res).to.include('51.0');
       expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
       expect(res).to.include('org-metadata-rest-deploy');

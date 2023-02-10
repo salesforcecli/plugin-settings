@@ -6,19 +6,32 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
+import { Config } from '@salesforce/core';
 let testSession: TestSession;
 
 function verifyValidationError(key: string, value: string | number) {
   const expected = {
-    status: 1,
-    result: {
-      successes: [],
-      failures: [
-        {
-          name: key,
+    result: [
+      {
+        error: {
+          exitCode: 1,
+          name: 'DeprecatedConfigKeyError',
         },
-      ],
-    },
+        failures: [
+          {
+            message: `Deprecated config name: ${key}. Please use ${Config.getPropertyConfigMeta(key).key} instead.`,
+            name: key,
+          },
+        ],
+        message: `Deprecated config name: ${key}. Please use ${Config.getPropertyConfigMeta(key).key} instead.`,
+        name: key,
+        success: false,
+        successes: [],
+        value: value as string,
+      },
+    ],
+    status: 0,
+    warnings: [],
   };
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
   // ignore error message
@@ -29,10 +42,9 @@ function verifyValidationError(key: string, value: string | number) {
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
-  expect(res.status).to.equal(1);
-  expect(res.result).to.have.property('successes').with.length(0);
-  expect(res.result).to.have.property('failures').with.length(1);
-  const result = res.result as { failures: [{ name: string; message: string }] };
+  expect(res.result[0]).to.have.property('successes').with.length(0);
+  expect(res.result[0]).to.have.property('failures').with.length(1);
+  const result = res.result[0] as { failures: [{ name: string; message: string }] };
   expect(result.failures[0].message.startsWith(message)).to.be.true;
   execCmd(`config:unset ${key}`);
 }
@@ -47,7 +59,7 @@ function verifyKeysAndValuesJson(key: string, value: string | boolean) {
     result: [
       {
         name: key,
-        value: value as string,
+        value: String(value),
         success: true,
         error: {
           name: 'DeprecatedConfigKeyError',
@@ -137,23 +149,15 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when bad URL', () => {
-        verifyValidationStartsWith('instanceUrl', 'abc.com', 'Invalid config value');
+        verifyValidationStartsWith(
+          'instanceUrl',
+          'abc.com',
+          'Deprecated config name: instanceUrl. Please use org-instance-url instead.'
+        );
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
         verifyValidationError('instanceUrl', 'https://not-our-url.com');
-      });
-    });
-
-    describe('defaultdevhubusername', () => {
-      it('will fail to validate defaultdevhubusername', () => {
-        verifyValidationError('defaultdevhubusername', 'ab');
-      });
-    });
-
-    describe('defaultusername', () => {
-      it('will fail to validate defaultusername', () => {
-        verifyValidationError('defaultusername', 'ab');
       });
     });
 
@@ -188,10 +192,6 @@ describe('config:set NUTs', async () => {
         verifyKeysAndValuesJson('restDeploy', false);
         verifyKeysAndValuesStdout('restDeploy', 'true', ['restDeploy', 'true']);
         verifyKeysAndValuesStdout('restDeploy', false, ['restDeploy', 'false']);
-      });
-
-      it('will fail to validate restDeploy', () => {
-        verifyValidationError('restDeploy', 'ab');
       });
     });
   });

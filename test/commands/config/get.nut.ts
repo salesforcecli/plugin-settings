@@ -55,6 +55,7 @@ describe('config get NUTs', async () => {
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
+          key: 'org-api-version',
           location: 'Local',
           value: '52.0',
           success: true,
@@ -86,18 +87,21 @@ describe('config get NUTs', async () => {
       expect(res.jsonOutput.result).to.deep.equal([
         {
           name: 'org-api-version',
+          key: 'org-api-version',
           location: 'Local',
           value: '51.0',
           success: true,
         },
         {
           name: 'org-max-query-limit',
+          key: 'org-max-query-limit',
           location: 'Global',
           value: '100',
           success: true,
         },
         {
           name: 'disable-telemetry',
+          key: 'disable-telemetry',
           location: 'Local',
           value: 'false',
           success: true,

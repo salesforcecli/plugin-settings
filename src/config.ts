@@ -16,6 +16,10 @@ export type Msg = {
   deprecated?: boolean;
   value?: string;
   success: boolean;
+
+  // added to support plugin-config in sfdx where an invalid value is passed for a key
+  successes?: Array<Record<string, unknown>>;
+  failures?: Array<Record<string, unknown>>;
   location?: string;
   path?: string;
   message?: string;
