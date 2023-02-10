@@ -6,7 +6,7 @@
  */
 
 import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
+import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator, Lifecycle } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -66,9 +66,15 @@ export class Set extends ConfigCommand<ConfigResponses> {
             config.set(newKey, value);
             this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
           } catch (e) {
+            void Lifecycle.getInstance().emitTelemetry({ event: 'DeprecatedConfigValueSet', key: name });
+            this.warn(
+              `The json output format will be changing in v58.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`
+            );
+            // if that deprecated value was also set to an invalid value
             this.responses.push({
               // sf default of invalid config value e.g. org-metadata-rest-deploy=foo, it must be true/false
               name,
+              key: name,
               success: false,
               value,
               error,

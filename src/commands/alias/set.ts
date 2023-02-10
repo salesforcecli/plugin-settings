@@ -42,6 +42,8 @@ export default class AliasSet extends AliasCommand<AliasResults> {
         // if (!value) {
         //   return { alias, success: false, error: messages.createError('error.ValueRequired'), value };
         // } else {
+        if (!value)
+          this.warn(`Setting an alias to undefined is deprecated v58.0. Use ${this.config.bin} alias unset instead.`);
         stateAggregator.aliases.set(alias, value ?? 'undefined');
         return { alias, success: true, value };
         // }

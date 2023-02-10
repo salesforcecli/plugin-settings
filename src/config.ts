@@ -12,18 +12,18 @@ import { toHelpSection } from '@salesforce/sf-plugins-core';
 
 export type Msg = {
   name: string;
-  key?: string;
+
   deprecated?: boolean;
   value?: string;
   success: boolean;
-
-  // added to support plugin-config in sfdx where an invalid value is passed for a key
-  successes?: Array<Record<string, unknown>>;
-  failures?: Array<Record<string, unknown>>;
   location?: string;
   path?: string;
   message?: string;
   error?: Error;
+  // added to support plugin-config in sfdx
+  successes?: Array<Record<string, unknown>>;
+  failures?: Array<Record<string, unknown>>;
+  key?: string;
 };
 
 export type ConfigResponses = Msg[];

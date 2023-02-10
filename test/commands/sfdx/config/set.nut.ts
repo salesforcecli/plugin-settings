@@ -27,11 +27,16 @@ function verifyValidationError(key: string, value: string | number) {
         name: key,
         success: false,
         successes: [],
+        key,
         value: value as string,
       },
     ],
     status: 0,
-    warnings: [],
+    warnings: [
+      `The json output format will be changing in v58.0. Use the new key ${
+        Config.getPropertyConfigMeta(key).key
+      } instead. The 'success','failures', and 'key' properties will be removed.`,
+    ],
   };
   const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
   // ignore error message
