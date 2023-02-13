@@ -12,8 +12,6 @@ import { toHelpSection } from '@salesforce/sf-plugins-core';
 
 export type Msg = {
   name: string;
-
-  deprecated?: boolean;
   value?: string;
   success: boolean;
   location?: string;
@@ -24,6 +22,7 @@ export type Msg = {
   successes?: Array<Record<string, unknown>>;
   failures?: Array<Record<string, unknown>>;
   key?: string;
+  deprecated?: boolean;
 };
 
 export type ConfigResponses = Msg[];

@@ -7,6 +7,7 @@
 
 import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator, Lifecycle } from '@salesforce/core';
+import * as Levenshtein from 'fast-levenshtein';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -60,12 +61,19 @@ export class Set extends ConfigCommand<ConfigResponses> {
         }
       } catch (err) {
         const error = err as Error;
-        if (error.message.includes('Deprecated config name')) {
-          const newKey = Config.getPropertyConfigMeta(name).key;
+        if (error.name === 'DeprecatedConfigKeyError') {
+          const newKey = Config.getPropertyConfigMeta(name).key ?? name;
           try {
             config.set(newKey, value);
-            this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+            this.responses.push({
+              name,
+              value,
+              success: true,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+            });
           } catch (e) {
+            const secondError = e as Error;
             void Lifecycle.getInstance().emitTelemetry({ event: 'DeprecatedConfigValueSet', key: name });
             this.warn(
               `The json output format will be changing in v58.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`
@@ -77,12 +85,25 @@ export class Set extends ConfigCommand<ConfigResponses> {
               key: name,
               success: false,
               value,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
+              error: secondError,
+              message: secondError.message.replace(/\.\.$/, '.'),
               // add sfdx properties
               successes: [],
-              failures: [{ name, message: error.message.replace(/\.\.$/, '.') }],
+              failures: [{ name, message: secondError.message.replace(/\.\.$/, '.') }],
             });
+          }
+        } else if (error.name.includes('UnknownConfigKeyError')) {
+          if (this.jsonEnabled()) {
+            this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          } else {
+            const suggestion = closest(name);
+            // eslint-disable-next-line no-await-in-loop
+            const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
+            if (answer) {
+              const key = Config.getPropertyConfigMeta(suggestion).key;
+              config.set(key, value);
+              this.responses.push({ name: key, value, success: true });
+            }
           }
         } else {
           this.pushFailure(name, err as Error, value);
@@ -95,6 +116,19 @@ export class Set extends ConfigCommand<ConfigResponses> {
     }
     return this.responses;
   }
+}
+
+function closest(cmd: string): string {
+  // we'll use this array to keep track of which key is the closest to the users entered value.
+  // keys closer to the index 0 will be a closer guess than keys indexed further from 0
+  // an entry at 0 would be a direct match, an entry at 1 would be a single character off, etc.
+  const index: string[] = [];
+  Object.keys(
+    Config.getAllowedProperties()
+      .map((k) => k.key)
+      .map((k) => (index[Levenshtein.get(cmd, k)] = k))
+  );
+  return index.find((item) => item !== undefined);
 }
 
 const loadConfig = async (global: boolean): Promise<Config> => {

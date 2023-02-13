@@ -64,15 +64,6 @@ describe('config set NUTs', async () => {
       expect(res.name).to.include('InvalidArgumentFormat');
     });
 
-    it('fails to set randomKey=randomValue', () => {
-      const { result } = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
-        ensureExitCode: 1,
-      }).jsonOutput;
-      expect(result[0].name).to.equal('randomKey');
-      expect(result[0].message).to.equal('Unknown config name: randomKey.');
-      expect(result[0].success).to.be.false;
-    });
-
     it('throws an error if no varargs are passed', () => {
       const res: string = execCmd('config set', {
         ensureExitCode: 1,

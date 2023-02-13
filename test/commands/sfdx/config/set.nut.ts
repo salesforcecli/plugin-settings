@@ -7,23 +7,23 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Config } from '@salesforce/core';
+import { ConfigResponses } from '../../../../src/config';
 let testSession: TestSession;
 
 function verifyValidationError(key: string, value: string | number) {
+  const newKey = Config.getPropertyConfigMeta(key).key;
   const expected = {
     result: [
       {
         error: {
           exitCode: 1,
-          name: 'DeprecatedConfigKeyError',
+          name: 'InvalidConfigValueError',
         },
         failures: [
           {
-            message: `Deprecated config name: ${key}. Please use ${Config.getPropertyConfigMeta(key).key} instead.`,
             name: key,
           },
         ],
-        message: `Deprecated config name: ${key}. Please use ${Config.getPropertyConfigMeta(key).key} instead.`,
         name: key,
         success: false,
         successes: [],
@@ -33,14 +33,15 @@ function verifyValidationError(key: string, value: string | number) {
     ],
     status: 0,
     warnings: [
-      `The json output format will be changing in v58.0. Use the new key ${
-        Config.getPropertyConfigMeta(key).key
-      } instead. The 'success','failures', and 'key' properties will be removed.`,
+      `The json output format will be changing in v58.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`,
     ],
   };
-  const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
-  // ignore error message
-
+  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
+  // validate error message / failures error message here and delete, it will vary based on the value.
+  expect(res.result[0].failures[0].message).to.include('Invalid config value:');
+  expect(res.result[0].message).to.include('Invalid config value:');
+  delete res.result[0].failures[0].message;
+  delete res.result[0].message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
@@ -99,26 +100,6 @@ describe('config:set NUTs', async () => {
       expect(res.exitCode).to.equal(1);
       expect(res.name).to.include('InvalidArgumentFormatError');
     });
-
-    it('fails to set randomKey=randomValue', () => {
-      const res = execCmd('config:set randomKey=randomValue --json').jsonOutput;
-      expect(res).to.deep.equal({
-        status: 1,
-        result: [
-          {
-            name: 'randomKey',
-            success: false,
-            value: 'randomValue',
-            error: {
-              name: 'UnknownConfigKeyError',
-              exitCode: 1,
-            },
-            message: 'Unknown config name: randomKey.',
-          },
-        ],
-        warnings: [],
-      });
-    });
   });
 
   describe('setting valid configs and values', () => {
@@ -157,7 +138,7 @@ describe('config:set NUTs', async () => {
         verifyValidationStartsWith(
           'instanceUrl',
           'abc.com',
-          'Deprecated config name: instanceUrl. Please use org-instance-url instead.'
+          'Invalid config value: Specify a valid Salesforce instance URL.'
         );
       });
 
