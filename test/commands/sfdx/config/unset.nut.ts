@@ -6,6 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
+import { ConfigResponses } from '../../../../src/config';
 let testSession: TestSession;
 
 describe('config:unset NUTs', async () => {
@@ -15,12 +16,7 @@ describe('config:unset NUTs', async () => {
 
   describe('config:unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
-      const res = execCmd('config:unset --json', { ensureExitCode: 1 }).jsonOutput as unknown as {
-        stack: string;
-        name: string;
-        exitCode: number;
-        commandName: string;
-      };
+      const res = execCmd<ConfigResponses>('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
       expect(res.stack).to.include('NoConfigKeysFoundError');
       delete res.stack;
       expect(res).to.deep.equal({
@@ -28,6 +24,7 @@ describe('config:unset NUTs', async () => {
           'You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you\'ve previously set.',
         name: 'NoConfigKeysFoundError',
         status: 1,
+        code: 1,
         exitCode: 1,
         warnings: [],
       });
