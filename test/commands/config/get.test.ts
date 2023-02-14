@@ -9,10 +9,11 @@ import * as path from 'path';
 import { test, expect } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { Plugin } from '@oclif/core';
+import { Plugin, Config } from '@oclif/core';
 import * as sinon from 'sinon';
 import { SinonSandbox } from 'sinon';
 import { SfConfigProperties } from '@salesforce/core/lib/config/config';
+import { Get } from '../../../src/commands/config/get';
 
 process.env.NODE_ENV = 'development';
 
@@ -150,5 +151,18 @@ describe('config:get', () => {
           },
         ]);
       });
+  });
+
+  describe('calculate suggestion', () => {
+    it('will calculate the correct suggestions based on inputs', () => {
+      const cmd = new Get([], {} as Config);
+
+      expect(cmd.calculateSuggestion('target-de-hub')).to.equal('target-dev-hub');
+      expect(cmd.calculateSuggestion('org-api-versi')).to.equal('org-api-version');
+      expect(cmd.calculateSuggestion('target-o')).to.equal('target-org');
+      expect(cmd.calculateSuggestion('target')).to.equal('target-org');
+      expect(cmd.calculateSuggestion('org-instance')).to.equal('org-instance-url');
+      expect(cmd.calculateSuggestion('org')).to.equal('target-org');
+    });
   });
 });

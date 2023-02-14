@@ -7,7 +7,6 @@
 
 import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator, Lifecycle } from '@salesforce/core';
-import * as Levenshtein from 'fast-levenshtein';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -96,7 +95,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
           if (this.jsonEnabled()) {
             this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
           } else {
-            const suggestion = closest(name);
+            const suggestion = this.calculateSuggestion(name);
             // eslint-disable-next-line no-await-in-loop
             const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
             if (answer) {
@@ -116,19 +115,6 @@ export class Set extends ConfigCommand<ConfigResponses> {
     }
     return this.responses;
   }
-}
-
-function closest(cmd: string): string {
-  // we'll use this array to keep track of which key is the closest to the users entered value.
-  // keys closer to the index 0 will be a closer guess than keys indexed further from 0
-  // an entry at 0 would be a direct match, an entry at 1 would be a single character off, etc.
-  const index: string[] = [];
-  Object.keys(
-    Config.getAllowedProperties()
-      .map((k) => k.key)
-      .map((k) => (index[Levenshtein.get(cmd, k)] = k))
-  );
-  return index.find((item) => item !== undefined);
 }
 
 const loadConfig = async (global: boolean): Promise<Config> => {

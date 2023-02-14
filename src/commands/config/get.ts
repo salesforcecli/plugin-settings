@@ -36,7 +36,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
     } else {
       const aggregator = await ConfigAggregator.create();
 
-      (argv as string[]).forEach((configName) => {
+      for (const configName of argv as string[]) {
         try {
           this.pushSuccess(aggregator.getInfo(configName, true));
         } catch (err) {
@@ -55,11 +55,18 @@ export class Get extends ConfigCommand<ConfigResponses> {
               message: error.message,
               success: true,
             });
+          } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+            const suggestion = this.calculateSuggestion(configName);
+            // eslint-disable-next-line no-await-in-loop
+            const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
+            if (answer) {
+              this.pushSuccess(aggregator.getInfo(suggestion, false));
+            }
           } else {
             this.pushFailure(configName, err as Error);
           }
         }
-      });
+      }
 
       if (!this.jsonEnabled()) {
         this.output('Get Config', flags.verbose);

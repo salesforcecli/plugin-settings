@@ -37,7 +37,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
       const config: Config = await Config.create(Config.getDefaultOptions(flags.global));
 
       await config.read();
-      (argv as string[]).forEach((key) => {
+      for (const key of argv as string[]) {
         try {
           config.unset(key);
           this.responses.push({ name: key, success: true });
@@ -47,11 +47,24 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
             const meta = Config.getPropertyConfigMeta(key);
             config.unset(meta?.key);
             this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+            const suggestion = this.calculateSuggestion(key);
+            // eslint-disable-next-line no-await-in-loop
+            const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
+            if (answer) {
+              config.unset(suggestion);
+              this.responses.push({
+                name: suggestion,
+                success: true,
+                error,
+                message: error.message.replace(/\.\.$/, '.'),
+              });
+            }
           } else {
             this.pushFailure(key, err as Error);
           }
         }
-      });
+      }
       await config.write();
       if (!this.jsonEnabled()) {
         this.output('Unset Config', false);
