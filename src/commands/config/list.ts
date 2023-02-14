@@ -5,6 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { ConfigAggregator, Messages, SfdxConfigAggregator } from '@salesforce/core';
+import { loglevel } from '@salesforce/sf-plugins-core';
 import { ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -16,7 +17,7 @@ export default class List extends ConfigCommand<ConfigResponses> {
   public static readonly examples = messages.getMessages('examples');
   public static readonly aliases = ['force:config:list'];
   public static readonly deprecateAliases = true;
-  public static flags = {};
+  public static flags = { loglevel };
 
   public async run(): Promise<ConfigResponses> {
     await SfdxConfigAggregator.create({});

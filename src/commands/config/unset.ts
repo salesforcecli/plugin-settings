@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags } from '@salesforce/sf-plugins-core';
+import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Config, Messages, SfdxConfigAggregator } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
@@ -21,6 +21,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
   public static readonly deprecateAliases = true;
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
   public static readonly flags = {
+    loglevel,
     global: Flags.boolean({
       char: 'g',
       summary: messages.getMessage('flags.global.summary'),
@@ -33,43 +34,42 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
 
     if (!argv || argv.length === 0) {
       throw messages.createError('error.NoConfigKeysFound');
-    } else {
-      const config: Config = await Config.create(Config.getDefaultOptions(flags.global));
+    }
+    const config: Config = await Config.create(Config.getDefaultOptions(flags.global));
 
-      await config.read();
-      for (const key of argv as string[]) {
-        try {
-          config.unset(key);
-          this.responses.push({ name: key, success: true });
-        } catch (err) {
-          const error = err as Error;
-          if (error.message.includes('Deprecated config name')) {
-            const meta = Config.getPropertyConfigMeta(key);
-            config.unset(meta?.key);
-            this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
-          } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
-            const suggestion = this.calculateSuggestion(key);
-            // eslint-disable-next-line no-await-in-loop
-            const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
-            if (answer) {
-              config.unset(suggestion);
-              this.responses.push({
-                name: suggestion,
-                success: true,
-                error,
-                message: error.message.replace(/\.\.$/, '.'),
-              });
-            }
-          } else {
-            this.pushFailure(key, err as Error);
+    await config.read();
+    for (const key of argv as string[]) {
+      try {
+        config.unset(key);
+        this.responses.push({ name: key, success: true });
+      } catch (err) {
+        const error = err as Error;
+        if (error.message.includes('Deprecated config name')) {
+          const meta = Config.getPropertyConfigMeta(key);
+          config.unset(meta?.key);
+          this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+        } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+          const suggestion = this.calculateSuggestion(key);
+          // eslint-disable-next-line no-await-in-loop
+          const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+          if (answer) {
+            config.unset(suggestion);
+            this.responses.push({
+              name: suggestion,
+              success: true,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+            });
           }
+        } else {
+          this.pushFailure(key, err as Error);
         }
       }
-      await config.write();
-      if (!this.jsonEnabled()) {
-        this.output('Unset Config', false);
-      }
     }
+    await config.write();
+
+    this.output('Unset Config', false);
+
     return this.responses;
   }
 }

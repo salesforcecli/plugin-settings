@@ -5,19 +5,12 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
+import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator, Lifecycle } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
-  'summary',
-  'description',
-  'examples',
-  'flags.global.summary',
-  'error.ArgumentsRequired',
-  'error.ValueRequired',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 export class Set extends ConfigCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
@@ -27,6 +20,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
   public static readonly deprecateAliases = true;
   public static readonly strict = false;
   public static readonly flags = {
+    loglevel,
     global: Flags.boolean({
       char: 'g',
       summary: messages.getMessage('flags.global.summary'),
@@ -74,9 +68,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
           } catch (e) {
             const secondError = e as Error;
             void Lifecycle.getInstance().emitTelemetry({ event: 'DeprecatedConfigValueSet', key: name });
-            this.warn(
-              `The json output format will be changing in v58.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`
-            );
+            this.warn(messages.getMessage('deprecated', [newKey]));
             // if that deprecated value was also set to an invalid value
             this.responses.push({
               // sf default of invalid config value e.g. org-metadata-rest-deploy=foo, it must be true/false
@@ -97,7 +89,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
           } else {
             const suggestion = this.calculateSuggestion(name);
             // eslint-disable-next-line no-await-in-loop
-            const answer = (await this.confirm(`did you mean: ${suggestion} (y/n)`, 10 * 1000)) ?? false;
+            const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
             if (answer) {
               const key = Config.getPropertyConfigMeta(suggestion).key;
               config.set(key, value);

@@ -23,3 +23,7 @@ Unset the configuration variables globally, so they can no longer be used from a
 # error.NoConfigKeysFound
 
 You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you've previously set.
+
+# didYouMean
+
+Did you mean %s?

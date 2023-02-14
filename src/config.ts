@@ -42,14 +42,14 @@ export const CONFIG_HELP_SECTION = toHelpSection(
 export abstract class ConfigCommand<T> extends SfCommand<T> {
   protected responses: ConfigResponses = [];
   // eslint-disable-next-line class-methods-use-this
-  public calculateSuggestion(cmd: string): string {
+  public calculateSuggestion(userEnteredConfig: string): string {
     // we'll use this array to keep track of which key is the closest to the users entered value.
     // keys closer to the index 0 will be a closer guess than keys indexed further from 0
     // an entry at 0 would be a direct match, an entry at 1 would be a single character off, etc.
     const index: string[] = [];
     Config.getAllowedProperties()
       .map((k) => k.key)
-      .map((k) => (index[Levenshtein.get(cmd, k)] = k));
+      .map((k) => (index[Levenshtein.get(userEnteredConfig, k)] = k));
     return index.find((item) => item !== undefined);
   }
   protected pushSuccess(configInfo: ConfigInfo): void {

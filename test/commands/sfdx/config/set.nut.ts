@@ -33,7 +33,7 @@ function verifyValidationError(key: string, value: string | number) {
     ],
     status: 0,
     warnings: [
-      `The json output format will be changing in v58.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`,
+      `The json output format will be changing in v57.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`,
     ],
   };
   const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
