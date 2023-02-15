@@ -69,8 +69,8 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
         stateAggregator.aliases.unset(alias);
         return { alias, value, success: true };
       } catch (err) {
-        const error = err as SfError;
-        return { alias, value, success: false, error };
+        const { name, message } = err as SfError;
+        return { alias, value, success: false, error: { name, message } };
       }
     });
 

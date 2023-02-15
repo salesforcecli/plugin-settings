@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { SfError } from '@salesforce/core';
 import { ux } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 
@@ -14,7 +13,10 @@ export type AliasResult = {
   value?: string;
   success?: boolean;
   message?: string;
-  error?: SfError;
+  error?: {
+    name: string;
+    message: string;
+  };
 };
 
 export type AliasResults = AliasResult[];
