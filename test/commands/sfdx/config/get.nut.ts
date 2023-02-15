@@ -6,7 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { ConfigResponses } from '../../../../src/config';
+import { ConfigResponses, Msg } from '../../../../src/config';
 let testSession: TestSession;
 
 describe('config:get NUTs', async () => {
@@ -19,9 +19,9 @@ describe('config:get NUTs', async () => {
       const res = execCmd<ConfigResponses>('config:get --json', {
         ensureExitCode: 1,
       }).jsonOutput;
-      expect(res.stack).to.include('NoConfigKeysFound');
-      expect(res.name).to.include('NoConfigKeysFound');
-      expect(res.exitCode).to.equal(1);
+      expect(res?.stack).to.include('NoConfigKeysFound');
+      expect(res?.name).to.include('NoConfigKeysFound');
+      expect(res?.exitCode).to.equal(1);
     });
 
     it('attempt to config get without keys stdout', () => {
@@ -36,22 +36,23 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets singular config correctly', () => {
-      const res = execCmd('config:get apiVersion --json', { ensureExitCode: 0 });
+      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = res?.result.at(0) ?? ({} as Msg);
       // the path variable will change machine to machine, ensure it has the config file and then delete it
-      expect(res.jsonOutput.result[0].path).to.include('config.json');
-      expect(res.jsonOutput.result[0].key).to.include('apiVersion');
-      expect(res.jsonOutput.result[0].location).to.include('Global');
-      expect(res.jsonOutput.result[0].value).to.include('51.0');
-      expect(res.jsonOutput.status).to.equal(0);
+      expect(result.path).to.include('config.json');
+      expect(result.key).to.include('apiVersion');
+      expect(result.location).to.include('Global');
+      expect(result.value).to.include('51.0');
+      expect(res?.status).to.equal(0);
     });
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config:set apiVersion=52.0');
-      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 });
+      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
       // the path variable will change machine to machine, ensure it has the config file and then delete it
-      expect(res.jsonOutput.result[0].path).to.include('config.json');
-      delete res.jsonOutput.result[0].path;
-      expect(res.jsonOutput).to.deep.equal({
+      expect(res?.result[0].path).to.include('config.json');
+      delete res?.result[0].path;
+      expect(res).to.deep.equal({
         result: [
           {
             deprecated: true,
@@ -89,15 +90,15 @@ describe('config:get NUTs', async () => {
     it('gets multiple results correctly', () => {
       execCmd('config:set restDeploy=false');
       execCmd('config:set apiVersion=51.0');
-      const res = execCmd<{ result: { path: string } }>('config:get apiVersion maxQueryLimit restDeploy --json', {
+      const res = execCmd<ConfigResponses>('config:get apiVersion maxQueryLimit restDeploy --json', {
         ensureExitCode: 0,
       });
-      Object.values(res.jsonOutput.result).forEach((result) => {
+      Object.values(res.jsonOutput?.result ?? []).forEach((result) => {
         expect(result.path).to.include('config.json');
         delete result.path;
       });
 
-      expect(res.jsonOutput.result).to.deep.equal([
+      expect(res.jsonOutput?.result).to.deep.equal([
         {
           deprecated: true,
           error: {

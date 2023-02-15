@@ -136,7 +136,7 @@ describe('config:get', () => {
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
           name: 'sfdx-cli-ts-plugin',
           commands: [],
-        } as Plugin);
+        } as unknown as Plugin);
       })
       .stdout()
       .stderr()

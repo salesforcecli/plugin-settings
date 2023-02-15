@@ -40,9 +40,9 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set multiple values json', () => {
-      const { result } = execCmd('alias set DevHub=devhuborg@salesforce.com Admin=admin@salesforce.com --json', {
+      const result = execCmd('alias set DevHub=devhuborg@salesforce.com Admin=admin@salesforce.com --json', {
         ensureExitCode: 0,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         { alias: 'DevHub', success: true, value: 'devhuborg@salesforce.com' },
@@ -62,17 +62,17 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set with spaces in value', () => {
-      const { result } = execCmd('alias set foo="alias with spaces" --json', {
+      const result = execCmd('alias set foo="alias with spaces" --json', {
         ensureExitCode: 0,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([{ alias: 'foo', success: true, value: 'alias with spaces' }]);
     });
 
     it('allow setting a single alias without an equal sign', () => {
-      const { result } = execCmd('alias set theKey theValue --json', {
+      const result = execCmd('alias set theKey theValue --json', {
         ensureExitCode: 0,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([{ alias: 'theKey', success: true, value: 'theValue' }]);
     });
@@ -105,9 +105,9 @@ describe('alias set NUTs', () => {
     });
 
     it.skip('alias set DevHub= shows error to use alias unset command (json)', () => {
-      const { result } = execCmd('alias set DevHub= --json', {
+      const result = execCmd('alias set DevHub= --json', {
         ensureExitCode: 1,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -131,9 +131,9 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set overwrites existing entry correctly json', () => {
-      const { result } = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com --json', {
+      const result = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com --json', {
         ensureExitCode: 0,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         { alias: 'DevHub', success: true, value: 'newdevhub@salesforce.com' },

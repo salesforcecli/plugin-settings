@@ -32,7 +32,7 @@ describe('alias list NUTs', () => {
     });
 
     it('lists no aliases correctly', () => {
-      const { result } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([]);
     });
 
@@ -49,7 +49,7 @@ describe('alias list NUTs', () => {
     });
 
     it('lists singular alias correctly', () => {
-      const { result } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           alias: 'DevHub',
@@ -74,7 +74,7 @@ describe('alias list NUTs', () => {
     });
 
     it('lists multiple results correctly JSON', () => {
-      const { result } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           alias: 'DevHub',

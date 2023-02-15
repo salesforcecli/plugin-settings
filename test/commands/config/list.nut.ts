@@ -16,7 +16,7 @@ describe('config list NUTs', async () => {
 
   describe('config list with no configs set', () => {
     it('lists no config entries correctly', () => {
-      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([]);
     });
 
@@ -32,7 +32,7 @@ describe('config list NUTs', async () => {
     });
 
     it('lists singular config correctly', () => {
-      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
@@ -47,7 +47,7 @@ describe('config list NUTs', async () => {
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config set org-api-version=52.0 --json');
-      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
@@ -77,7 +77,7 @@ describe('config list NUTs', async () => {
 
     it('lists multiple results correctly JSON', () => {
       execCmd('config set disable-telemetry=false');
-      const { result } = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           name: 'disable-telemetry',

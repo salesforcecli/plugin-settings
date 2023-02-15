@@ -27,14 +27,15 @@ function verifyValidationError(key: string, value: string | number, message: str
       success: false,
     },
   ];
-  const { result } = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput;
-  delete result[0].error;
+  const result = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput
+    ?.result;
+  delete result?.at(0)?.error;
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const { result } = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const result = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput?.result;
   const expected = [{ name: key, success: true }] as ConfigResponses;
   if (value !== '') expected[0].value = `${value}`;
   expect(result).to.deep.equal(expected);
@@ -61,7 +62,7 @@ describe('config set NUTs', async () => {
       const res = execCmd('config set randomKey --json', {
         ensureExitCode: 1,
       }).jsonOutput;
-      expect(res.name).to.include('InvalidArgumentFormat');
+      expect(res?.name).to.include('InvalidArgumentFormat');
     });
 
     it('throws an error if no varargs are passed', () => {
@@ -75,9 +76,9 @@ describe('config set NUTs', async () => {
     it('don\'t allow using "set=" to unset a config key', () => {
       execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
 
-      const { result } = execCmd<ConfigResponses>('config set org-api-version= --json', {
+      const result = execCmd<ConfigResponses>('config set org-api-version= --json', {
         ensureExitCode: 1,
-      }).jsonOutput;
+      }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -203,7 +204,7 @@ describe('config set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both org-api-version and org-max-query-limit in one command', () => {
-      const { result } = execCmd('config set org-api-version=51.0 org-max-query-limit=100 --json').jsonOutput;
+      const result = execCmd('config set org-api-version=51.0 org-max-query-limit=100 --json').jsonOutput?.result;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',

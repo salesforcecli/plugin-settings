@@ -20,8 +20,8 @@ export type Msg = {
   message?: string;
   error?: Error;
   // added to support plugin-config in sfdx
-  successes?: Array<Record<string, unknown>>;
-  failures?: Array<Record<string, unknown>>;
+  successes?: Array<{ message?: string; name: string }>;
+  failures?: Array<{ message?: string; name: string }>;
   key?: string;
   deprecated?: boolean;
 };
@@ -50,7 +50,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
     Config.getAllowedProperties()
       .map((k) => k.key)
       .map((k) => (index[Levenshtein.get(userEnteredConfig, k)] = k));
-    return index.find((item) => item !== undefined);
+    return index.find((item) => item !== undefined) ?? '';
   }
   protected pushSuccess(configInfo: ConfigInfo): void {
     this.responses.push({

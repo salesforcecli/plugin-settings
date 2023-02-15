@@ -44,7 +44,8 @@ export class Get extends ConfigCommand<ConfigResponses> {
       } catch (err) {
         const error = err as Error;
         if (error.message.includes('Deprecated config name')) {
-          const info = aggregator.getInfo(aggregator.getPropertyMeta(configName).newKey);
+          // because we've caught the deprecated error, the 'newKey' property will be set
+          const info = aggregator.getInfo(aggregator.getPropertyMeta(configName).newKey as string);
           // deprecated key, so we'll get the replacement and return the value
           this.responses.push({
             name: info.key,

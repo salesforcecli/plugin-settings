@@ -7,11 +7,11 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Config } from '@salesforce/core';
-import { ConfigResponses } from '../../../../src/config';
+import { ConfigResponses, Msg } from '../../../../src/config';
 let testSession: TestSession;
 
 function verifyValidationError(key: string, value: string | number) {
-  const newKey = Config.getPropertyConfigMeta(key).key;
+  const newKey = Config.getPropertyConfigMeta(key)?.key;
   const expected = {
     result: [
       {
@@ -37,29 +37,31 @@ function verifyValidationError(key: string, value: string | number) {
     ],
   };
   const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
+  const result = res?.result[0] as Msg;
   // validate error message / failures error message here and delete, it will vary based on the value.
-  expect(res.result[0].failures[0].message).to.include('Invalid config value:');
-  expect(res.result[0].message).to.include('Invalid config value:');
-  delete res.result[0].failures[0].message;
-  delete res.result[0].message;
+  expect(result.failures?.at(0)?.message).to.include('Invalid config value:');
+  expect(result.message).to.include('Invalid config value:');
+  delete result.failures?.at(0)?.message;
+  delete result.message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
-  const res = execCmd(`config:set ${key}=${value} --json`).jsonOutput;
-  expect(res.result[0]).to.have.property('successes').with.length(0);
-  expect(res.result[0]).to.have.property('failures').with.length(1);
-  const result = res.result[0] as { failures: [{ name: string; message: string }] };
-  expect(result.failures[0].message.startsWith(message)).to.be.true;
+  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
+  expect(res?.result[0]).to.have.property('successes').with.length(0);
+  expect(res?.result[0]).to.have.property('failures').with.length(1);
+  const result = res?.result.at(0) as Msg;
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  expect(result.failures?.at(0)?.message?.startsWith(message)).to.be.true;
   execCmd(`config:unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const res = execCmd(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
   // to avoid converting to async right now, validate the message mentions everything, except the new key.
-  expect(res.result[0].message).to.include(`Deprecated config name: ${key}. Please use`);
-  delete res.result[0].message;
+  expect(res?.result.at(0)?.message).to.include(`Deprecated config name: ${key}. Please use`);
+  delete res?.result.at(0)?.message;
   expect(res).to.deep.equal({
     status: 0,
     result: [
@@ -95,10 +97,10 @@ describe('config:set NUTs', async () => {
   describe('config:set errors', () => {
     it('fails to set a randomKey with InvalidVarargsFormat error', () => {
       const res = execCmd('config:set randomKey --json').jsonOutput;
-      expect(res.stack).to.include('InvalidArgumentFormatError');
-      expect(res.status).to.equal(1);
-      expect(res.exitCode).to.equal(1);
-      expect(res.name).to.include('InvalidArgumentFormatError');
+      expect(res?.stack).to.include('InvalidArgumentFormatError');
+      expect(res?.status).to.equal(1);
+      expect(res?.exitCode).to.equal(1);
+      expect(res?.name).to.include('InvalidArgumentFormatError');
     });
   });
 

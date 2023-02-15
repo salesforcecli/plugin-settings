@@ -38,7 +38,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
     const parsed = parseVarArgs(args, argv as string[]);
 
     for (const name of Object.keys(parsed)) {
-      const value = parsed[name];
+      const value = parsed[name] as string;
       try {
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
@@ -55,7 +55,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
       } catch (err) {
         const error = err as Error;
         if (error.name === 'DeprecatedConfigKeyError') {
-          const newKey = Config.getPropertyConfigMeta(name).key ?? name;
+          const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
           try {
             config.set(newKey, value);
             this.responses.push({
@@ -91,7 +91,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
             // eslint-disable-next-line no-await-in-loop
             const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
             if (answer) {
-              const key = Config.getPropertyConfigMeta(suggestion).key;
+              const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
               config.set(key, value);
               this.responses.push({ name: key, value, success: true });
             }
@@ -117,7 +117,7 @@ const loadConfig = async (global: boolean): Promise<Config> => {
     return config;
   } catch (error) {
     if (error instanceof SfError) {
-      error.actions = error.actions || [];
+      error.actions = error.actions ?? [];
       error.actions.push('Run with --global to set for your entire workspace.');
     }
     throw error;

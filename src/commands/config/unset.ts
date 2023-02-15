@@ -46,7 +46,7 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
         const error = err as Error;
         if (error.message.includes('Deprecated config name')) {
           const meta = Config.getPropertyConfigMeta(key);
-          config.unset(meta?.key);
+          config.unset(meta?.key ?? key);
           this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
         } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
           const suggestion = this.calculateSuggestion(key);

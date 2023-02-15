@@ -61,9 +61,9 @@ const hook: Hook<'init'> = ({ config }): Promise<void> => {
     .flat();
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(flattenedConfigMetas);
+    Config.addAllowedProperties(flattenedConfigMetas as ConfigPropertyMeta[]);
   }
-  return;
+  return Promise.resolve();
 };
 
 export default hook;

@@ -17,8 +17,8 @@ describe('config:unset NUTs', async () => {
   describe('config:unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
       const res = execCmd<ConfigResponses>('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
-      expect(res.stack).to.include('NoConfigKeysFoundError');
-      delete res.stack;
+      expect(res?.stack).to.include('NoConfigKeysFoundError');
+      delete res?.stack;
       expect(res).to.deep.equal({
         message:
           'You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you\'ve previously set.',
