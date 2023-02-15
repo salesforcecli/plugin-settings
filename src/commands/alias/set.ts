@@ -28,6 +28,7 @@ export default class AliasSet extends AliasCommand<AliasResults> {
   public static readonly flags = { loglevel };
 
   public async run(): Promise<AliasResults> {
+    await this.parse(AliasSet);
     const stateAggregator = await StateAggregator.getInstance();
 
     const { args, argv } = await this.parse(AliasSet);

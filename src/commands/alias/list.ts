@@ -19,6 +19,7 @@ export default class AliasList extends AliasCommand<AliasResults> {
   public static readonly deprecateAliases = true;
   public static readonly flags = { loglevel };
   public async run(): Promise<AliasResults> {
+    await this.parse(AliasList);
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
 
