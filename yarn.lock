@@ -1042,14 +1042,14 @@
     mv "~2"
     safe-json-stringify "~1"
 
-"@salesforce/cli-plugins-testkit@^3.2.12":
-  version "3.2.12"
-  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-3.2.12.tgz#427e5d5f5aeda08b4e23248b323ae52b30e47b7e"
-  integrity sha512-66Jm7Kww6ay82+8nmooiyQtgGm45CHv/fptp64IIu8TTGSirhZbz251yM6qj+Y4yBb2ZpaUwY+mDnaQodgyNuQ==
+"@salesforce/cli-plugins-testkit@^3.2.20":
+  version "3.2.20"
+  resolved "https://registry.yarnpkg.com/@salesforce/cli-plugins-testkit/-/cli-plugins-testkit-3.2.20.tgz#15f0e3a50e2242c482bb89fb18464473f8cc2cbc"
+  integrity sha512-EOKTZQrTiyZWPUKwbjZTJf9UvLlUrnXGN2qDgi65S7OH4W/bR1syRlrVDJ8w/F5mSqKaExhGGoFviycRrWrW8g==
   dependencies:
-    "@salesforce/core" "^3.32.6"
+    "@salesforce/core" "^3.33.1"
     "@salesforce/kit" "^1.8.0"
-    "@salesforce/ts-types" "^1.5.21"
+    "@salesforce/ts-types" "^1.7.2"
     "@types/shelljs" "^0.8.11"
     archiver "^5.2.0"
     debug "^4.3.1"
@@ -1057,7 +1057,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^3.31.16", "@salesforce/core@^3.32.12", "@salesforce/core@^3.32.6", "@salesforce/core@^3.33.1", "@salesforce/core@^3.8.0":
+"@salesforce/core@^3.31.16", "@salesforce/core@^3.32.12", "@salesforce/core@^3.33.1", "@salesforce/core@^3.8.0":
   version "3.33.1"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.33.1.tgz#3dd0a44ba22763e8e0c2c97df03393e5c2c845d9"
   integrity sha512-jaed8rK+NhSxB6MjYUN8f/2VkvtbFN/Ce/l6JvgFE+cvOf2g+lPv1pSsnKKlaSiiYcXkOvIRDT9d9ns1RLJzUw==
@@ -1194,7 +1194,7 @@
     sinon "^5.1.1"
     tslib "^2.2.0"
 
-"@salesforce/ts-types@^1.5.20", "@salesforce/ts-types@^1.5.21", "@salesforce/ts-types@^1.7.1", "@salesforce/ts-types@^1.7.2", "@salesforce/ts-types@^1.7.3":
+"@salesforce/ts-types@^1.5.20", "@salesforce/ts-types@^1.7.1", "@salesforce/ts-types@^1.7.2", "@salesforce/ts-types@^1.7.3":
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/@salesforce/ts-types/-/ts-types-1.7.3.tgz#89b79ff0aaa55fea9f2de0afa8e515be3e17d0d8"
   integrity sha512-jpmekGqZ7tpHRJwf1rF0yBJ/IMC5mOrryNi4HZkKuNQn8RF97WpynmL8Om04mLTCESvCiif3y7NWfIcxtID2Gw==
