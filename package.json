@@ -16,7 +16,7 @@
     "@salesforce/cli-plugins-testkit": "^3.2.12",
     "@salesforce/dev-config": "^3.1.0",
     "@salesforce/dev-scripts": "^4.0.0-beta.9",
-    "@salesforce/kit": "^1.7.1",
+    "@salesforce/kit": "^1.8.5",
     "@salesforce/plugin-command-reference": "^2.2.8",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.4",
