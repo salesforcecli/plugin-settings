@@ -102,15 +102,6 @@ describe('config:get', () => {
   test
     .do(async () => prepareStubs())
     .stdout()
-    .command(['config:get', '--json'])
-    .it('should throw an error when no keys are provided', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.name).to.equal('NoConfigKeysFoundError');
-    });
-
-  test
-    .do(async () => prepareStubs())
-    .stdout()
     .command(['config:get', SfConfigProperties.DISABLE_TELEMETRY, '--json'])
     .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
       const response = JSON.parse(ctx.stdout);

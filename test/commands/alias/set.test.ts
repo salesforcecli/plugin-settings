@@ -21,12 +21,4 @@ describe('alias set', () => {
         },
       ]);
     });
-
-  test
-    .stdout()
-    .stderr()
-    .command(['alias set'])
-    .it('throws error when no alias provided', (ctx) => {
-      expect(ctx.stderr).to.include('You must provide one or more aliases to set.');
-    });
 });

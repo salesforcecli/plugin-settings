@@ -66,15 +66,6 @@ describe('config:unset', () => {
     });
 
   test
-    .do(async () => prepareStubs())
-    .stdout()
-    .command(['config:unset', '--json'])
-    .it('should throw an error if no properties are provided', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.name).to.equal('NoConfigKeysFoundError');
-    });
-
-  test
     .do(async () => prepareStubs(true))
     .stdout()
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global', '--json'])

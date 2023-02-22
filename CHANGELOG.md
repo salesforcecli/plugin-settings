@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/salesforcecli/plugin-settings/compare/1.2.2...1.3.0) (2023-02-15)
+
+### Features
+
+- update JSON for alias commands ([d7f1e3b](https://github.com/salesforcecli/plugin-settings/commit/d7f1e3b3b9a4c4d7603f30be5e310d5b92af49d4))
+
 ## [1.2.2](https://github.com/salesforcecli/plugin-settings/compare/1.2.1...1.2.2) (2023-02-11)
 
 ### Bug Fixes
