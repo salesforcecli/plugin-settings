@@ -8,7 +8,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
-import { ConfigResponses } from '../../../src/config';
+import { SetConfigCommandResult } from '../../../src/commands/config/set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
@@ -35,9 +35,10 @@ function verifyValidationError(key: string, value: string | number, message: str
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const result = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput?.result;
-  const expected = [{ name: key, success: true }] as ConfigResponses;
-  if (value !== '') expected[0].value = `${value}`;
+  const result = execCmd<SetConfigCommandResult>(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput
+    ?.result;
+  const expected = { failures: [], successes: [{ name: key, success: true }] } as SetConfigCommandResult;
+  if (value !== '') expected.successes[0].value = `${value}`;
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
@@ -74,11 +75,12 @@ describe('config set NUTs', async () => {
     });
 
     it('don\'t allow using "set=" to unset a config key', () => {
-      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      execCmd<SetConfigCommandResult>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 })
+        .jsonOutput;
 
-      const result = execCmd<ConfigResponses>('config set org-api-version= --json', {
+      const result = execCmd<SetConfigCommandResult>('config set org-api-version= --json', {
         ensureExitCode: 1,
-      }).jsonOutput?.result;
+      }).jsonOutput?.result.failures;
 
       expect(result).to.deep.equal([
         {
@@ -204,7 +206,8 @@ describe('config set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both org-api-version and org-max-query-limit in one command', () => {
-      const result = execCmd('config set org-api-version=51.0 org-max-query-limit=100 --json').jsonOutput?.result;
+      const result = execCmd<SetConfigCommandResult>('config set org-api-version=51.0 org-max-query-limit=100 --json')
+        .jsonOutput?.result.successes;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',

@@ -6,7 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { ConfigResponses } from '../../../src/config';
+import { SetConfigCommandResult } from '../../../src/commands/config/set';
 
 let testSession: TestSession;
 
@@ -17,7 +17,7 @@ describe('config unset NUTs', async () => {
 
   describe('config unset without keys', () => {
     it('errors when attempting to unset nothing', () => {
-      const result = execCmd<ConfigResponses>('config unset --json', { ensureExitCode: 1 }).jsonOutput;
+      const result = execCmd<SetConfigCommandResult>('config unset --json', { ensureExitCode: 1 }).jsonOutput;
       expect(result?.name).to.equal('NoConfigKeysFoundError');
       expect(result?.status).to.equal(1);
     });
@@ -36,9 +36,9 @@ describe('config unset NUTs', async () => {
     });
 
     it('lists singular config correctly', () => {
-      const result = execCmd<ConfigResponses>('config unset org-api-version --json', {
+      const result = execCmd<SetConfigCommandResult>('config unset org-api-version --json', {
         ensureExitCode: 0,
-      }).jsonOutput?.result;
+      }).jsonOutput?.result.successes;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
@@ -65,12 +65,12 @@ describe('config unset NUTs', async () => {
 
     it('unsets multiple configs correctly JSON', () => {
       execCmd('config set disable-telemetry=false');
-      const result = execCmd<ConfigResponses>(
+      const result = execCmd<SetConfigCommandResult>(
         'config unset disable-telemetry org-api-version org-max-query-limit --json',
         {
           ensureExitCode: 0,
         }
-      ).jsonOutput?.result;
+      ).jsonOutput?.result.successes;
       expect(result).to.deep.equal([
         {
           name: 'disable-telemetry',

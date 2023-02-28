@@ -6,13 +6,15 @@
  */
 
 import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator, Lifecycle } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
+import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
+import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
-export class Set extends ConfigCommand<ConfigResponses> {
+export type SetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
+
+export class Set extends ConfigCommand<SetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -28,8 +30,9 @@ export class Set extends ConfigCommand<ConfigResponses> {
   };
 
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
+  private setResponses: SetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<ConfigResponses> {
+  public async run(): Promise<SetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);
     const config: Config = await loadConfig(flags.global);
 
@@ -50,7 +53,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
           // eslint-disable-next-line no-await-in-loop
           if (isOrgKey(name) && value) await validateOrg(value);
           config.set(name, value);
-          this.responses.push({ name, value, success: true });
+          this.setResponses.successes.push({ name, value, success: true });
         }
       } catch (err) {
         const error = err as Error;
@@ -58,7 +61,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
           const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
           try {
             config.set(newKey, value);
-            this.responses.push({
+            this.setResponses.successes.push({
               name,
               value,
               success: true,
@@ -67,25 +70,26 @@ export class Set extends ConfigCommand<ConfigResponses> {
             });
           } catch (e) {
             const secondError = e as Error;
-            void Lifecycle.getInstance().emitTelemetry({ event: 'DeprecatedConfigValueSet', key: name });
-            this.warn(messages.getMessage('deprecated', [newKey]));
             // if that deprecated value was also set to an invalid value
-            this.responses.push({
-              // sf default of invalid config value e.g. org-metadata-rest-deploy=foo, it must be true/false
+            this.setResponses.failures.push({
               name,
               key: name,
               success: false,
               value,
               error: secondError,
               message: secondError.message.replace(/\.\.$/, '.'),
-              // add sfdx properties
-              successes: [],
-              failures: [{ name, message: secondError.message.replace(/\.\.$/, '.') }],
             });
           }
         } else if (error.name.includes('UnknownConfigKeyError')) {
           if (this.jsonEnabled()) {
-            this.responses.push({ name, value, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+            process.exitCode = 1;
+            this.setResponses.failures.push({
+              name,
+              value,
+              success: false,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+            });
           } else {
             const suggestion = this.calculateSuggestion(name);
             // eslint-disable-next-line no-await-in-loop
@@ -93,7 +97,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
             if (answer) {
               const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
               config.set(key, value);
-              this.responses.push({ name: key, value, success: true });
+              this.setResponses.successes.push({ name: key, value, success: true });
             }
           }
         } else {
@@ -103,9 +107,22 @@ export class Set extends ConfigCommand<ConfigResponses> {
     }
     await config.write();
     if (!this.jsonEnabled()) {
+      this.responses = [...this.setResponses.successes, ...this.setResponses.failures];
       this.output('Set Config', false);
     }
-    return this.responses;
+    return this.setResponses;
+  }
+
+  protected pushFailure(name: string, err: string | Error, value?: string): void {
+    const error = SfError.wrap(err);
+    this.setResponses.failures.push({
+      name,
+      success: false,
+      value,
+      error,
+      message: error.message.replace(/\.\.$/, '.'),
+    });
+    process.exitCode = 1;
   }
 }
 

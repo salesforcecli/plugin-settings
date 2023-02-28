@@ -6,75 +6,68 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { Config } from '@salesforce/core';
-import { ConfigResponses, Msg } from '../../../../src/config';
+import { Msg } from '../../../../src/config';
+import { SetConfigCommandResult } from '../../../../src/commands/config/set';
 let testSession: TestSession;
 
 function verifyValidationError(key: string, value: string | number) {
-  const newKey = Config.getPropertyConfigMeta(key)?.key;
   const expected = {
-    result: [
-      {
-        error: {
-          exitCode: 1,
-          name: 'InvalidConfigValueError',
-        },
-        failures: [
-          {
-            name: key,
+    result: {
+      failures: [
+        {
+          error: {
+            exitCode: 1,
+            name: 'InvalidConfigValueError',
           },
-        ],
-        name: key,
-        success: false,
-        successes: [],
-        key,
-        value: value as string,
-      },
-    ],
+          key,
+          name: key,
+          success: false,
+          value: value as string,
+        },
+      ],
+      successes: [],
+    },
     status: 0,
-    warnings: [
-      `The json output format will be changing in v57.0. Use the new key ${newKey} instead. The 'success','failures', and 'key' properties will be removed.`,
-    ],
+    warnings: [],
   };
-  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
-  const result = res?.result[0] as Msg;
+  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const result = res?.result.failures as Msg[];
   // validate error message / failures error message here and delete, it will vary based on the value.
-  expect(result.failures?.at(0)?.message).to.include('Invalid config value:');
-  expect(result.message).to.include('Invalid config value:');
-  delete result.failures?.at(0)?.message;
-  delete result.message;
+  expect(result.at(0)?.message).to.include('Invalid config value:');
+  delete result.at(0)?.message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
-  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`).jsonOutput;
-  expect(res?.result[0]).to.have.property('successes').with.length(0);
-  expect(res?.result[0]).to.have.property('failures').with.length(1);
-  const result = res?.result.at(0) as Msg;
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  expect(result.failures?.at(0)?.message?.startsWith(message)).to.be.true;
+  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  expect(res?.result).to.have.property('successes').with.length(0);
+  expect(res?.result).to.have.property('failures').with.length(1);
+  const result = res?.result.failures.at(0) as Msg;
+  expect(result.message?.startsWith(message)).to.be.true;
   execCmd(`config:unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const res = execCmd<ConfigResponses>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  // to avoid converting to async right now, validate the message mentions everything, except the new key.
-  expect(res?.result.at(0)?.message).to.include(`Deprecated config name: ${key}. Please use`);
-  delete res?.result.at(0)?.message;
+  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  expect(res?.result.successes.at(0)?.message).to.include(`Deprecated config name: ${key}. Please use`);
+  delete res?.result.successes.at(0)?.message;
   expect(res).to.deep.equal({
     status: 0,
-    result: [
-      {
-        name: key,
-        value: String(value),
-        success: true,
-        error: {
-          name: 'DeprecatedConfigKeyError',
-          exitCode: 1,
+    result: {
+      failures: [],
+      successes: [
+        {
+          name: key,
+          value: String(value),
+          success: true,
+          error: {
+            name: 'DeprecatedConfigKeyError',
+            exitCode: 1,
+          },
         },
-      },
-    ],
+      ],
+    },
     warnings: [],
   });
   execCmd(`config:unset ${key}`);
@@ -189,28 +182,31 @@ describe('config:set NUTs', async () => {
       const res = execCmd('config:set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
       expect(res).to.deep.equal({
         status: 0,
-        result: [
-          {
-            name: 'apiVersion',
-            value: '51.0',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+        result: {
+          failures: [],
+          successes: [
+            {
+              name: 'apiVersion',
+              value: '51.0',
+              success: true,
+              error: {
+                name: 'DeprecatedConfigKeyError',
+                exitCode: 1,
+              },
+              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
             },
-            message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
-          },
-          {
-            name: 'maxQueryLimit',
-            value: '100',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+            {
+              name: 'maxQueryLimit',
+              value: '100',
+              success: true,
+              error: {
+                name: 'DeprecatedConfigKeyError',
+                exitCode: 1,
+              },
+              message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
             },
-            message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
-          },
-        ],
+          ],
+        },
         warnings: [],
       });
       execCmd('config:unset apiVersion maxQueryLimit');

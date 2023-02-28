@@ -6,13 +6,14 @@
  */
 
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, SfdxConfigAggregator } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
+import { Config, Messages, SfdxConfigAggregator, SfError } from '@salesforce/core';
+import { CONFIG_HELP_SECTION, ConfigCommand } from '../../config';
+import { SetConfigCommandResult } from './set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.unset');
 
-export class UnSet extends ConfigCommand<ConfigResponses> {
+export class UnSet extends ConfigCommand<SetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -27,8 +28,9 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
       summary: messages.getMessage('flags.global.summary'),
     }),
   };
+  private unsetResponses: SetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<ConfigResponses> {
+  public async run(): Promise<SetConfigCommandResult> {
     const { argv, flags } = await this.parse(UnSet);
     await SfdxConfigAggregator.create({});
 
@@ -41,20 +43,25 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
     for (const key of argv as string[]) {
       try {
         config.unset(key);
-        this.responses.push({ name: key, success: true });
+        this.unsetResponses.successes.push({ name: key, success: true });
       } catch (err) {
         const error = err as Error;
         if (error.message.includes('Deprecated config name')) {
           const meta = Config.getPropertyConfigMeta(key);
           config.unset(meta?.key ?? key);
-          this.responses.push({ name: key, success: true, error, message: error.message.replace(/\.\.$/, '.') });
+          this.unsetResponses.successes.push({
+            name: key,
+            success: true,
+            error,
+            message: error.message.replace(/\.\.$/, '.'),
+          });
         } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
           const suggestion = this.calculateSuggestion(key);
           // eslint-disable-next-line no-await-in-loop
           const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
           if (answer) {
             config.unset(suggestion);
-            this.responses.push({
+            this.unsetResponses.successes.push({
               name: suggestion,
               success: true,
               error,
@@ -67,9 +74,22 @@ export class UnSet extends ConfigCommand<ConfigResponses> {
       }
     }
     await config.write();
+    this.responses = [...this.unsetResponses.successes, ...this.unsetResponses.failures];
 
     this.output('Unset Config', false);
 
-    return this.responses;
+    return this.unsetResponses;
+  }
+
+  protected pushFailure(name: string, err: string | Error, value?: string): void {
+    const error = SfError.wrap(err);
+    this.unsetResponses.failures.push({
+      name,
+      success: false,
+      value,
+      error,
+      message: error.message.replace(/\.\.$/, '.'),
+    });
+    process.exitCode = 1;
   }
 }

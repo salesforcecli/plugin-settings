@@ -49,7 +49,3 @@ You must provide a value when setting a config. Use `sf config unset the-config-
 # didYouMean
 
 Did you mean %s?
-
-# deprecated
-
-The json output format will be changing in v57.0. Use the new key %s instead. The 'success','failures', and 'key' properties will be removed.

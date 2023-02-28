@@ -46,18 +46,21 @@ describe('config:unset NUTs', async () => {
     it('lists singular config correctly', () => {
       const res = execCmd('config:unset apiVersion --json', { ensureExitCode: 0 });
       expect(res.jsonOutput).to.deep.equal({
-        status: 0,
-        result: [
-          {
-            name: 'apiVersion',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+        result: {
+          failures: [],
+          successes: [
+            {
+              error: {
+                exitCode: 1,
+                name: 'DeprecatedConfigKeyError',
+              },
+              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
+              name: 'apiVersion',
+              success: true,
             },
-            message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
-          },
-        ],
+          ],
+        },
+        status: 0,
         warnings: [],
       });
     });
@@ -83,35 +86,38 @@ describe('config:unset NUTs', async () => {
       const res = execCmd('config:unset restDeploy apiVersion maxQueryLimit --json', { ensureExitCode: 0 });
       expect(res.jsonOutput).to.deep.equal({
         status: 0,
-        result: [
-          {
-            name: 'restDeploy',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+        result: {
+          successes: [
+            {
+              name: 'restDeploy',
+              success: true,
+              error: {
+                name: 'DeprecatedConfigKeyError',
+                exitCode: 1,
+              },
+              message: 'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
             },
-            message: 'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
-          },
-          {
-            name: 'apiVersion',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+            {
+              name: 'apiVersion',
+              success: true,
+              error: {
+                name: 'DeprecatedConfigKeyError',
+                exitCode: 1,
+              },
+              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
             },
-            message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
-          },
-          {
-            name: 'maxQueryLimit',
-            success: true,
-            error: {
-              name: 'DeprecatedConfigKeyError',
-              exitCode: 1,
+            {
+              name: 'maxQueryLimit',
+              success: true,
+              error: {
+                name: 'DeprecatedConfigKeyError',
+                exitCode: 1,
+              },
+              message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
             },
-            message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
-          },
-        ],
+          ],
+          failures: [],
+        },
         warnings: [],
       });
     });

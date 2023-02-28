@@ -1,12 +1,25 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/ConfigResponses",
+  "$ref": "#/definitions/SetConfigCommandResult",
   "definitions": {
-    "ConfigResponses": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Msg"
-      }
+    "SetConfigCommandResult": {
+      "type": "object",
+      "properties": {
+        "successes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Msg"
+          }
+        },
+        "failures": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Msg"
+          }
+        }
+      },
+      "required": ["successes", "failures"],
+      "additionalProperties": false
     },
     "Msg": {
       "type": "object",
