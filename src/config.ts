@@ -7,7 +7,7 @@
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
-import { ConfigInfo, OrgConfigProperties, SfError, SfdxPropertyKeys, Config } from '@salesforce/core';
+import { ConfigInfo, SfError, Config } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
 import * as Levenshtein from 'fast-levenshtein';
 
@@ -30,13 +30,7 @@ export type ConfigResponses = Msg[];
 
 export const CONFIG_HELP_SECTION = toHelpSection(
   'CONFIGURATION VARIABLES',
-  SfdxPropertyKeys.API_VERSION,
-  SfdxPropertyKeys.DISABLE_TELEMETRY,
-  SfdxPropertyKeys.INSTANCE_URL,
-  SfdxPropertyKeys.MAX_QUERY_LIMIT,
-  SfdxPropertyKeys.REST_DEPLOY,
-  OrgConfigProperties.TARGET_ORG,
-  OrgConfigProperties.TARGET_DEV_HUB
+  ...Config.getAllowedProperties().map((k) => k.newKey ?? k.key)
 );
 
 export abstract class ConfigCommand<T> extends SfCommand<T> {
