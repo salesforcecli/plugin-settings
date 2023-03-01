@@ -48,7 +48,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
     // an entry at 0 would be a direct match, an entry at 1 would be a single character off, etc.
     const index: string[] = [];
     Config.getAllowedProperties()
-      .map((k) => k.key)
+      .map((k) => k.newKey ?? k.key)
       .map((k) => (index[Levenshtein.get(userEnteredConfig, k)] = k));
     return index.find((item) => item !== undefined) ?? '';
   }
