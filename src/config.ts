@@ -30,7 +30,7 @@ export type ConfigResponses = Msg[];
 
 export const CONFIG_HELP_SECTION = toHelpSection(
   'CONFIGURATION VARIABLES',
-  ...Config.getAllowedProperties().map((k) => k.newKey ?? k.key)
+  ...new Set(Config.getAllowedProperties().map((k) => k.newKey ?? k.key))
 );
 
 export abstract class ConfigCommand<T> extends SfCommand<T> {
