@@ -40,7 +40,7 @@ describe('config get NUTs', async () => {
     it('gets singular config correctly', () => {
       const result = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
-      }).jsonOutput?.result.at(0);
+      }).jsonOutput?.result[0];
       expect(result?.name).to.equal('org-api-version');
       expect(result?.location).to.equal('Global');
       expect(result?.value).to.equal('51.0');

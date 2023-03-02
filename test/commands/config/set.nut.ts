@@ -29,7 +29,9 @@ function verifyValidationError(key: string, value: string | number, message: str
   ];
   const result = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput
     ?.result;
-  delete result?.at(0)?.error;
+  if (result) {
+    delete result[0].error;
+  }
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
