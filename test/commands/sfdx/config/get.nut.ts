@@ -37,7 +37,7 @@ describe('config:get NUTs', async () => {
 
     it('gets singular config correctly', () => {
       const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
-      const result = res?.result.at(0) ?? ({} as Msg);
+      const result = res?.result[0] ?? ({} as Msg);
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(result.path).to.include('config.json');
       expect(result.key).to.include('apiVersion');

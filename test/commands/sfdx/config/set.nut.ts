@@ -33,8 +33,8 @@ function verifyValidationError(key: string, value: string | number) {
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   const result = res?.result.failures as Msg[];
   // validate error message / failures error message here and delete, it will vary based on the value.
-  expect(result.at(0)?.message).to.include('Invalid config value:');
-  delete result.at(0)?.message;
+  expect(result[0]?.message).to.include('Invalid config value:');
+  delete result[0]?.message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }
@@ -43,15 +43,15 @@ function verifyValidationStartsWith(key: string, value: string | number, message
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   expect(res?.result).to.have.property('successes').with.length(0);
   expect(res?.result).to.have.property('failures').with.length(1);
-  const result = res?.result.failures.at(0) as Msg;
+  const result = res?.result.failures[0] as Msg;
   expect(result.message?.startsWith(message)).to.be.true;
   execCmd(`config:unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  expect(res?.result.successes.at(0)?.message).to.include(`Deprecated config name: ${key}. Please use`);
-  delete res?.result.successes.at(0)?.message;
+  expect(res?.result.successes[0]?.message).to.include(`Deprecated config name: ${key}. Please use`);
+  delete res?.result.successes[0]?.message;
   expect(res).to.deep.equal({
     status: 0,
     result: {
