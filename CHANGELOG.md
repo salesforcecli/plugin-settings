@@ -1,3 +1,12 @@
+## [1.4.1](https://github.com/salesforcecli/plugin-settings/compare/1.4.0...1.4.1) (2023-03-02)
+
+
+### Bug Fixes
+
+* replace .at(0) with [0] ([9a616ae](https://github.com/salesforcecli/plugin-settings/commit/9a616ae144190a9ce5bfbd7ea111211879ba52bd))
+
+
+
 # [1.4.0](https://github.com/salesforcecli/plugin-settings/compare/1.3.0...1.4.0) (2023-03-02)
 
 
