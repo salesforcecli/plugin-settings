@@ -9,6 +9,7 @@ import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
 import { SetConfigCommandResult } from '../../../src/commands/config/set';
+import { Msg } from '../../../src/config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
@@ -18,22 +19,32 @@ const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
 
 let testSession: TestSession;
 
-function verifyValidationError(key: string, value: string | number, message: string) {
-  const expected = [
-    {
-      name: key,
-      value: `${value}`,
-      message,
-      success: false,
+function verifyValidationError(key: string, value: string) {
+  const expected = {
+    result: {
+      failures: [
+        {
+          error: {
+            exitCode: 1,
+            name: 'InvalidConfigValueError',
+          },
+          name: key,
+          success: false,
+          value,
+        },
+      ],
+      successes: [],
     },
-  ];
-  const result = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput
-    ?.result;
-
-  delete result?.[0].error;
-
-  expect(result).to.deep.equal(expected);
-  execCmd(`config unset ${key}`);
+    status: 1,
+    warnings: [],
+  };
+  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const result = res?.result.failures as Msg[];
+  // validate error message / failures error message here and delete, it will vary based on the value.
+  expect(result[0]?.message).to.include('Invalid config value:');
+  delete result[0]?.message;
+  expect(res).to.deep.equal(expected);
+  execCmd(`config:unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
@@ -106,11 +117,7 @@ describe('config set NUTs', async () => {
       });
 
       it('will fail to validate org-api-version', () => {
-        verifyValidationError(
-          'org-api-version',
-          '50',
-          'Invalid config value: Specify a valid Salesforce API version, for example, 42.0.'
-        );
+        verifyValidationError('org-api-version', '50');
       });
     });
 
@@ -121,11 +128,7 @@ describe('config set NUTs', async () => {
       });
 
       it('will fail to validate org-max-query-limit', () => {
-        verifyValidationError(
-          'org-max-query-limit',
-          '-2',
-          'Invalid config value: Specify a valid positive integer, for example, 150000.'
-        );
+        verifyValidationError('org-max-query-limit', '-2');
       });
     });
 
@@ -139,23 +142,59 @@ describe('config set NUTs', async () => {
       });
 
       it('will fail to validate org-instance-url when non-Salesforce URL', () => {
-        verifyValidationError(
-          'org-instance-url',
-          'abc.com',
-          'Invalid config value: Specify a valid Salesforce instance URL.'
-        );
+        verifyValidationError('org-instance-url', 'abc.com');
       });
     });
 
-    describe('target-org', () => {
+    describe('target orgs', () => {
       it('will fail to validate target-org', () => {
-        verifyValidationError('target-org', 'ab', 'Invalid config value: org "ab" is not authenticated.');
+        const expected = {
+          status: 1,
+          result: {
+            successes: [],
+            failures: [
+              {
+                name: 'target-org',
+                success: false,
+                value: 'ab',
+                error: {
+                  cause: {},
+                  name: 'Error',
+                  exitCode: 1,
+                },
+                message: 'Invalid config value: org "ab" is not authenticated.',
+              },
+            ],
+          },
+          warnings: [],
+        };
+        const res = execCmd<SetConfigCommandResult>('config:set target-org=ab --json').jsonOutput;
+        expect(res).to.deep.equal(expected);
       });
-    });
 
-    describe('target-dev-hub', () => {
-      it('will fail to validate target-dev-hub', () => {
-        verifyValidationError('target-dev-hub', 'ab', 'Invalid config value: org "ab" is not authenticated.');
+      it('will fail to validate target-dev-org', () => {
+        const expected = {
+          status: 1,
+          result: {
+            successes: [],
+            failures: [
+              {
+                name: 'target-dev-hub',
+                success: false,
+                value: 'ab',
+                error: {
+                  cause: {},
+                  name: 'Error',
+                  exitCode: 1,
+                },
+                message: 'Invalid config value: org "ab" is not authenticated.',
+              },
+            ],
+          },
+          warnings: [],
+        };
+        const res = execCmd<SetConfigCommandResult>('config:set target-dev-hub=ab --json').jsonOutput;
+        expect(res).to.deep.equal(expected);
       });
     });
 
@@ -180,11 +219,7 @@ describe('config set NUTs', async () => {
       });
 
       it('will fail to validate disable-telemetry', () => {
-        verifyValidationError(
-          'disable-telemetry',
-          'ab',
-          'Invalid config value: The config value can only be set to true or false.'
-        );
+        verifyValidationError('disable-telemetry', 'ab');
       });
     });
 
@@ -197,11 +232,7 @@ describe('config set NUTs', async () => {
       });
 
       it('will fail to validate disable-telemetry', () => {
-        verifyValidationError(
-          'disable-telemetry',
-          'ab',
-          'Invalid config value: The config value can only be set to true or false.'
-        );
+        verifyValidationError('disable-telemetry', 'ab');
       });
     });
   });
