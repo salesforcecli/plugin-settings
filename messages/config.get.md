@@ -23,3 +23,7 @@ Display whether the configuration variables are set locally or globally.
 # error.NoConfigKeysFound
 
 You must provide one or more configuration variables to get. Run "sf config list" to see the configuration variables you've previously set.
+
+# didYouMean
+
+Did you mean %s?

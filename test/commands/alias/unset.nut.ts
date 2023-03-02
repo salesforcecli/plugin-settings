@@ -8,6 +8,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
+import { AliasResults } from '../../../src/alias';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
@@ -30,7 +31,7 @@ describe('alias unset NUTs', () => {
 
   describe('unsetting non-existent key is a success (json)', () => {
     it('unsetting a non-existent key will report success', () => {
-      const { result } = execCmd('alias unset noAlias --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias unset noAlias --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -58,7 +59,7 @@ describe('alias unset NUTs', () => {
     });
 
     it('alias unset --json', () => {
-      const { result } = execCmd('alias unset DevHub --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias unset DevHub --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -68,9 +69,9 @@ describe('alias unset NUTs', () => {
         },
       ]);
 
-      const { result: listResult } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const res = execCmd<AliasResults>('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
-      expect(listResult).to.deep.equal([
+      expect(res).to.deep.equal([
         {
           alias: 'Admin',
           value: 'admin@salesforce.com',
@@ -118,7 +119,7 @@ describe('alias unset NUTs', () => {
     });
 
     it('alias unset --json', () => {
-      const { result } = execCmd('alias unset DevHub user --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias unset DevHub user --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -133,9 +134,9 @@ describe('alias unset NUTs', () => {
         },
       ]);
 
-      const { result: listResult } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const res = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
-      expect(listResult).to.deep.equal([
+      expect(res).to.deep.equal([
         {
           alias: 'Admin',
           value: 'admin@salesforce.com',
@@ -155,7 +156,7 @@ describe('alias unset NUTs', () => {
     });
 
     it('removes all aliases when passing --all', () => {
-      const { result } = execCmd('alias unset --all --no-prompt --json', { ensureExitCode: 0 }).jsonOutput;
+      const result = execCmd('alias unset --all --no-prompt --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
       expect(result).to.deep.equal([
         {
@@ -175,9 +176,9 @@ describe('alias unset NUTs', () => {
         },
       ]);
 
-      const { result: listResult } = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput;
+      const res = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
-      expect(listResult).to.deep.equal([]);
+      expect(res).to.deep.equal([]);
     });
   });
 });

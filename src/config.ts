@@ -7,8 +7,9 @@
 
 import { SfCommand } from '@salesforce/sf-plugins-core';
 import { ux } from '@oclif/core';
-import { ConfigInfo, OrgConfigProperties, SfError, SfdxPropertyKeys } from '@salesforce/core';
+import { ConfigInfo, SfError, Config } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
+import * as Levenshtein from 'fast-levenshtein';
 
 export type Msg = {
   name: string;
@@ -18,27 +19,37 @@ export type Msg = {
   path?: string;
   message?: string;
   error?: Error;
+  // added to support plugin-config in sfdx
+  successes?: Array<{ message?: string; name: string }>;
+  failures?: Array<{ message?: string; name: string }>;
+  key?: string;
+  deprecated?: boolean;
 };
 
 export type ConfigResponses = Msg[];
 
 export const CONFIG_HELP_SECTION = toHelpSection(
   'CONFIGURATION VARIABLES',
-  SfdxPropertyKeys.API_VERSION,
-  SfdxPropertyKeys.DISABLE_TELEMETRY,
-  SfdxPropertyKeys.INSTANCE_URL,
-  SfdxPropertyKeys.MAX_QUERY_LIMIT,
-  SfdxPropertyKeys.REST_DEPLOY,
-  OrgConfigProperties.TARGET_ORG,
-  OrgConfigProperties.TARGET_DEV_HUB
+  ...new Set(Config.getAllowedProperties().map((k) => k.newKey ?? k.key))
 );
 
 export abstract class ConfigCommand<T> extends SfCommand<T> {
   protected responses: ConfigResponses = [];
-
+  // eslint-disable-next-line class-methods-use-this
+  public calculateSuggestion(userEnteredConfig: string): string {
+    // we'll use this array to keep track of which key is the closest to the users entered value.
+    // keys closer to the index 0 will be a closer guess than keys indexed further from 0
+    // an entry at 0 would be a direct match, an entry at 1 would be a single character off, etc.
+    const index: string[] = [];
+    Config.getAllowedProperties()
+      .map((k) => k.newKey ?? k.key)
+      .map((k) => (index[Levenshtein.get(userEnteredConfig, k)] = k));
+    return index.find((item) => item !== undefined) ?? '';
+  }
   protected pushSuccess(configInfo: ConfigInfo): void {
     this.responses.push({
       name: configInfo.key,
+      key: configInfo.key,
       value: configInfo.value as string | undefined,
       success: true,
       location: configInfo.location,

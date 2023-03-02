@@ -45,3 +45,7 @@ You must provide one or more configuration variables to set. Use the --help flag
 # error.ValueRequired
 
 You must provide a value when setting a config. Use `sf config unset the-config-name` to unset existing configs.
+
+# didYouMean
+
+Did you mean %s?

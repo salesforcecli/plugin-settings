@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags } from '@salesforce/sf-plugins-core';
+import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages, SfError } from '@salesforce/core';
 import { AliasCommand, AliasResults } from '../../alias';
 
@@ -25,11 +25,11 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
-
   public static readonly strict = false; // This allows varargs
-  public static readonly state = 'beta';
-
+  public static readonly aliases = ['force:alias:unset'];
+  public static readonly deprecateAliases = true;
   public static flags = {
+    loglevel,
     all: Flags.boolean({
       summary: messages.getMessage('flags.all.summary'),
       char: 'a',
@@ -59,7 +59,7 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
 
     // Confirm the users wants to remove all aliases. Supports --no-prompt.
     if (flags.all && !flags['no-prompt'] && !(await this.confirm(messages.getMessage('prompt.RemoveAllAliases')))) {
-      return;
+      return [];
     }
 
     const results = toRemove.map((alias) => {

@@ -42,7 +42,10 @@ describe('config:unset', () => {
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global', '--json'])
     .it('should unset values for a single property', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([{ name: OrgConfigProperties.ORG_API_VERSION, success: true }]);
+      expect(result).to.deep.equal({
+        failures: [],
+        successes: [{ name: OrgConfigProperties.ORG_API_VERSION, success: true }],
+      });
       expect(configStub.unset.callCount).to.equal(1);
     });
 
@@ -58,20 +61,14 @@ describe('config:unset', () => {
     ])
     .it('should unset values for multiple properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        { name: OrgConfigProperties.ORG_API_VERSION, success: true },
-        { name: OrgConfigProperties.TARGET_DEV_HUB, success: true },
-      ]);
+      expect(result).to.deep.equal({
+        successes: [
+          { name: OrgConfigProperties.ORG_API_VERSION, success: true },
+          { name: OrgConfigProperties.TARGET_DEV_HUB, success: true },
+        ],
+        failures: [],
+      });
       expect(configStub.unset.callCount).to.equal(2);
-    });
-
-  test
-    .do(async () => prepareStubs())
-    .stdout()
-    .command(['config:unset', '--json'])
-    .it('should throw an error if no properties are provided', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.name).to.equal('NoConfigKeysFoundError');
     });
 
   test
@@ -80,18 +77,21 @@ describe('config:unset', () => {
     .command(['config:unset', `${OrgConfigProperties.ORG_API_VERSION}`, '--global', '--json'])
     .it('should handle errors with --json flag', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        {
-          error: {
-            cause: {},
-            exitCode: 1,
-            name: 'Error',
+      expect(result).to.deep.equal({
+        successes: [],
+        failures: [
+          {
+            error: {
+              cause: {},
+              exitCode: 1,
+              name: 'Error',
+            },
+            name: OrgConfigProperties.ORG_API_VERSION,
+            message: 'Unset Error!',
+            success: false,
           },
-          name: OrgConfigProperties.ORG_API_VERSION,
-          message: 'Unset Error!',
-          success: false,
-        },
-      ]);
+        ],
+      });
     });
 
   test

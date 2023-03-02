@@ -36,10 +36,34 @@ describe('config:list', () => {
     .it('should return values for all configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
-        { name: SfConfigProperties.DISABLE_TELEMETRY, value: true, location: 'Global', success: true },
-        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
-        { name: OrgConfigProperties.ORG_API_VERSION, value: '49.0', location: 'Local', success: true },
+        {
+          name: OrgConfigProperties.TARGET_DEV_HUB,
+          key: OrgConfigProperties.TARGET_DEV_HUB,
+          value: 'MyDevhub',
+          location: 'Global',
+          success: true,
+        },
+        {
+          name: SfConfigProperties.DISABLE_TELEMETRY,
+          key: SfConfigProperties.DISABLE_TELEMETRY,
+          value: true,
+          location: 'Global',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.TARGET_ORG,
+          key: OrgConfigProperties.TARGET_ORG,
+          value: 'MyUser',
+          location: 'Local',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.ORG_API_VERSION,
+          key: OrgConfigProperties.ORG_API_VERSION,
+          value: '49.0',
+          location: 'Local',
+          success: true,
+        },
       ]);
     });
 

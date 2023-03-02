@@ -8,7 +8,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
-import { ConfigResponses } from '../../../src/config';
+import { SetConfigCommandResult } from '../../../src/commands/config/set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
@@ -27,16 +27,18 @@ function verifyValidationError(key: string, value: string | number, message: str
       success: false,
     },
   ];
-  const { result } = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput;
-  delete result[0].error;
+  const result = execCmd<Array<{ error: unknown }>>(`config set ${key}=${value} --json`, { cli: 'sf' }).jsonOutput
+    ?.result;
+  delete result?.at(0)?.error;
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const { result } = execCmd(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  const expected = [{ name: key, success: true }] as ConfigResponses;
-  if (value !== '') expected[0].value = `${value}`;
+  const result = execCmd<SetConfigCommandResult>(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput
+    ?.result;
+  const expected = { failures: [], successes: [{ name: key, success: true }] } as SetConfigCommandResult;
+  if (value !== '') expected.successes[0].value = `${value}`;
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
 }
@@ -61,16 +63,7 @@ describe('config set NUTs', async () => {
       const res = execCmd('config set randomKey --json', {
         ensureExitCode: 1,
       }).jsonOutput;
-      expect(res.name).to.include('InvalidArgumentFormat');
-    });
-
-    it('fails to set randomKey=randomValue', () => {
-      const { result } = execCmd<ConfigResponses>('config set randomKey=randomValue --json', {
-        ensureExitCode: 1,
-      }).jsonOutput;
-      expect(result[0].name).to.equal('randomKey');
-      expect(result[0].message).to.equal('Unknown config name: randomKey.');
-      expect(result[0].success).to.be.false;
+      expect(res?.name).to.include('InvalidArgumentFormat');
     });
 
     it('throws an error if no varargs are passed', () => {
@@ -82,11 +75,12 @@ describe('config set NUTs', async () => {
     });
 
     it('don\'t allow using "set=" to unset a config key', () => {
-      execCmd<ConfigResponses>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 }).jsonOutput;
+      execCmd<SetConfigCommandResult>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 })
+        .jsonOutput;
 
-      const { result } = execCmd<ConfigResponses>('config set org-api-version= --json', {
+      const result = execCmd<SetConfigCommandResult>('config set org-api-version= --json', {
         ensureExitCode: 1,
-      }).jsonOutput;
+      }).jsonOutput?.result.failures;
 
       expect(result).to.deep.equal([
         {
@@ -212,7 +206,8 @@ describe('config set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both org-api-version and org-max-query-limit in one command', () => {
-      const { result } = execCmd('config set org-api-version=51.0 org-max-query-limit=100 --json').jsonOutput;
+      const result = execCmd<SetConfigCommandResult>('config set org-api-version=51.0 org-max-query-limit=100 --json')
+        .jsonOutput?.result.successes;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',

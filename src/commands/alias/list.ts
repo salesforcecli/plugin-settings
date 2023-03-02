@@ -6,6 +6,7 @@
  */
 
 import { StateAggregator, Messages } from '@salesforce/core';
+import { loglevel } from '@salesforce/sf-plugins-core';
 import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
@@ -14,10 +15,11 @@ export default class AliasList extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');
   public static examples = messages.getMessages('examples');
-
-  public static readonly state = 'beta';
-
+  public static readonly aliases = ['force:alias:list'];
+  public static readonly deprecateAliases = true;
+  public static readonly flags = { loglevel };
   public async run(): Promise<AliasResults> {
+    await this.parse(AliasList);
     const stateAggregator = await StateAggregator.getInstance();
     const aliases = stateAggregator.aliases.getAll();
 

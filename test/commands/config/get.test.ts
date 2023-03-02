@@ -9,10 +9,11 @@ import * as path from 'path';
 import { test, expect } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { Plugin } from '@oclif/core';
+import { Plugin, Config } from '@oclif/core';
 import * as sinon from 'sinon';
 import { SinonSandbox } from 'sinon';
 import { SfConfigProperties } from '@salesforce/core/lib/config/config';
+import { Get } from '../../../src/commands/config/get';
 
 process.env.NODE_ENV = 'development';
 
@@ -46,8 +47,20 @@ describe('config:get', () => {
     .it('should return values for globally configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Global', success: true },
-        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Global', success: true },
+        {
+          name: OrgConfigProperties.TARGET_DEV_HUB,
+          key: OrgConfigProperties.TARGET_DEV_HUB,
+          value: 'MyDevhub',
+          location: 'Global',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.TARGET_ORG,
+          key: OrgConfigProperties.TARGET_ORG,
+          value: 'MyUser',
+          location: 'Global',
+          success: true,
+        },
       ]);
     });
 
@@ -58,8 +71,20 @@ describe('config:get', () => {
     .it('should return values for locally configured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        { name: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location: 'Local', success: true },
-        { name: OrgConfigProperties.TARGET_ORG, value: 'MyUser', location: 'Local', success: true },
+        {
+          name: OrgConfigProperties.TARGET_DEV_HUB,
+          key: OrgConfigProperties.TARGET_DEV_HUB,
+          value: 'MyDevhub',
+          location: 'Local',
+          success: true,
+        },
+        {
+          name: OrgConfigProperties.TARGET_ORG,
+          key: OrgConfigProperties.TARGET_ORG,
+          value: 'MyUser',
+          location: 'Local',
+          success: true,
+        },
       ]);
     });
 
@@ -70,20 +95,8 @@ describe('config:get', () => {
     .it('should gracefully handle unconfigured properties', (ctx) => {
       const { result } = JSON.parse(ctx.stdout);
       expect(result).to.deep.equal([
-        {
-          name: OrgConfigProperties.ORG_API_VERSION,
-          success: true,
-        },
+        { key: OrgConfigProperties.ORG_API_VERSION, name: OrgConfigProperties.ORG_API_VERSION, success: true },
       ]);
-    });
-
-  test
-    .do(async () => prepareStubs())
-    .stdout()
-    .command(['config:get', '--json'])
-    .it('should throw an error when no keys are provided', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.name).to.equal('NoConfigKeysFoundError');
     });
 
   test
@@ -114,7 +127,7 @@ describe('config:get', () => {
           pjson: require(path.resolve(mockPluginRoot, 'package.json')),
           name: 'sfdx-cli-ts-plugin',
           commands: [],
-        } as Plugin);
+        } as unknown as Plugin);
       })
       .stdout()
       .stderr()
@@ -123,10 +136,24 @@ describe('config:get', () => {
         const response = JSON.parse(ctx.stdout);
         expect(response.result).to.deep.equal([
           {
+            key: 'customKey',
             name: 'customKey',
             success: true,
           },
         ]);
       });
+  });
+
+  describe('calculate suggestion', () => {
+    it('will calculate the correct suggestions based on inputs', () => {
+      const cmd = new Get([], {} as Config);
+
+      expect(cmd.calculateSuggestion('target-de-hub')).to.equal('target-dev-hub');
+      expect(cmd.calculateSuggestion('org-api-versi')).to.equal('org-api-version');
+      expect(cmd.calculateSuggestion('target-o')).to.equal('target-org');
+      expect(cmd.calculateSuggestion('target')).to.equal('target-org');
+      expect(cmd.calculateSuggestion('org-instance')).to.equal('org-instance-url');
+      expect(cmd.calculateSuggestion('org')).to.equal('target-org');
+    });
   });
 });

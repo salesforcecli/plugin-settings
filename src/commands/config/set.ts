@@ -5,28 +5,24 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { parseVarArgs, Flags } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, ConfigCommand, ConfigResponses } from '../../config';
+import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
+import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
+import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
-  'summary',
-  'description',
-  'examples',
-  'flags.global.summary',
-  'error.ArgumentsRequired',
-  'error.ValueRequired',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
-export class Set extends ConfigCommand<ConfigResponses> {
+export type SetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
+
+export class Set extends ConfigCommand<SetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
-
+  public static readonly aliases = ['force:config:set'];
+  public static readonly deprecateAliases = true;
   public static readonly strict = false;
-
   public static readonly flags = {
+    loglevel,
     global: Flags.boolean({
       char: 'g',
       summary: messages.getMessage('flags.global.summary'),
@@ -34,8 +30,9 @@ export class Set extends ConfigCommand<ConfigResponses> {
   };
 
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
+  private setResponses: SetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<ConfigResponses> {
+  public async run(): Promise<SetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);
     const config: Config = await loadConfig(flags.global);
 
@@ -44,7 +41,7 @@ export class Set extends ConfigCommand<ConfigResponses> {
     const parsed = parseVarArgs(args, argv as string[]);
 
     for (const name of Object.keys(parsed)) {
-      const value = parsed[name];
+      const value = parsed[name] as string;
       try {
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
@@ -56,28 +53,88 @@ export class Set extends ConfigCommand<ConfigResponses> {
           // eslint-disable-next-line no-await-in-loop
           if (isOrgKey(name) && value) await validateOrg(value);
           config.set(name, value);
-          this.responses.push({ name, value, success: true });
+          this.setResponses.successes.push({ name, value, success: true });
         }
       } catch (err) {
-        this.pushFailure(name, err as Error, value);
+        const error = err as Error;
+        if (error.name === 'DeprecatedConfigKeyError') {
+          const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
+          try {
+            config.set(newKey, value);
+            this.setResponses.successes.push({
+              name,
+              value,
+              success: true,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+            });
+          } catch (e) {
+            const secondError = e as Error;
+            // if that deprecated value was also set to an invalid value
+            this.setResponses.failures.push({
+              name,
+              key: name,
+              success: false,
+              value,
+              error: secondError,
+              message: secondError.message.replace(/\.\.$/, '.'),
+            });
+          }
+        } else if (error.name.includes('UnknownConfigKeyError')) {
+          if (this.jsonEnabled()) {
+            process.exitCode = 1;
+            this.setResponses.failures.push({
+              name,
+              value,
+              success: false,
+              error,
+              message: error.message.replace(/\.\.$/, '.'),
+            });
+          } else {
+            const suggestion = this.calculateSuggestion(name);
+            // eslint-disable-next-line no-await-in-loop
+            const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+            if (answer) {
+              const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
+              config.set(key, value);
+              this.setResponses.successes.push({ name: key, value, success: true });
+            }
+          }
+        } else {
+          this.pushFailure(name, err as Error, value);
+        }
       }
     }
     await config.write();
     if (!this.jsonEnabled()) {
+      this.responses = [...this.setResponses.successes, ...this.setResponses.failures];
       this.output('Set Config', false);
     }
-    return this.responses;
+    return this.setResponses;
+  }
+
+  protected pushFailure(name: string, err: string | Error, value?: string): void {
+    const error = SfError.wrap(err);
+    this.setResponses.failures.push({
+      name,
+      success: false,
+      value,
+      error,
+      message: error.message.replace(/\.\.$/, '.'),
+    });
+    process.exitCode = 1;
   }
 }
 
 const loadConfig = async (global: boolean): Promise<Config> => {
   try {
+    await SfdxConfigAggregator.create({});
     const config = await Config.create(Config.getDefaultOptions(global));
     await config.read();
     return config;
   } catch (error) {
     if (error instanceof SfError) {
-      error.actions = error.actions || [];
+      error.actions = error.actions ?? [];
       error.actions.push('Run with --global to set for your entire workspace.');
     }
     throw error;

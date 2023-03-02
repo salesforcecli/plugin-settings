@@ -44,6 +44,44 @@
           },
           "required": ["name", "message"],
           "additionalProperties": false
+        },
+        "successes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["name"],
+            "additionalProperties": false
+          }
+        },
+        "failures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["name"],
+            "additionalProperties": false
+          }
+        },
+        "key": {
+          "type": "string"
+        },
+        "deprecated": {
+          "type": "boolean"
         }
       },
       "required": ["name", "success"],
