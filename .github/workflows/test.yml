@@ -16,7 +16,7 @@ jobs:
     uses: salesforcecli/github-workflows/.github/workflows/unitTestsWindows.yml@main
   nuts:
     needs: linux-unit-tests
-    uses: salesforcecli/github-workflows/.github/workflows/nut.yml@main
+    uses: salesforcecli/github-workflows/.github/workflows/nut.yml@ew/configure-nut-retires
     secrets: inherit
     strategy:
       matrix:
@@ -24,3 +24,4 @@ jobs:
       fail-fast: false
     with:
       os: ${{ matrix.os }}
+    retries: 2
