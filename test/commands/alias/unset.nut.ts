@@ -11,10 +11,7 @@ import { Messages } from '@salesforce/core';
 import { AliasResults } from '../../../src/alias';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
-  'error.NameRequired',
-  'warning.NoAliasesSet',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.unset');
 
 describe('alias unset NUTs', () => {
   let session: TestSession;
