@@ -62,7 +62,7 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set with spaces in value', () => {
-      const result = execCmd('alias set foo="alias with spaces" --json', {
+      const result = execCmd("alias set foo='alias with spaces' --json", {
         ensureExitCode: 0,
       }).jsonOutput?.result;
 
