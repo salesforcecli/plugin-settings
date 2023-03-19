@@ -10,16 +10,7 @@ import { StateAggregator, Messages, SfError } from '@salesforce/core';
 import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'alias.unset', [
-  'summary',
-  'description',
-  'examples',
-  'flags.all.summary',
-  'flags.no-prompt.summary',
-  'error.NameRequired',
-  'warning.NoAliasesSet',
-  'prompt.RemoveAllAliases',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.unset');
 
 export default class AliasUnset extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
