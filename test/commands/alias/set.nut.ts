@@ -11,10 +11,7 @@ import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
-  'error.ArgumentsRequired',
-  'error.ValueRequired',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.set');
 
 function unsetAll() {
   // putting these in a single `execCmd` speeds up NUTs

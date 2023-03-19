@@ -10,7 +10,7 @@ import { loglevel } from '@salesforce/sf-plugins-core';
 import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'alias.list', ['summary', 'description', 'examples']);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.list');
 export default class AliasList extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
   public static description = messages.getMessage('description');

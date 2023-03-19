@@ -12,10 +12,7 @@ import { SetConfigCommandResult } from '../../../src/commands/config/set';
 import { Msg } from '../../../src/config';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'config.set', [
-  'error.ArgumentsRequired',
-  'error.ValueRequired',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 let testSession: TestSession;
 

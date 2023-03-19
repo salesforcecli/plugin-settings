@@ -10,13 +10,7 @@ import { StateAggregator, Messages, SfError } from '@salesforce/core';
 import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
-const messages = Messages.load('@salesforce/plugin-settings', 'alias.set', [
-  'summary',
-  'description',
-  'examples',
-  'error.ArgumentsRequired',
-  'error.ValueRequired',
-]);
+const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.set');
 
 export default class AliasSet extends AliasCommand<AliasResults> {
   public static summary = messages.getMessage('summary');
