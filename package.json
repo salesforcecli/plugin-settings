@@ -19,6 +19,7 @@
     "@salesforce/dev-scripts": "^4.3.0",
     "@salesforce/kit": "^1.8.5",
     "@salesforce/plugin-command-reference": "^2.2.8",
+    "@salesforce/plugin-deploy-retrieve": "^1.8.14",
     "@salesforce/prettier-config": "^0.0.2",
     "@salesforce/ts-sinon": "^1.4.4",
     "@salesforce/ts-types": "^1.7.1",
@@ -86,7 +87,8 @@
     "devPlugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-command-snapshot",
-      "@salesforce/plugin-command-reference"
+      "@salesforce/plugin-command-reference",
+      "@salesforce/plugin-deploy-retrieve"
     ],
     "topics": {
       "config": {
@@ -113,6 +115,7 @@
     "reformat": "prettier --config .prettierrc --write './*.{js,json,md}' './**/*.{ts,json,md}'",
     "test": "wireit",
     "test:nuts": "nyc mocha \"test/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel --jobs 20",
+    "test:nuts:config": "nyc mocha \"test/**/config/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel --jobs 20",
     "test:only": "wireit",
     "version": "oclif readme"
   },

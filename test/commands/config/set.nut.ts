@@ -219,19 +219,6 @@ describe('config set NUTs', async () => {
         verifyValidationError('disable-telemetry', 'ab');
       });
     });
-
-    describe('disable-telemetry', () => {
-      it('will set disable-telemetry correctly', () => {
-        verifyKeysAndValuesJson('disable-telemetry', 'true');
-        verifyKeysAndValuesJson('disable-telemetry', false);
-        verifyKeysAndValuesStdout('disable-telemetry', 'true', ['disable-telemetry', 'true']);
-        verifyKeysAndValuesStdout('disable-telemetry', false, ['disable-telemetry', 'false']);
-      });
-
-      it('will fail to validate disable-telemetry', () => {
-        verifyValidationError('disable-telemetry', 'ab');
-      });
-    });
   });
 
   describe('set two keys and values properly', () => {

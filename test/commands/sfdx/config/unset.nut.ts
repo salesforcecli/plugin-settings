@@ -50,18 +50,13 @@ describe('config:unset NUTs', async () => {
           failures: [],
           successes: [
             {
-              error: {
-                exitCode: 1,
-                name: 'DeprecatedConfigKeyError',
-              },
-              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
               name: 'apiVersion',
               success: true,
             },
           ],
         },
         status: 0,
-        warnings: [],
+        warnings: ['Deprecated config name: apiVersion. Please use org-api-version instead.'],
       });
     });
 
@@ -91,34 +86,23 @@ describe('config:unset NUTs', async () => {
             {
               name: 'restDeploy',
               success: true,
-              error: {
-                name: 'DeprecatedConfigKeyError',
-                exitCode: 1,
-              },
-              message: 'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
             },
             {
               name: 'apiVersion',
               success: true,
-              error: {
-                name: 'DeprecatedConfigKeyError',
-                exitCode: 1,
-              },
-              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
             },
             {
               name: 'maxQueryLimit',
               success: true,
-              error: {
-                name: 'DeprecatedConfigKeyError',
-                exitCode: 1,
-              },
-              message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
             },
           ],
           failures: [],
         },
-        warnings: [],
+        warnings: [
+          'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
+          'Deprecated config name: apiVersion. Please use org-api-version instead.',
+          'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
+        ],
       });
     });
 

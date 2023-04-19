@@ -5,8 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { ConfigResponses } from '../../../../src/config';
+import { removePath } from '../../../shared/removePath';
 let testSession: TestSession;
 
 describe('config:list NUTs', async () => {
@@ -31,11 +32,14 @@ describe('config:list NUTs', async () => {
 
   describe('config:list with singular result', () => {
     before(() => {
-      execCmd('config:set apiVersion=51.0 --global');
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
     });
 
     it('lists singular config correctly', () => {
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
+      // path will be different on each machine/test run
+      assert(res.jsonOutput);
+      res.jsonOutput.result = removePath(res.jsonOutput?.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
@@ -52,8 +56,10 @@ describe('config:list NUTs', async () => {
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config:set apiVersion=52.0 --json');
+      execCmd('config:set apiVersion=52.0 --json', { ensureExitCode: 0 });
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
+      assert(res.jsonOutput);
+      res.jsonOutput.result = removePath(res.jsonOutput?.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {
@@ -81,13 +87,15 @@ describe('config:list NUTs', async () => {
 
   describe('config:list with multiple results', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global');
-      execCmd('config:set maxQueryLimit=100 --global');
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
+      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0 });
     });
 
     it('lists multiple results correctly JSON', () => {
-      execCmd('config:set restDeploy=false');
+      execCmd('config:set restDeploy=false', { ensureExitCode: 0 });
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
+      assert(res.jsonOutput);
+      res.jsonOutput.result = removePath(res.jsonOutput?.result);
       expect(res.jsonOutput).to.deep.equal({
         result: [
           {

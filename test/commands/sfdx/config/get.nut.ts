@@ -5,9 +5,10 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
-import { ConfigResponses, Msg } from '../../../../src/config';
+import { assert, expect, config as chaiConfig } from 'chai';
+import { ConfigResponses } from '../../../../src/config';
 let testSession: TestSession;
+chaiConfig.truncateThreshold = 0;
 
 describe('config:get NUTs', async () => {
   testSession = await TestSession.create({
@@ -32,36 +33,35 @@ describe('config:get NUTs', async () => {
 
   describe('config:get with singular result', () => {
     before(() => {
-      execCmd('config:set apiVersion=51.0 --global');
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
     });
 
     it('gets singular config correctly', () => {
       const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
-      const result = res?.result[0] ?? ({} as Msg);
+      assert(res?.result[0]);
+      const result = res.result[0];
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(result.path).to.include('config.json');
-      expect(result.key).to.include('apiVersion');
+      // you can ask for the old name, but it'll give you the new one, along with a warning
+      expect(result.key).to.include('org-api-version');
       expect(result.location).to.include('Global');
       expect(result.value).to.include('51.0');
       expect(res?.status).to.equal(0);
+      assert('warnings' in res);
+      expect(res.warnings).to.deep.equal(['Deprecated config name: apiVersion. Please use org-api-version instead.']);
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config:set apiVersion=52.0');
+      execCmd('config:set apiVersion=52.0', { ensureExitCode: 0 });
       const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(res?.result[0].path).to.include('config.json');
       delete res?.result[0].path;
+
       expect(res).to.deep.equal({
         result: [
           {
-            deprecated: true,
-            error: {
-              exitCode: 1,
-              name: 'DeprecatedConfigKeyError',
-            },
-            key: 'apiVersion',
-            message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
+            key: 'org-api-version',
             name: 'org-api-version',
             success: true,
             location: 'Local',
@@ -69,27 +69,27 @@ describe('config:get NUTs', async () => {
           },
         ],
         status: 0,
-        warnings: [],
+        warnings: ['Deprecated config name: apiVersion. Please use org-api-version instead.'],
       });
     });
 
     it('gets singular result correctly stdout', () => {
-      const res: string = execCmd<ConfigResponses>('config:get apiVersion').shellOutput.stdout;
+      const res: string = execCmd<ConfigResponses>('config:get apiVersion', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('Get Config');
-      expect(res).to.include('apiVersion');
+      expect(res).to.include('org-api-version');
       expect(res).to.include('52.0');
     });
   });
 
   describe('config:get with multiple results', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global');
-      execCmd('config:set maxQueryLimit=100 --global');
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
+      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0 });
     });
 
     it('gets multiple results correctly', () => {
-      execCmd('config:set restDeploy=false');
-      execCmd('config:set apiVersion=51.0');
+      execCmd('config:set restDeploy=false', { ensureExitCode: 0 });
+      execCmd('config:set apiVersion=51.0', { ensureExitCode: 0 });
       const res = execCmd<ConfigResponses>('config:get apiVersion maxQueryLimit restDeploy --json', {
         ensureExitCode: 0,
       });
@@ -97,43 +97,32 @@ describe('config:get NUTs', async () => {
         expect(result.path).to.include('config.json');
         delete result.path;
       });
+      assert(res);
+      assert(res.jsonOutput && 'warnings' in res.jsonOutput);
+      expect(res?.jsonOutput.warnings).to.deep.equal([
+        'Deprecated config name: apiVersion. Please use org-api-version instead.',
+        'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
+        'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
+      ]);
 
       expect(res.jsonOutput?.result).to.deep.equal([
         {
-          deprecated: true,
-          error: {
-            exitCode: 1,
-            name: 'DeprecatedConfigKeyError',
-          },
-          key: 'apiVersion',
+          key: 'org-api-version',
           location: 'Local',
-          message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
           name: 'org-api-version',
           success: true,
           value: '51.0',
         },
         {
-          deprecated: true,
-          error: {
-            exitCode: 1,
-            name: 'DeprecatedConfigKeyError',
-          },
-          key: 'maxQueryLimit',
+          key: 'org-max-query-limit',
           location: 'Global',
-          message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
           name: 'org-max-query-limit',
           success: true,
           value: '100',
         },
         {
-          deprecated: true,
-          error: {
-            exitCode: 1,
-            name: 'DeprecatedConfigKeyError',
-          },
-          key: 'restDeploy',
+          key: 'org-metadata-rest-deploy',
           location: 'Local',
-          message: 'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
           name: 'org-metadata-rest-deploy',
           success: true,
           value: 'false',
@@ -142,13 +131,14 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets multiple results correctly stdout', () => {
-      const res = execCmd<ConfigResponses>('config:get  apiVersion maxQueryLimit restDeploy').shellOutput.stdout;
+      const res = execCmd<ConfigResponses>('config:get  apiVersion maxQueryLimit restDeploy', { ensureExitCode: 0 })
+        .shellOutput.stdout;
       expect(res).to.include('Get Config');
-      expect(res).to.include('apiVersion');
+      expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');
-      expect(res).to.include('maxQueryLimit');
+      expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
-      expect(res).to.include('restDeploy');
+      expect(res).to.include('org-metadata-rest-deploy');
       expect(res).to.include('false');
     });
   });

@@ -5,8 +5,9 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { ConfigResponses } from '../../../src/config';
+import { removePath } from '../../shared/removePath';
 
 let testSession: TestSession;
 
@@ -52,7 +53,8 @@ describe('config get NUTs', async () => {
       const result = execCmd<ConfigResponses>('config get org-api-version --json', {
         ensureExitCode: 0,
       }).jsonOutput?.result;
-      expect(result).to.deep.equal([
+      assert(result);
+      expect(removePath(result)).to.deep.equal([
         {
           name: 'org-api-version',
           key: 'org-api-version',
@@ -73,18 +75,18 @@ describe('config get NUTs', async () => {
 
   describe('config get with multiple results', () => {
     beforeEach(() => {
-      execCmd('config set org-api-version=51.0 --global');
-      execCmd('config set org-max-query-limit=100 --global');
+      execCmd('config set org-api-version=51.0 --global', { ensureExitCode: 0 });
+      execCmd('config set org-max-query-limit=100 --global', { ensureExitCode: 0 });
     });
 
     it('gets multiple results correctly', () => {
-      execCmd('config set disable-telemetry=false');
-      execCmd('config set org-api-version=51.0');
+      execCmd('config set disable-telemetry=false', { ensureExitCode: 0 });
+      execCmd('config set org-api-version=51.0', { ensureExitCode: 0 });
       const res = execCmd<ConfigResponses>('config get org-api-version org-max-query-limit disable-telemetry --json', {
         ensureExitCode: 0,
       });
-
-      expect(res.jsonOutput?.result).to.deep.equal([
+      assert(res.jsonOutput?.result);
+      expect(removePath(res.jsonOutput?.result)).to.deep.equal([
         {
           name: 'org-api-version',
           key: 'org-api-version',
