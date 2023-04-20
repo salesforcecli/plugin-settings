@@ -13,6 +13,7 @@ chaiConfig.truncateThreshold = 0;
 describe('config:get NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configGetNUTs' },
+    devhubAuthStrategy: 'NONE',
   });
 
   describe('config:get errors', () => {
