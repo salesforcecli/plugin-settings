@@ -6,7 +6,7 @@
  */
 
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, SfdxConfigAggregator, SfError } from '@salesforce/core';
+import { Config, Messages, SfError } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand } from '../../config';
 import { SetConfigCommandResult } from './set';
 
@@ -32,7 +32,6 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
 
   public async run(): Promise<SetConfigCommandResult> {
     const { argv, flags } = await this.parse(UnSet);
-    await SfdxConfigAggregator.create({});
 
     if (!argv || argv.length === 0) {
       throw messages.createError('error.NoConfigKeysFound');

@@ -6,7 +6,7 @@
  */
 
 import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
+import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -107,7 +107,6 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
 const loadConfig = async (global: boolean): Promise<Config> => {
   try {
-    await SfdxConfigAggregator.create({});
     const config = await Config.create(Config.getDefaultOptions(global));
     await config.read();
     return config;
