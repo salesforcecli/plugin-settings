@@ -40,21 +40,14 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
 
     await config.read();
     for (const key of argv as string[]) {
+      const resolvedName = this.configAggregator.getPropertyMeta(key)?.newKey ?? key;
+
       try {
-        config.unset(key);
-        this.unsetResponses.successes.push({ name: key, success: true });
+        config.unset(resolvedName);
+        this.unsetResponses.successes.push({ name: resolvedName, success: true });
       } catch (err) {
         const error = err as Error;
-        if (error.message.includes('Deprecated config name')) {
-          const meta = Config.getPropertyConfigMeta(key);
-          config.unset(meta?.key ?? key);
-          this.unsetResponses.successes.push({
-            name: key,
-            success: true,
-            error,
-            message: error.message.replace(/\.\.$/, '.'),
-          });
-        } else if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+        if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
           const suggestion = this.calculateSuggestion(key);
           // eslint-disable-next-line no-await-in-loop
           const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
@@ -68,7 +61,7 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
             });
           }
         } else {
-          this.pushFailure(key, err as Error);
+          this.pushFailure(resolvedName, err as Error);
         }
       }
     }
