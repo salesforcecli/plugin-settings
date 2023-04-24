@@ -947,10 +947,10 @@
     jsonwebtoken "9.0.0"
     ts-retry-promise "^0.7.0"
 
-"@salesforce/core@^3.35.0-qa.2":
-  version "3.35.0-qa.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.35.0-qa.2.tgz#e2b554b55ccb8c676383d1406f3bad0b8cee0195"
-  integrity sha512-DEr4jcFxBCwi3IxRPZqUpd/MsOBDzJ8MsUTgPM8ZpkfFJibVbW77t3QkPLdTzPb7NBN8C76X+z/cg0HnsuJ67Q==
+"@salesforce/core@^3.35.0-qa.3":
+  version "3.35.0-qa.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-3.35.0-qa.3.tgz#99f8183084d1de92f0e8bf3aa43c1b1098ce69b2"
+  integrity sha512-OsLMAAYOSBLFKWajPZMuys9IOKsac7dCbajZFumpjHC+qG6UIJy+n1Q1mW6MkBLMOET63Ht6kIM2IwwzJMwIsg==
   dependencies:
     "@salesforce/bunyan" "^2.0.0"
     "@salesforce/kit" "^1.9.2"
@@ -1078,13 +1078,13 @@
     chalk "^4"
     inquirer "^8.2.5"
 
-"@salesforce/sf-plugins-core@^2.3.0-qa.2":
-  version "2.3.0-qa.2"
-  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-2.3.0-qa.2.tgz#ab4274abffb2eede9ae7809496b4345bcd0e71dc"
-  integrity sha512-YXQcMFsWqLVhRhAz4F2QDdAgykZf1g6pizMknpOwt/bMYyb2/3kABPBdxxP/risR8Q0F7pLU4cgFidwrRQerDA==
+"@salesforce/sf-plugins-core@^2.3.0-qa.3":
+  version "2.3.0-qa.3"
+  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-2.3.0-qa.3.tgz#2188c696544810cdf9cee21b32aa5beca7bda24d"
+  integrity sha512-E5Hw+wyS9Z5wgrtSpqIjDqQ3Pqn77d22q0fJLfxzMJ0bYRAV/6SYGXUIbP2VKNcGFeVXNT5NfRtxZykknO/PMQ==
   dependencies:
     "@oclif/core" "^2.8.2"
-    "@salesforce/core" "^3.35.0-qa.2"
+    "@salesforce/core" "^3.35.0-qa.3"
     "@salesforce/kit" "^1.9.0"
     "@salesforce/ts-types" "^1.7.3"
     chalk "^4"
