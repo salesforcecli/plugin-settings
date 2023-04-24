@@ -43,7 +43,6 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
     for (const name of Object.keys(parsed)) {
       const value = parsed[name] as string;
       const resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
-      // const resolvedName = Config.getAllowedProperties().find((p) => p.key === name)?.newKey ?? name;
       try {
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
