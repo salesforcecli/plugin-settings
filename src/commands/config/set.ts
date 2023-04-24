@@ -42,8 +42,8 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
     for (const name of Object.keys(parsed)) {
       const value = parsed[name] as string;
-      const resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
       try {
+        const resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
           this.pushFailure(name, messages.createError('error.ValueRequired'), value);
@@ -62,7 +62,7 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
           if (this.jsonEnabled()) {
             process.exitCode = 1;
             this.setResponses.failures.push({
-              name: resolvedName,
+              name,
               value,
               success: false,
               error,
@@ -79,7 +79,7 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
             }
           }
         } else {
-          this.pushFailure(resolvedName, err as Error, value);
+          this.pushFailure(name, err as Error, value);
         }
       }
     }

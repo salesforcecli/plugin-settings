@@ -40,9 +40,8 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
 
     await config.read();
     for (const key of argv as string[]) {
-      const resolvedName = this.configAggregator.getPropertyMeta(key)?.newKey ?? key;
-
       try {
+        const resolvedName = this.configAggregator.getPropertyMeta(key)?.newKey ?? key;
         config.unset(resolvedName);
         this.unsetResponses.successes.push({ name: resolvedName, success: true });
       } catch (err) {
@@ -61,7 +60,7 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
             });
           }
         } else {
-          this.pushFailure(resolvedName, err as Error);
+          this.pushFailure(key, err as Error);
         }
       }
     }
