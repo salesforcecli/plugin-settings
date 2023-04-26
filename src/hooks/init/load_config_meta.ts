@@ -8,7 +8,7 @@
 import type { Hook, Interfaces } from '@oclif/core';
 import { tsPath } from '@oclif/core';
 import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
-import { isObject, get } from '@salesforce/ts-types';
+import { get, isObject } from '@salesforce/ts-types';
 
 const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
@@ -57,11 +57,11 @@ const hook: Hook<'init'> = ({ config }): Promise<void> => {
 
       return configMeta;
     })
-    .filter(isObject)
-    .flat();
+    .flat()
+    .filter((cm) => cm && isObject(cm)) as ConfigPropertyMeta[];
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(flattenedConfigMetas as ConfigPropertyMeta[]);
+    Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
 };

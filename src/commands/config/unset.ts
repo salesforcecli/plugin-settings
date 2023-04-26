@@ -8,12 +8,12 @@
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { Config, Messages, SfdxConfigAggregator, SfError } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand } from '../../config';
-import { SetConfigCommandResult } from './set';
+import { UnsetConfigCommandResult } from './set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.unset');
 
-export class UnSet extends ConfigCommand<SetConfigCommandResult> {
+export class UnSet extends ConfigCommand<UnsetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -28,9 +28,9 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
       summary: messages.getMessage('flags.global.summary'),
     }),
   };
-  private unsetResponses: SetConfigCommandResult = { successes: [], failures: [] };
+  private unsetResponses: UnsetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<SetConfigCommandResult> {
+  public async run(): Promise<UnsetConfigCommandResult> {
     const { argv, flags } = await this.parse(UnSet);
     await SfdxConfigAggregator.create({});
 
@@ -45,7 +45,8 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
         config.unset(key);
         this.unsetResponses.successes.push({ name: key, success: true });
       } catch (err) {
-        const error = err as Error;
+        const error =
+          err instanceof Error ? err : typeof err === 'string' ? new Error(err) : new Error('Unknown Error');
         if (error.message.includes('Deprecated config name')) {
           const meta = Config.getPropertyConfigMeta(key);
           config.unset(meta?.key ?? key);
@@ -69,7 +70,7 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
             });
           }
         } else {
-          this.pushFailure(key, err as Error);
+          this.pushFailure(key, error);
         }
       }
     }

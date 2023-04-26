@@ -12,9 +12,9 @@ import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
-export type SetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
+export type UnsetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
 
-export class Set extends ConfigCommand<SetConfigCommandResult> {
+export class Set extends ConfigCommand<UnsetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -30,9 +30,9 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
   };
 
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
-  private setResponses: SetConfigCommandResult = { successes: [], failures: [] };
+  private setResponses: UnsetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<SetConfigCommandResult> {
+  public async run(): Promise<UnsetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);
     const config: Config = await loadConfig(flags.global);
 
@@ -40,13 +40,12 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
     const parsed = parseVarArgs(args, argv as string[]);
 
-    for (const name of Object.keys(parsed)) {
-      const value = parsed[name] as string;
-      try {
-        if (!value) {
-          // Push a failure if users are try to unset a value with `set=`.
-          this.pushFailure(name, messages.createError('error.ValueRequired'), value);
-        } else {
+    for (const [name, value] of Object.entries(parsed)) {
+      if (!value) {
+        // Push a failure if users are try to unset a value with `set=`.
+        this.pushFailure(name, messages.createError('error.ValueRequired'), value);
+      } else {
+        try {
           // core's builtin config validation requires synchronous functions but there's
           // currently no way to validate an org synchronously. Therefore, we have to manually
           // validate the org here and manually set the error message if it fails
@@ -54,54 +53,56 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
           if (isOrgKey(name) && value) await validateOrg(value);
           config.set(name, value);
           this.setResponses.successes.push({ name, value, success: true });
-        }
-      } catch (err) {
-        const error = err as Error;
-        if (error.name === 'DeprecatedConfigKeyError') {
-          const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
-          try {
-            config.set(newKey, value);
-            this.setResponses.successes.push({
-              name,
-              value,
-              success: true,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
-            });
-          } catch (e) {
-            const secondError = e as Error;
-            // if that deprecated value was also set to an invalid value
-            this.setResponses.failures.push({
-              name,
-              key: name,
-              success: false,
-              value,
-              error: secondError,
-              message: secondError.message.replace(/\.\.$/, '.'),
-            });
-          }
-        } else if (error.name.includes('UnknownConfigKeyError')) {
-          if (this.jsonEnabled()) {
-            process.exitCode = 1;
-            this.setResponses.failures.push({
-              name,
-              value,
-              success: false,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
-            });
-          } else {
-            const suggestion = this.calculateSuggestion(name);
-            // eslint-disable-next-line no-await-in-loop
-            const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
-            if (answer) {
-              const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
-              config.set(key, value);
-              this.setResponses.successes.push({ name: key, value, success: true });
+        } catch (err) {
+          const error =
+            err instanceof Error ? err : typeof err === 'string' ? new Error(err) : new Error('Unknown Error');
+          if (error.name === 'DeprecatedConfigKeyError') {
+            const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
+            try {
+              config.set(newKey, value);
+              this.setResponses.successes.push({
+                name,
+                value,
+                success: true,
+                error,
+                message: error.message.replace(/\.\.$/, '.'),
+              });
+            } catch (e) {
+              const secondError =
+                e instanceof Error ? e : typeof e === 'string' ? new Error(e) : new Error('Unknown Error');
+              // if that deprecated value was also set to an invalid value
+              this.setResponses.failures.push({
+                name,
+                key: name,
+                success: false,
+                value,
+                error: secondError,
+                message: secondError.message.replace(/\.\.$/, '.'),
+              });
             }
+          } else if (error.name.includes('UnknownConfigKeyError')) {
+            if (this.jsonEnabled()) {
+              process.exitCode = 1;
+              this.setResponses.failures.push({
+                name,
+                value,
+                success: false,
+                error,
+                message: error.message.replace(/\.\.$/, '.'),
+              });
+            } else {
+              const suggestion = this.calculateSuggestion(name);
+              // eslint-disable-next-line no-await-in-loop
+              const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+              if (answer) {
+                const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
+                config.set(key, value);
+                this.setResponses.successes.push({ name: key, value, success: true });
+              }
+            }
+          } else {
+            this.pushFailure(name, error, value);
           }
-        } else {
-          this.pushFailure(name, err as Error, value);
         }
       }
     }

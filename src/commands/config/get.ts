@@ -42,7 +42,8 @@ export class Get extends ConfigCommand<ConfigResponses> {
       try {
         this.pushSuccess(aggregator.getInfo(configName, true));
       } catch (err) {
-        const error = err as Error;
+        const error =
+          err instanceof Error ? err : typeof err === 'string' ? new Error(err) : new Error('Unknown Error');
         if (error.message.includes('Deprecated config name')) {
           // because we've caught the deprecated error, the 'newKey' property will be set
           const info = aggregator.getInfo(aggregator.getPropertyMeta(configName).newKey as string);
@@ -66,7 +67,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
             this.pushSuccess(aggregator.getInfo(suggestion, false));
           }
         } else {
-          this.pushFailure(configName, err as Error);
+          this.pushFailure(configName, error);
         }
       }
     }

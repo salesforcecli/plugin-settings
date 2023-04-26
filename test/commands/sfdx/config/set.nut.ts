@@ -7,7 +7,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
 import { Msg } from '../../../../src/config';
-import { SetConfigCommandResult } from '../../../../src/commands/config/set';
+import { UnsetConfigCommandResult } from '../../../../src/commands/config/set';
 let testSession: TestSession;
 
 function verifyValidationError(key: string, value: string | number) {
@@ -30,7 +30,7 @@ function verifyValidationError(key: string, value: string | number) {
     status: 0,
     warnings: [],
   };
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<UnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   const result = res?.result.failures as Msg[];
   // validate error message / failures error message here and delete, it will vary based on the value.
   expect(result[0]?.message).to.include('Invalid config value:');
@@ -40,7 +40,7 @@ function verifyValidationError(key: string, value: string | number) {
 }
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<UnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   expect(res?.result).to.have.property('successes').with.length(0);
   expect(res?.result).to.have.property('failures').with.length(1);
   const result = res?.result.failures[0] as Msg;
@@ -49,7 +49,7 @@ function verifyValidationStartsWith(key: string, value: string | number, message
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const res = execCmd<UnsetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
   expect(res?.result.successes[0]?.message).to.include(`Deprecated config name: ${key}. Please use`);
   delete res?.result.successes[0]?.message;
   expect(res).to.deep.equal({
