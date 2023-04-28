@@ -23,6 +23,8 @@ describe('config:unset NUTs', async () => {
         message:
           'You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you\'ve previously set.',
         name: 'NoConfigKeysFoundError',
+        commandName: 'UnSet',
+        context: 'UnSet',
         status: 1,
         code: 1,
         exitCode: 1,
