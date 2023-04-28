@@ -1043,7 +1043,7 @@
   resolved "https://registry.yarnpkg.com/@salesforce/schemas/-/schemas-1.5.1.tgz#2d1bfdcf593caaa04cd4b3e6fe621097ff7f28fe"
   integrity sha512-MRqU+tn8w5IFvZ0Lm9YKLgxYxr2MQMI+fXXsTrwfUnijsps+ybF9IOTu6MOMxxl2vCUkO8XDjA435wXlWSLI6g==
 
-"@salesforce/sf-plugins-core@^2.0.1", "@salesforce/sf-plugins-core@^2.2.4", "@salesforce/sf-plugins-core@^2.2.7":
+"@salesforce/sf-plugins-core@^2.0.1", "@salesforce/sf-plugins-core@^2.2.7", "@salesforce/sf-plugins-core@^2.3.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-2.3.0.tgz#4d1156bdf15de35332c8c7455c09b2d6422f3974"
   integrity sha512-dR4x0D1WdtsT85pTPkIcZEh4szV3RPCdRre00pFUT/XeteSFRXbov5Cei/29Tu3BK4Cl8bxAEvT/L+43nQQShg==
