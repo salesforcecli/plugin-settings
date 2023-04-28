@@ -19,7 +19,7 @@ describe('config:unset NUTs', async () => {
       const res = execCmd<ConfigResponses>('config:unset --json', { ensureExitCode: 1 }).jsonOutput;
       expect(res?.stack).to.include('NoConfigKeysFoundError');
       delete res?.stack;
-      expect(res).to.deep.equal({
+      expect(res).to.deep.include({
         message:
           'You must provide one or more configuration variables to unset. Run "sf config list" to see the configuration variables you\'ve previously set.',
         name: 'NoConfigKeysFoundError',
@@ -50,7 +50,7 @@ describe('config:unset NUTs', async () => {
           failures: [],
           successes: [
             {
-              name: 'apiVersion',
+              name: 'org-api-version',
               success: true,
             },
           ],
@@ -63,7 +63,7 @@ describe('config:unset NUTs', async () => {
     it('lists singular result correctly stdout', () => {
       const res: string = execCmd('config:unset apiVersion').shellOutput.stdout;
       expect(res).to.include('Unset Config');
-      expect(res).to.include('apiVersion');
+      expect(res).to.include('org-api-version');
       expect(res).to.include('Name');
       expect(res).to.include('Success');
       expect(res).to.include('true');
@@ -84,15 +84,15 @@ describe('config:unset NUTs', async () => {
         result: {
           successes: [
             {
-              name: 'restDeploy',
+              name: 'org-metadata-rest-deploy',
               success: true,
             },
             {
-              name: 'apiVersion',
+              name: 'org-api-version',
               success: true,
             },
             {
-              name: 'maxQueryLimit',
+              name: 'org-max-query-limit',
               success: true,
             },
           ],
@@ -111,9 +111,9 @@ describe('config:unset NUTs', async () => {
       const res: string = execCmd('config:unset restDeploy apiVersion maxQueryLimit', { ensureExitCode: 0 }).shellOutput
         .stdout;
       expect(res).to.include('Unset Config');
-      expect(res).to.include('apiVersion');
-      expect(res).to.include('maxQueryLimit');
-      expect(res).to.include('restDeploy');
+      expect(res).to.include('org-api-version');
+      expect(res).to.include('org-max-query-limit');
+      expect(res).to.include('org-metadata-rest-deploy');
     });
   });
 });
