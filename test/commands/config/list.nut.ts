@@ -5,13 +5,16 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
+import { ConfigResponses } from '../../../src/config';
+import { removePath } from '../../shared/removePath';
 
 let testSession: TestSession;
 
 describe('config list NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configListNUTs' },
+    devhubAuthStrategy: 'NONE',
   });
 
   describe('config list with no configs set', () => {
@@ -28,12 +31,13 @@ describe('config list NUTs', async () => {
 
   describe('config list with singular result', () => {
     before(() => {
-      execCmd('config set org-api-version=51.0 --global');
+      execCmd('config set org-api-version=51.0 --global', { ensureExitCode: 0 });
     });
 
     it('lists singular config correctly', () => {
-      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
-      expect(result).to.deep.equal([
+      const result = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
+      assert(result);
+      expect(removePath(result)).to.deep.equal([
         {
           name: 'org-api-version',
           // the new key to allow plugin-settings in sfdx
@@ -47,8 +51,9 @@ describe('config list NUTs', async () => {
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config set org-api-version=52.0 --json');
-      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
-      expect(result).to.deep.equal([
+      const result = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
+      assert(result);
+      expect(removePath(result)).to.deep.equal([
         {
           name: 'org-api-version',
           key: 'org-api-version',
@@ -77,8 +82,9 @@ describe('config list NUTs', async () => {
 
     it('lists multiple results correctly JSON', () => {
       execCmd('config set disable-telemetry=false');
-      const result = execCmd('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
-      expect(result).to.deep.equal([
+      const result = execCmd<ConfigResponses>('config list --json', { ensureExitCode: 0 }).jsonOutput?.result;
+      assert(result);
+      expect(removePath(result)).to.deep.equal([
         {
           name: 'disable-telemetry',
           key: 'disable-telemetry',
@@ -104,7 +110,7 @@ describe('config list NUTs', async () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config set disable-telemetry=false');
+      execCmd('config set disable-telemetry=false', { ensureExitCode: 0 });
       const res: string = execCmd('config list', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('org-api-version');

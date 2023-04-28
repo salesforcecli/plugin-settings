@@ -6,7 +6,7 @@
  */
 
 import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, Org, SfError, OrgConfigProperties, SfdxConfigAggregator } from '@salesforce/core';
+import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
@@ -42,7 +42,10 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
     for (const name of Object.keys(parsed)) {
       const value = parsed[name] as string;
+      let resolvedName = name;
       try {
+        // this needs to be inside the try/catch because it can throw an error
+        resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
           this.pushFailure(name, messages.createError('error.ValueRequired'), value);
@@ -51,36 +54,13 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
           // currently no way to validate an org synchronously. Therefore, we have to manually
           // validate the org here and manually set the error message if it fails
           // eslint-disable-next-line no-await-in-loop
-          if (isOrgKey(name) && value) await validateOrg(value);
-          config.set(name, value);
-          this.setResponses.successes.push({ name, value, success: true });
+          if (isOrgKey(resolvedName) && value) await validateOrg(value);
+          config.set(resolvedName, value);
+          this.setResponses.successes.push({ name: resolvedName, value, success: true });
         }
       } catch (err) {
         const error = err as Error;
-        if (error.name === 'DeprecatedConfigKeyError') {
-          const newKey = Config.getPropertyConfigMeta(name)?.key ?? name;
-          try {
-            config.set(newKey, value);
-            this.setResponses.successes.push({
-              name,
-              value,
-              success: true,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
-            });
-          } catch (e) {
-            const secondError = e as Error;
-            // if that deprecated value was also set to an invalid value
-            this.setResponses.failures.push({
-              name,
-              key: name,
-              success: false,
-              value,
-              error: secondError,
-              message: secondError.message.replace(/\.\.$/, '.'),
-            });
-          }
-        } else if (error.name.includes('UnknownConfigKeyError')) {
+        if (error.name.includes('UnknownConfigKeyError')) {
           if (this.jsonEnabled()) {
             process.exitCode = 1;
             this.setResponses.failures.push({
@@ -101,7 +81,7 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
             }
           }
         } else {
-          this.pushFailure(name, err as Error, value);
+          this.pushFailure(resolvedName, err as Error, value);
         }
       }
     }
@@ -128,7 +108,6 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
 const loadConfig = async (global: boolean): Promise<Config> => {
   try {
-    await SfdxConfigAggregator.create({});
     const config = await Config.create(Config.getDefaultOptions(global));
     await config.read();
     return config;

@@ -45,7 +45,9 @@ describe('hooks', () => {
           key: 'customKey',
         },
       ]);
-      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0]).to.deep.equal(tsSrcConfigMetaMock);
+      // modified since devPlugins now includes plugin-deploy-retrive to exercise a config-meta that it includes.
+      // see https://github.com/salesforcecli/plugin-deploy-retrieve/blob/main/src/configMeta.ts
+      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock[0]);
     })
     .it('loads config metas from a ts src directory');
 
@@ -67,7 +69,7 @@ describe('hooks', () => {
           key: 'customKey',
         },
       ]);
-      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0]).to.deep.equal(jsLibConfigMetaMock);
+      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(jsLibConfigMetaMock[0]);
     })
     .it('loads config metas from a js lib directory');
 });

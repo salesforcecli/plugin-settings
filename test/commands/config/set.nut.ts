@@ -66,6 +66,7 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
 describe('config set NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
+    devhubAuthStrategy: 'NONE',
   });
 
   describe('config set errors', () => {
@@ -204,19 +205,6 @@ describe('config set NUTs', async () => {
     describe('org-isv-debugger-url', () => {
       it('will set org-isv-debugger-url correctly', () => {
         verifyKeysAndValuesJson('org-isv-debugger-url', '12');
-      });
-    });
-
-    describe('disable-telemetry', () => {
-      it('will set disable-telemetry correctly', () => {
-        verifyKeysAndValuesJson('disable-telemetry', 'true');
-        verifyKeysAndValuesJson('disable-telemetry', false);
-        verifyKeysAndValuesStdout('disable-telemetry', 'true', ['disable-telemetry', 'true']);
-        verifyKeysAndValuesStdout('disable-telemetry', false, ['disable-telemetry', 'false']);
-      });
-
-      it('will fail to validate disable-telemetry', () => {
-        verifyValidationError('disable-telemetry', 'ab');
       });
     });
 

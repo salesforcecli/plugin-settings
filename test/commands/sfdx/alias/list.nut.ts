@@ -15,7 +15,9 @@ function unsetAll() {
 }
 
 describe('alias:list NUTs', async () => {
-  testSession = await TestSession.create();
+  testSession = await TestSession.create({
+    devhubAuthStrategy: 'NONE',
+  });
 
   describe('alias:list without results', () => {
     beforeEach(() => {

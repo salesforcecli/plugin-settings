@@ -51,6 +51,7 @@ export abstract class ConfigCommand<T> extends SfCommand<T> {
       name: configInfo.key,
       key: configInfo.key,
       value: configInfo.value as string | undefined,
+      path: configInfo.path,
       success: true,
       location: configInfo.location,
     });

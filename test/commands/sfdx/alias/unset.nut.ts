@@ -9,7 +9,9 @@ import { expect } from 'chai';
 let testSession: TestSession;
 
 describe('alias:unset NUTs', async () => {
-  testSession = await TestSession.create();
+  testSession = await TestSession.create({
+    devhubAuthStrategy: 'NONE',
+  });
 
   describe('alias:unset non-existent key', () => {
     it("will unset a key even if it doesn't exist", () => {

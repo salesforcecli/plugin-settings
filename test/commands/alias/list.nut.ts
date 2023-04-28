@@ -19,6 +19,7 @@ describe('alias list NUTs', () => {
   before(async () => {
     session = await TestSession.create({
       project: { name: 'aliasListNUTs' },
+      devhubAuthStrategy: 'NONE',
     });
   });
 

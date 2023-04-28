@@ -5,12 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { assert, expect, config as chaiConfig } from 'chai';
 import { Msg } from '../../../../src/config';
 import { SetConfigCommandResult } from '../../../../src/commands/config/set';
+chaiConfig.truncateThreshold = 0;
+
 let testSession: TestSession;
 
-function verifyValidationError(key: string, value: string | number) {
+function verifyValidationError(key: string, value: string | number, newKey: string) {
   const expected = {
     result: {
       failures: [
@@ -19,16 +21,15 @@ function verifyValidationError(key: string, value: string | number) {
             exitCode: 1,
             name: 'InvalidConfigValueError',
           },
-          key,
-          name: key,
+          name: newKey,
           success: false,
           value: value as string,
         },
       ],
       successes: [],
     },
-    status: 0,
-    warnings: [],
+    status: 1,
+    warnings: [`Deprecated config name: ${key}. Please use ${newKey} instead.`],
   };
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   const result = res?.result.failures as Msg[];
@@ -48,27 +49,22 @@ function verifyValidationStartsWith(key: string, value: string | number, message
   execCmd(`config:unset ${key}`);
 }
 
-function verifyKeysAndValuesJson(key: string, value: string | boolean) {
+function verifyKeysAndValuesJson(key: string, value: string | boolean, newKey: string) {
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
-  expect(res?.result.successes[0]?.message).to.include(`Deprecated config name: ${key}. Please use`);
-  delete res?.result.successes[0]?.message;
+  assert(res);
   expect(res).to.deep.equal({
     status: 0,
     result: {
       failures: [],
       successes: [
         {
-          name: key,
+          name: newKey,
           value: String(value),
           success: true,
-          error: {
-            name: 'DeprecatedConfigKeyError',
-            exitCode: 1,
-          },
         },
       ],
     },
-    warnings: [],
+    warnings: [`Deprecated config name: ${key}. Please use ${newKey} instead.`],
   });
   execCmd(`config:unset ${key}`);
 }
@@ -85,6 +81,7 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
 describe('config:set NUTs', async () => {
   testSession = await TestSession.create({
     project: { name: 'configSetNUTs' },
+    devhubAuthStrategy: 'NONE',
   });
 
   describe('config:set errors', () => {
@@ -100,31 +97,31 @@ describe('config:set NUTs', async () => {
   describe('setting valid configs and values', () => {
     describe('apiVersion', () => {
       it('will set apiVersion correctly', () => {
-        verifyKeysAndValuesJson('apiVersion', '50.0');
-        verifyKeysAndValuesStdout('apiVersion', '50.0', ['apiVersion', '50.0']);
+        verifyKeysAndValuesJson('apiVersion', '50.0', 'org-api-version');
+        verifyKeysAndValuesStdout('apiVersion', '50.0', ['org-api-version', '50.0']);
       });
 
       it('will fail to validate apiVersion', () => {
-        verifyValidationError('apiVersion', '50');
+        verifyValidationError('apiVersion', '50', 'org-api-version');
       });
     });
 
     describe('maxQueryLimit', () => {
       it('will set maxQueryLimit correctly', () => {
-        verifyKeysAndValuesJson('maxQueryLimit', '50');
-        verifyKeysAndValuesStdout('maxQueryLimit', '50', ['maxQueryLimit', '50']);
+        verifyKeysAndValuesJson('maxQueryLimit', '50', 'org-max-query-limit');
+        verifyKeysAndValuesStdout('maxQueryLimit', '50', ['org-max-query-limit', '50']);
       });
 
       it('will fail to validate maxQueryLimit', () => {
-        verifyValidationError('maxQueryLimit', '-2');
+        verifyValidationError('maxQueryLimit', '-2', 'org-max-query-limit');
       });
     });
 
     describe('instanceUrl', () => {
       it('will set instanceUrl correctly', () => {
-        verifyKeysAndValuesJson('instanceUrl', 'https://test.my.salesforce.com');
+        verifyKeysAndValuesJson('instanceUrl', 'https://test.my.salesforce.com', 'org-instance-url');
         verifyKeysAndValuesStdout('instanceUrl', 'https://test.my.salesforce.com', [
-          'instanceUrl',
+          'org-instance-url',
           'https://test.my.salesforce.com',
         ]);
       });
@@ -138,87 +135,79 @@ describe('config:set NUTs', async () => {
       });
 
       it('will fail to validate instanceUrl when non-Salesforce URL', () => {
-        verifyValidationError('instanceUrl', 'https://not-our-url.com');
+        verifyValidationError('instanceUrl', 'https://not-our-url.com', 'org-instance-url');
       });
     });
 
     describe('isvDebuggerSid', () => {
       it('will set isvDebuggerSid correctly', () => {
-        verifyKeysAndValuesJson('isvDebuggerSid', '12');
+        verifyKeysAndValuesJson('isvDebuggerSid', '12', 'org-isv-debugger-sid');
       });
     });
 
     describe('isvDebuggerUrl', () => {
       it('will set isvDebuggerUrl correctly', () => {
-        verifyKeysAndValuesJson('isvDebuggerUrl', '12');
+        verifyKeysAndValuesJson('isvDebuggerUrl', '12', 'org-isv-debugger-url');
       });
     });
 
     describe('disableTelemetry', () => {
       it('will set disableTelemetry correctly', () => {
-        verifyKeysAndValuesJson('disableTelemetry', 'true');
-        verifyKeysAndValuesJson('disableTelemetry', false);
-        verifyKeysAndValuesStdout('disableTelemetry', 'true', ['disableTelemetry', 'true']);
-        verifyKeysAndValuesStdout('disableTelemetry', false, ['disableTelemetry', 'false']);
+        verifyKeysAndValuesJson('disableTelemetry', 'true', 'disable-telemetry');
+        verifyKeysAndValuesJson('disableTelemetry', false, 'disable-telemetry');
+        verifyKeysAndValuesStdout('disableTelemetry', 'true', ['disable-telemetry', 'true']);
+        verifyKeysAndValuesStdout('disableTelemetry', false, ['disable-telemetry', 'false']);
       });
 
       it('will fail to validate disableTelemetry', () => {
-        verifyValidationError('disableTelemetry', 'ab');
+        verifyValidationError('disableTelemetry', 'ab', 'disable-telemetry');
       });
     });
 
     describe('restDeploy', () => {
       it('will set restDeploy correctly', () => {
-        verifyKeysAndValuesJson('restDeploy', 'true');
-        verifyKeysAndValuesJson('restDeploy', false);
-        verifyKeysAndValuesStdout('restDeploy', 'true', ['restDeploy', 'true']);
-        verifyKeysAndValuesStdout('restDeploy', false, ['restDeploy', 'false']);
+        verifyKeysAndValuesJson('restDeploy', 'true', 'org-metadata-rest-deploy');
+        verifyKeysAndValuesJson('restDeploy', false, 'org-metadata-rest-deploy');
+        verifyKeysAndValuesStdout('restDeploy', 'true', ['org-metadata-rest-deploy', 'true']);
+        verifyKeysAndValuesStdout('restDeploy', false, ['org-metadata-rest-deploy', 'false']);
       });
     });
   });
 
   describe('set two keys and values properly', () => {
     it('will set both apiVersion and maxQueryLimit in one command', () => {
-      const res = execCmd('config:set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
+      const res = execCmd<SetConfigCommandResult>('config:set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
       expect(res).to.deep.equal({
         status: 0,
         result: {
           failures: [],
           successes: [
             {
-              name: 'apiVersion',
+              name: 'org-api-version',
               value: '51.0',
               success: true,
-              error: {
-                name: 'DeprecatedConfigKeyError',
-                exitCode: 1,
-              },
-              message: 'Deprecated config name: apiVersion. Please use org-api-version instead.',
             },
             {
-              name: 'maxQueryLimit',
+              name: 'org-max-query-limit',
               value: '100',
               success: true,
-              error: {
-                name: 'DeprecatedConfigKeyError',
-                exitCode: 1,
-              },
-              message: 'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
             },
           ],
         },
-        warnings: [],
+        warnings: [
+          'Deprecated config name: apiVersion. Please use org-api-version instead.',
+          'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
+        ],
       });
-      execCmd('config:unset apiVersion maxQueryLimit');
+      execCmd('config:unset apiVersion maxQueryLimit', { ensureExitCode: 0 });
 
       const res2 = execCmd('config:set apiVersion=51.0 maxQueryLimit=100', { ensureExitCode: 0 }).shellOutput.stdout;
       expect(res2).to.include('Set Config');
-      expect(res2).to.include('apiVersion');
-      expect(res2).to.include('51.0');
-      expect(res2).to.include('maxQueryLimit');
-      expect(res2).to.include('100');
+      // has these in the output table, but we don't want to catch the names from the warnings
+      expect(res2).to.match(/org-max-query-limit\s+100/);
+      expect(res2).to.match(/org-api-version\s+51.0/);
 
-      execCmd('config:unset apiVersion maxQueryLimit');
+      execCmd('config:unset apiVersion maxQueryLimit', { ensureExitCode: 0 });
     });
   });
 });
