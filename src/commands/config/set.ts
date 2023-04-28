@@ -42,8 +42,10 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
 
     for (const name of Object.keys(parsed)) {
       const value = parsed[name] as string;
+      let resolvedName = name;
       try {
-        const resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
+        // this needs to be inside the try/catch because it can throw an error
+        resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
           this.pushFailure(name, messages.createError('error.ValueRequired'), value);
@@ -79,7 +81,7 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
             }
           }
         } else {
-          this.pushFailure(name, err as Error, value);
+          this.pushFailure(resolvedName, err as Error, value);
         }
       }
     }
