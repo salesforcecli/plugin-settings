@@ -16,7 +16,7 @@
     "@oclif/test": "^2.3.11",
     "@salesforce/cli-plugins-testkit": "^3.3.3",
     "@salesforce/dev-config": "^3.1.0",
-    "@salesforce/dev-scripts": "^4.3.0",
+    "@salesforce/dev-scripts": "^4.3.1",
     "@salesforce/kit": "^1.8.5",
     "@salesforce/plugin-command-reference": "^2.2.8",
     "@salesforce/plugin-deploy-retrieve": "^1.8.18",
