@@ -4,14 +4,21 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { Flags, loglevel } from '@salesforce/sf-plugins-core';
+import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { ConfigAggregator, Messages } from '@salesforce/core';
-import { ConfigCommand, ConfigResponses, CONFIG_HELP_SECTION } from '../../config';
+import {
+  CONFIG_HELP_SECTION,
+  calculateSuggestion,
+  buildFailureMsg,
+  buildSuccessMsg,
+  output,
+  ConfigResponses,
+} from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.get');
 
-export class Get extends ConfigCommand<ConfigResponses> {
+export class Get extends SfCommand<ConfigResponses> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -29,6 +36,7 @@ export class Get extends ConfigCommand<ConfigResponses> {
 
   public async run(): Promise<ConfigResponses> {
     const { argv, flags } = await this.parse(Get);
+    const responses: ConfigResponses = [];
     if (!argv || argv.length === 0) {
       throw messages.createError('error.NoConfigKeysFound');
     }
@@ -37,24 +45,23 @@ export class Get extends ConfigCommand<ConfigResponses> {
 
     for (const configName of argv as string[]) {
       try {
-        this.pushSuccess(aggregator.getInfo(configName));
+        responses.push(buildSuccessMsg(aggregator.getInfo(configName)));
       } catch (err) {
-        const error = err as Error;
-        if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
-          const suggestion = this.calculateSuggestion(configName);
+        if (err instanceof Error && err.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+          const suggestion = calculateSuggestion(configName);
           // eslint-disable-next-line no-await-in-loop
           const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
           if (answer) {
-            this.pushSuccess(aggregator.getInfo(suggestion, false));
+            responses.push(buildSuccessMsg(aggregator.getInfo(suggestion, false)));
           }
         } else {
-          this.pushFailure(configName, err as Error);
+          responses.push(buildFailureMsg(configName, err));
+          process.exitCode = 1;
         }
       }
     }
 
-    this.output('Get Config', flags.verbose);
-
-    return this.responses;
+    output(new Ux({ jsonEnabled: this.jsonEnabled() }), responses, 'get', flags.verbose);
+    return responses;
   }
 }

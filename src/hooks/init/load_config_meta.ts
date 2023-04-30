@@ -49,7 +49,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
 
 const hook: Hook<'init'> = ({ config }): Promise<void> => {
   const flattenedConfigMetas = (config.plugins || [])
-    .map((plugin) => {
+    .flatMap((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {
         log.info(`No config meta found for ${plugin.name}`);
@@ -57,11 +57,10 @@ const hook: Hook<'init'> = ({ config }): Promise<void> => {
 
       return configMeta;
     })
-    .filter(isObject)
-    .flat();
+    .filter<ConfigPropertyMeta>(isObject);
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(flattenedConfigMetas as ConfigPropertyMeta[]);
+    Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
 };

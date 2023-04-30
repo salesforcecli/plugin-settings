@@ -76,7 +76,7 @@ describe('config:unset NUTs', async () => {
       execCmd('config:set maxQueryLimit=100 --global');
     });
 
-    it('unsets multiple configs correctly JSON', () => {
+    it('unset multiple configs correctly JSON', () => {
       execCmd('config:set restDeploy=false');
       const res = execCmd('config:unset restDeploy apiVersion maxQueryLimit --json', { ensureExitCode: 0 });
       expect(res.jsonOutput).to.deep.equal({

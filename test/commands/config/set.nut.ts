@@ -6,10 +6,9 @@
  */
 
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { expect } from 'chai';
+import { assert, expect } from 'chai';
 import { Messages } from '@salesforce/core';
 import { SetConfigCommandResult } from '../../../src/commands/config/set';
-import { Msg } from '../../../src/config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
@@ -36,10 +35,11 @@ function verifyValidationError(key: string, value: string) {
     warnings: [],
   };
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
-  const result = res?.result.failures as Msg[];
+  const failures = res?.result.failures;
+  assert(failures, 'there were no failures');
   // validate error message / failures error message here and delete, it will vary based on the value.
-  expect(result[0]?.message).to.include('Invalid config value:');
-  delete result[0]?.message;
+  expect(failures[0]?.message).to.include('Invalid config value:');
+  delete failures[0]?.message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }

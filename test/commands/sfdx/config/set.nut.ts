@@ -23,7 +23,7 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
           },
           name: newKey,
           success: false,
-          value: value as string,
+          value,
         },
       ],
       successes: [],
@@ -32,10 +32,11 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
     warnings: [`Deprecated config name: ${key}. Please use ${newKey} instead.`],
   };
   const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
-  const result = res?.result.failures as Msg[];
+  assert(res?.result.failures, 'there were no failures');
+  const failures = res?.result.failures;
   // validate error message / failures error message here and delete, it will vary based on the value.
-  expect(result[0]?.message).to.include('Invalid config value:');
-  delete result[0]?.message;
+  expect(failures[0]?.message).to.include('Invalid config value:');
+  delete failures[0]?.message;
   expect(res).to.deep.equal(expected);
   execCmd(`config:unset ${key}`);
 }

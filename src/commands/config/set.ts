@@ -5,16 +5,16 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { parseVarArgs, Flags, loglevel } from '@salesforce/sf-plugins-core';
+import { parseVarArgs, Flags, loglevel, Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, ConfigCommand, Msg } from '../../config';
+import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output } from '../../config';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 export type SetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
 
-export class Set extends ConfigCommand<SetConfigCommandResult> {
+export class Set extends SfCommand<SetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -30,25 +30,24 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
   };
 
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
-  private setResponses: SetConfigCommandResult = { successes: [], failures: [] };
 
   public async run(): Promise<SetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);
     const config: Config = await loadConfig(flags.global);
+    const responses: SetConfigCommandResult = { successes: [], failures: [] };
 
     if (!argv.length) throw messages.createError('error.ArgumentsRequired');
 
     const parsed = parseVarArgs(args, argv as string[]);
 
-    for (const name of Object.keys(parsed)) {
-      const value = parsed[name] as string;
+    for (const [name, value] of Object.entries(parsed)) {
       let resolvedName = name;
       try {
         // this needs to be inside the try/catch because it can throw an error
         resolvedName = this.configAggregator.getPropertyMeta(name)?.newKey ?? name;
         if (!value) {
           // Push a failure if users are try to unset a value with `set=`.
-          this.pushFailure(name, messages.createError('error.ValueRequired'), value);
+          responses.failures.push(buildFailureMsg(name, messages.createError('error.ValueRequired'), value));
         } else {
           // core's builtin config validation requires synchronous functions but there's
           // currently no way to validate an org synchronously. Therefore, we have to manually
@@ -56,53 +55,34 @@ export class Set extends ConfigCommand<SetConfigCommandResult> {
           // eslint-disable-next-line no-await-in-loop
           if (isOrgKey(resolvedName) && value) await validateOrg(value);
           config.set(resolvedName, value);
-          this.setResponses.successes.push({ name: resolvedName, value, success: true });
+          responses.successes.push({ name: resolvedName, value, success: true });
         }
-      } catch (err) {
-        const error = err as Error;
-        if (error.name.includes('UnknownConfigKeyError')) {
+      } catch (error) {
+        if (error instanceof Error && error.name.includes('UnknownConfigKeyError')) {
           if (this.jsonEnabled()) {
-            process.exitCode = 1;
-            this.setResponses.failures.push({
-              name,
-              value,
-              success: false,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
-            });
+            responses.failures.push(buildFailureMsg(resolvedName, error, value));
           } else {
-            const suggestion = this.calculateSuggestion(name);
+            const suggestion = calculateSuggestion(name);
             // eslint-disable-next-line no-await-in-loop
             const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
-            if (answer) {
+            if (answer && value) {
               const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
               config.set(key, value);
-              this.setResponses.successes.push({ name: key, value, success: true });
+              responses.successes.push({ name: key, value, success: true });
             }
           }
         } else {
-          this.pushFailure(resolvedName, err as Error, value);
+          responses.failures.push(buildFailureMsg(resolvedName, error, value));
         }
       }
     }
     await config.write();
-    if (!this.jsonEnabled()) {
-      this.responses = [...this.setResponses.successes, ...this.setResponses.failures];
-      this.output('Set Config', false);
+    if (responses.failures.length) {
+      process.exitCode = 1;
     }
-    return this.setResponses;
-  }
+    output(new Ux({ jsonEnabled: this.jsonEnabled() }), [...responses.successes, ...responses.failures], 'set');
 
-  protected pushFailure(name: string, err: string | Error, value?: string): void {
-    const error = SfError.wrap(err);
-    this.setResponses.failures.push({
-      name,
-      success: false,
-      value,
-      error,
-      message: error.message.replace(/\.\.$/, '.'),
-    });
-    process.exitCode = 1;
+    return responses;
   }
 }
 

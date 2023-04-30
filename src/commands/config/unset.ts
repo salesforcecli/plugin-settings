@@ -5,15 +5,15 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { Flags, loglevel } from '@salesforce/sf-plugins-core';
-import { Config, Messages, SfError } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, ConfigCommand } from '../../config';
+import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
+import { Config, Messages } from '@salesforce/core';
+import { CONFIG_HELP_SECTION, buildFailureMsg, calculateSuggestion, output } from '../../config';
 import { SetConfigCommandResult } from './set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.unset');
 
-export class UnSet extends ConfigCommand<SetConfigCommandResult> {
+export class UnSet extends SfCommand<SetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -28,7 +28,7 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
       summary: messages.getMessage('flags.global.summary'),
     }),
   };
-  private unsetResponses: SetConfigCommandResult = { successes: [], failures: [] };
+  private responses: SetConfigCommandResult = { successes: [], failures: [] };
 
   public async run(): Promise<SetConfigCommandResult> {
     const { argv, flags } = await this.parse(UnSet);
@@ -43,16 +43,15 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
       try {
         const resolvedName = this.configAggregator.getPropertyMeta(key)?.newKey ?? key;
         config.unset(resolvedName);
-        this.unsetResponses.successes.push({ name: resolvedName, success: true });
-      } catch (err) {
-        const error = err as Error;
-        if (error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
-          const suggestion = this.calculateSuggestion(key);
+        this.responses.successes.push({ name: resolvedName, success: true });
+      } catch (error) {
+        if (error instanceof Error && error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
+          const suggestion = calculateSuggestion(key);
           // eslint-disable-next-line no-await-in-loop
           const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
           if (answer) {
             config.unset(suggestion);
-            this.unsetResponses.successes.push({
+            this.responses.successes.push({
               name: suggestion,
               success: true,
               error,
@@ -60,27 +59,19 @@ export class UnSet extends ConfigCommand<SetConfigCommandResult> {
             });
           }
         } else {
-          this.pushFailure(key, err as Error);
+          this.responses.failures.push(buildFailureMsg(key, error));
+          process.exitCode = 1;
         }
       }
     }
     await config.write();
-    this.responses = [...this.unsetResponses.successes, ...this.unsetResponses.failures];
 
-    this.output('Unset Config', false);
+    output(
+      new Ux({ jsonEnabled: this.jsonEnabled() }),
+      [...this.responses.successes, ...this.responses.failures],
+      'unset'
+    );
 
-    return this.unsetResponses;
-  }
-
-  protected pushFailure(name: string, err: string | Error, value?: string): void {
-    const error = SfError.wrap(err);
-    this.unsetResponses.failures.push({
-      name,
-      success: false,
-      value,
-      error,
-      message: error.message.replace(/\.\.$/, '.'),
-    });
-    process.exitCode = 1;
+    return this.responses;
   }
 }
