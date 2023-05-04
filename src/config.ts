@@ -110,13 +110,13 @@ export const output = (ux: Ux, responses: Msg[], command: 'set' | 'unset' | 'lis
           }
         : {}),
     },
-    { title: commandToTitleMapping.get(command) }
+    { title: commandToTitleMapping[command] }
   );
 };
 
-const commandToTitleMapping = new Map<string, string>([
-  ['set', 'Set Config'],
-  ['unset', 'Unset Config'],
-  ['list', 'List Config'],
-  ['get', 'Get Config'],
-]);
+const commandToTitleMapping = {
+  set: 'Set Config',
+  unset: 'Unset Config',
+  list: 'List Config',
+  get: 'Get Config',
+} as const;

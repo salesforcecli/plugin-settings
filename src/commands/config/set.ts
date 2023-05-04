@@ -12,9 +12,9 @@ import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
-export type SetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
+export type SetOrUnsetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
 
-export class Set extends SfCommand<SetConfigCommandResult> {
+export class Set extends SfCommand<SetOrUnsetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -31,10 +31,10 @@ export class Set extends SfCommand<SetConfigCommandResult> {
 
   public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
-  public async run(): Promise<SetConfigCommandResult> {
+  public async run(): Promise<SetOrUnsetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);
     const config: Config = await loadConfig(flags.global);
-    const responses: SetConfigCommandResult = { successes: [], failures: [] };
+    const responses: SetOrUnsetConfigCommandResult = { successes: [], failures: [] };
 
     if (!argv.length) throw messages.createError('error.ArgumentsRequired');
 

@@ -60,7 +60,12 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
         stateAggregator.aliases.unset(alias);
         return { alias, value, success: true };
       } catch (err) {
-        const { name, message } = err instanceof Error ? err : { name: 'Unknown', message: 'Unknown Error' };
+        const { name, message } =
+          err instanceof Error
+            ? err
+            : typeof err === 'string'
+            ? new Error(err)
+            : { name: 'UnknownError', message: 'Unknown Error' };
         return { alias, value, success: false, error: { name, message } };
       }
     });

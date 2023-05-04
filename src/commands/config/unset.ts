@@ -8,12 +8,12 @@
 import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { Config, Messages } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, buildFailureMsg, calculateSuggestion, output } from '../../config';
-import { SetConfigCommandResult } from './set';
+import { SetOrUnsetConfigCommandResult } from './set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.unset');
 
-export class UnSet extends SfCommand<SetConfigCommandResult> {
+export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
   public static readonly description = messages.getMessage('description');
   public static readonly summary = messages.getMessage('summary');
   public static readonly examples = messages.getMessages('examples');
@@ -28,9 +28,9 @@ export class UnSet extends SfCommand<SetConfigCommandResult> {
       summary: messages.getMessage('flags.global.summary'),
     }),
   };
-  private responses: SetConfigCommandResult = { successes: [], failures: [] };
+  private responses: SetOrUnsetConfigCommandResult = { successes: [], failures: [] };
 
-  public async run(): Promise<SetConfigCommandResult> {
+  public async run(): Promise<SetOrUnsetConfigCommandResult> {
     const { argv, flags } = await this.parse(UnSet);
 
     if (!argv || argv.length === 0) {
