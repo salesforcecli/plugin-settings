@@ -7,7 +7,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect, config as chaiConfig } from 'chai';
 import { Msg } from '../../../../src/config';
-import { SetConfigCommandResult } from '../../../../src/commands/config/set';
+import { SetOrUnsetConfigCommandResult } from '../../../../src/commands/config/set';
 chaiConfig.truncateThreshold = 0;
 
 let testSession: TestSession;
@@ -31,7 +31,7 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
     status: 1,
     warnings: [`Deprecated config name: ${key}. Please use ${newKey} instead.`],
   };
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   assert(res?.result.failures, 'there were no failures');
   const failures = res?.result.failures;
   // validate error message / failures error message here and delete, it will vary based on the value.
@@ -42,7 +42,7 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
 }
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   expect(res?.result).to.have.property('successes').with.length(0);
   expect(res?.result).to.have.property('failures').with.length(1);
   const result = res?.result.failures[0] as Msg;
@@ -51,7 +51,9 @@ function verifyValidationStartsWith(key: string, value: string | number, message
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean, newKey: string) {
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`, {
+    ensureExitCode: 0,
+  }).jsonOutput;
   assert(res);
   expect(res).to.deep.equal({
     status: 0,
@@ -177,7 +179,9 @@ describe('config:set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both apiVersion and maxQueryLimit in one command', () => {
-      const res = execCmd<SetConfigCommandResult>('config:set apiVersion=51.0 maxQueryLimit=100 --json').jsonOutput;
+      const res = execCmd<SetOrUnsetConfigCommandResult>(
+        'config:set apiVersion=51.0 maxQueryLimit=100 --json'
+      ).jsonOutput;
       expect(res).to.deep.equal({
         status: 0,
         result: {

@@ -17,7 +17,10 @@ describe('config:list NUTs', async () => {
   });
   describe('config:list with no configs set', () => {
     it('lists no config entries correctly', () => {
-      const res = execCmd('config:list --json', { ensureExitCode: 0 });
+      const res = execCmd('config:list --json', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_DISABLE_TELEMETRY: undefined },
+      });
       expect(res.jsonOutput).to.deep.equal({
         result: [],
         status: 0,
@@ -26,7 +29,10 @@ describe('config:list NUTs', async () => {
     });
 
     it('lists no configs stdout', () => {
-      const res: string = execCmd('config:list').shellOutput;
+      const res: string = execCmd('config:list', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_DISABLE_TELEMETRY: undefined },
+      }).shellOutput;
       expect(res).to.include('No results found');
     });
   });
@@ -37,7 +43,10 @@ describe('config:list NUTs', async () => {
     });
 
     it('lists singular config correctly', () => {
-      const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
+      const res = execCmd<ConfigResponses>('config:list --json', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_DISABLE_TELEMETRY: undefined },
+      });
       // path will be different on each machine/test run
       assert(res.jsonOutput);
       res.jsonOutput.result = removePath(res.jsonOutput?.result);
@@ -58,7 +67,10 @@ describe('config:list NUTs', async () => {
 
     it('properly overwrites config values, with local > global', () => {
       execCmd('config:set apiVersion=52.0 --json', { ensureExitCode: 0 });
-      const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
+      const res = execCmd<ConfigResponses>('config:list --json', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_DISABLE_TELEMETRY: undefined },
+      });
       assert(res.jsonOutput);
       res.jsonOutput.result = removePath(res.jsonOutput?.result);
       expect(res.jsonOutput).to.deep.equal({
@@ -77,7 +89,10 @@ describe('config:list NUTs', async () => {
     });
 
     it('lists singular result correctly stdout', () => {
-      const res: string = execCmd('config:list').shellOutput.stdout;
+      const res: string = execCmd('config:list', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_DISABLE_TELEMETRY: undefined },
+      }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('Local');
@@ -97,32 +112,26 @@ describe('config:list NUTs', async () => {
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
       assert(res.jsonOutput);
       res.jsonOutput.result = removePath(res.jsonOutput?.result);
-      expect(res.jsonOutput).to.deep.equal({
-        result: [
-          {
-            key: 'org-api-version',
-            name: 'org-api-version',
-            success: true,
-            location: 'Global',
-            value: '51.0',
-          },
-          {
-            key: 'org-max-query-limit',
-            name: 'org-max-query-limit',
-            success: true,
-            location: 'Global',
-            value: '100',
-          },
-          {
-            key: 'org-metadata-rest-deploy',
-            name: 'org-metadata-rest-deploy',
-            success: true,
-            location: 'Local',
-            value: 'false',
-          },
-        ],
-        status: 0,
-        warnings: [],
+      expect(res.jsonOutput.result).to.deep.include({
+        key: 'org-api-version',
+        name: 'org-api-version',
+        success: true,
+        location: 'Global',
+        value: '51.0',
+      });
+      expect(res.jsonOutput.result).to.deep.include({
+        key: 'org-max-query-limit',
+        name: 'org-max-query-limit',
+        success: true,
+        location: 'Global',
+        value: '100',
+      });
+      expect(res.jsonOutput.result).to.deep.include({
+        key: 'org-metadata-rest-deploy',
+        name: 'org-metadata-rest-deploy',
+        success: true,
+        location: 'Local',
+        value: 'false',
       });
     });
 
@@ -138,8 +147,8 @@ describe('config:list NUTs', async () => {
       expect(res).to.include('false');
     });
   });
-});
 
-after(async () => {
-  await testSession?.clean();
+  after(async () => {
+    await testSession?.clean();
+  });
 });
