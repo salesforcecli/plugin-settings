@@ -6,7 +6,7 @@
  */
 
 import { loglevel, parseVarArgs } from '@salesforce/sf-plugins-core';
-import { StateAggregator, Messages, SfError } from '@salesforce/core';
+import { StateAggregator, Messages } from '@salesforce/core';
 import { AliasCommand, AliasResults } from '../../alias';
 
 Messages.importMessagesDirectory(__dirname);
@@ -42,7 +42,12 @@ export default class AliasSet extends AliasCommand<AliasResults> {
         }
         return { alias, success: true, value };
       } catch (err) {
-        const { name, message } = err as SfError;
+        const { name, message } =
+          err instanceof Error
+            ? err
+            : typeof err === 'string'
+            ? new Error(err)
+            : { name: 'UnknownError', message: 'Unknown Error' };
         return { alias, success: false, error: { name, message }, value };
       }
     });

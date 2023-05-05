@@ -4,10 +4,11 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
-import { ConfigResponses } from '../../src/config';
+import { Msg } from '../../src/config';
 
-export const removePath = (responses: ConfigResponses) =>
+export const removePath = (responses: Msg[]) =>
   responses.map((r) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { path, ...rMinusPath } = r;
     return rMinusPath;
   });

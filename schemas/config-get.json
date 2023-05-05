@@ -15,7 +15,7 @@
           "type": "string"
         },
         "value": {
-          "type": "string"
+          "type": ["string", "boolean", "number", "null"]
         },
         "success": {
           "type": "boolean"

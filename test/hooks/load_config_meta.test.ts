@@ -13,6 +13,7 @@ import { stubMethod } from '@salesforce/ts-sinon';
 import * as sinon from 'sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
 import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta';
+// @ts-expect-error because it's js
 import jsLibConfigMetaMock from '../config-meta-mocks/javascript-lib/lib/config-meta';
 
 process.env.NODE_ENV = 'development';
