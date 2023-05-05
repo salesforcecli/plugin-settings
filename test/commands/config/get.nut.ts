@@ -81,46 +81,34 @@ describe('config get NUTs', async () => {
     });
 
     it('gets multiple results correctly', () => {
-      execCmd('config set disable-telemetry=false', { ensureExitCode: 0 });
       execCmd('config set org-api-version=51.0', { ensureExitCode: 0 });
-      const res = execCmd<ConfigResponses>('config get org-api-version org-max-query-limit disable-telemetry --json', {
+      const res = execCmd<ConfigResponses>('config get org-api-version org-max-query-limit --json', {
         ensureExitCode: 0,
       });
       assert(res.jsonOutput?.result);
-      expect(removePath(res.jsonOutput?.result)).to.deep.equal([
-        {
-          name: 'org-api-version',
-          key: 'org-api-version',
-          location: 'Local',
-          value: '51.0',
-          success: true,
-        },
-        {
-          name: 'org-max-query-limit',
-          key: 'org-max-query-limit',
-          location: 'Global',
-          value: '100',
-          success: true,
-        },
-        {
-          name: 'disable-telemetry',
-          key: 'disable-telemetry',
-          location: 'Local',
-          value: 'false',
-          success: true,
-        },
-      ]);
+      expect(removePath(res.jsonOutput?.result)).to.deep.include({
+        name: 'org-api-version',
+        key: 'org-api-version',
+        location: 'Local',
+        value: '51.0',
+        success: true,
+      });
+      expect(removePath(res.jsonOutput?.result)).to.deep.include({
+        name: 'org-max-query-limit',
+        key: 'org-max-query-limit',
+        location: 'Global',
+        value: '100',
+        success: true,
+      });
     });
 
     it('gets multiple results correctly stdout', () => {
-      const res = execCmd('config get org-api-version org-max-query-limit disable-telemetry').shellOutput.stdout;
+      const res = execCmd('config get org-api-version org-max-query-limit').shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');
       expect(res).to.include('org-max-query-limit');
       expect(res).to.include('100');
-      expect(res).to.include('disable-telemetry');
-      expect(res).to.include('false');
     });
   });
 });

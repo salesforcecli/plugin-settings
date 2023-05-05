@@ -8,7 +8,7 @@
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect } from 'chai';
 import { Messages } from '@salesforce/core';
-import { SetConfigCommandResult } from '../../../src/commands/config/set';
+import { SetOrUnsetConfigCommandResult } from '../../../src/commands/config/set';
 
 Messages.importMessagesDirectory(__dirname);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
@@ -34,7 +34,7 @@ function verifyValidationError(key: string, value: string) {
     status: 1,
     warnings: [],
   };
-  const res = execCmd<SetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
   const failures = res?.result.failures;
   assert(failures, 'there were no failures');
   // validate error message / failures error message here and delete, it will vary based on the value.
@@ -45,9 +45,9 @@ function verifyValidationError(key: string, value: string) {
 }
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean) {
-  const result = execCmd<SetConfigCommandResult>(`config set ${key}=${value} --json`, { ensureExitCode: 0 }).jsonOutput
-    ?.result;
-  const expected = { failures: [], successes: [{ name: key, success: true }] } as SetConfigCommandResult;
+  const result = execCmd<SetOrUnsetConfigCommandResult>(`config set ${key}=${value} --json`, { ensureExitCode: 0 })
+    .jsonOutput?.result;
+  const expected = { failures: [], successes: [{ name: key, success: true }] } as SetOrUnsetConfigCommandResult;
   if (value !== '') expected.successes[0].value = `${value}`;
   expect(result).to.deep.equal(expected);
   execCmd(`config unset ${key}`);
@@ -86,10 +86,10 @@ describe('config set NUTs', async () => {
     });
 
     it('don\'t allow using "set=" to unset a config key', () => {
-      execCmd<SetConfigCommandResult>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 })
+      execCmd<SetOrUnsetConfigCommandResult>('config set org-api-version=50.0 --json', { cli: 'sf', ensureExitCode: 0 })
         .jsonOutput;
 
-      const result = execCmd<SetConfigCommandResult>('config set org-api-version= --json', {
+      const result = execCmd<SetOrUnsetConfigCommandResult>('config set org-api-version= --json', {
         ensureExitCode: 1,
       }).jsonOutput?.result.failures;
 
@@ -166,7 +166,7 @@ describe('config set NUTs', async () => {
           },
           warnings: [],
         };
-        const res = execCmd<SetConfigCommandResult>('config:set target-org=ab --json').jsonOutput;
+        const res = execCmd<SetOrUnsetConfigCommandResult>('config:set target-org=ab --json').jsonOutput;
         expect(res).to.deep.equal(expected);
       });
 
@@ -191,7 +191,7 @@ describe('config set NUTs', async () => {
           },
           warnings: [],
         };
-        const res = execCmd<SetConfigCommandResult>('config:set target-dev-hub=ab --json').jsonOutput;
+        const res = execCmd<SetOrUnsetConfigCommandResult>('config:set target-dev-hub=ab --json').jsonOutput;
         expect(res).to.deep.equal(expected);
       });
     });
@@ -224,8 +224,9 @@ describe('config set NUTs', async () => {
 
   describe('set two keys and values properly', () => {
     it('will set both org-api-version and org-max-query-limit in one command', () => {
-      const result = execCmd<SetConfigCommandResult>('config set org-api-version=51.0 org-max-query-limit=100 --json')
-        .jsonOutput?.result.successes;
+      const result = execCmd<SetOrUnsetConfigCommandResult>(
+        'config set org-api-version=51.0 org-max-query-limit=100 --json'
+      ).jsonOutput?.result.successes;
       expect(result).to.deep.equal([
         {
           name: 'org-api-version',
