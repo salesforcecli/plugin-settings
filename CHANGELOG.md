@@ -1,3 +1,12 @@
+## [1.4.7](https://github.com/salesforcecli/plugin-settings/compare/1.4.6...1.4.7) (2023-05-13)
+
+
+### Bug Fixes
+
+* **deps:** bump @salesforce/core from 3.36.0 to 3.36.1 ([31ab3ee](https://github.com/salesforcecli/plugin-settings/commit/31ab3eeb2556148dd0ff432b0540196020eab7a8))
+
+
+
 ## [1.4.6](https://github.com/salesforcecli/plugin-settings/compare/1.5.0-qa.5...1.4.6) (2023-04-28)
 
 
