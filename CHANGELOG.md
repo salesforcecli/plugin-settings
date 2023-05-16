@@ -1,3 +1,12 @@
+## [1.4.8](https://github.com/salesforcecli/plugin-settings/compare/1.4.7...1.4.8) (2023-05-16)
+
+
+### Bug Fixes
+
+* **deps:** bump vm2 from 3.9.17 to 3.9.18 ([0d202a6](https://github.com/salesforcecli/plugin-settings/commit/0d202a68f9daa1c7e909f09ef5b0d754e8b69267))
+
+
+
 ## [1.4.7](https://github.com/salesforcecli/plugin-settings/compare/1.4.6...1.4.7) (2023-05-13)
 
 
