@@ -6,11 +6,10 @@
  */
 
 import { expect, test } from '@oclif/test';
-import { testSetup } from '@salesforce/core/lib/testSetup';
-
-const $$ = testSetup();
+import { TestContext } from '@salesforce/core/lib/testSetup';
 
 describe('alias unset', () => {
+  const $$ = new TestContext();
   beforeEach(async () => {
     $$.stubAliases({ Coffee: 'espresso', Bacon: 'breakfast' });
   });
