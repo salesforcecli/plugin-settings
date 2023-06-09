@@ -54,8 +54,6 @@ export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
             this.responses.successes.push({
               name: suggestion,
               success: true,
-              error,
-              message: error.message.replace(/\.\.$/, '.'),
             });
           }
         } else {
