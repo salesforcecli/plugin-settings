@@ -1,3 +1,12 @@
+## [1.4.13](https://github.com/salesforcecli/plugin-settings/compare/1.4.12...1.4.13) (2023-06-15)
+
+
+### Bug Fixes
+
+* no error/message on successful unset ([9de7bdc](https://github.com/salesforcecli/plugin-settings/commit/9de7bdc1827362c67c059b8ce4e23402940545f9))
+
+
+
 ## [1.4.12](https://github.com/salesforcecli/plugin-settings/compare/1.4.11...1.4.12) (2023-06-11)
 
 
