@@ -1,3 +1,12 @@
+## [1.4.18](https://github.com/salesforcecli/plugin-settings/compare/1.4.17...1.4.18) (2023-07-08)
+
+
+### Bug Fixes
+
+* **deps:** bump tough-cookie from 4.1.2 to 4.1.3 ([c5066c8](https://github.com/salesforcecli/plugin-settings/commit/c5066c8d8f18fb994ceee325a7b60e31c633ea96))
+
+
+
 ## [1.4.17](https://github.com/salesforcecli/plugin-settings/compare/1.4.16...1.4.17) (2023-07-01)
 
 
