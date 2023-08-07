@@ -27,3 +27,7 @@ You must provide one or more configuration variables to unset. Run "sf config li
 # didYouMean
 
 Did you mean %s?
+
+# unsetGlobalWarning
+
+The %s config is still set globally, unset it by using the --global flag.
