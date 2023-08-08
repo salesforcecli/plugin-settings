@@ -30,4 +30,4 @@ Did you mean %s?
 
 # unsetGlobalWarning
 
-The %s config is still set globally, unset it by using the --global flag.
+The %s config variable is still set globally, unset it by using the --global flag.

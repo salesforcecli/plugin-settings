@@ -43,8 +43,28 @@ describe('config:unset NUTs', async () => {
       execCmd('config:set apiVersion=51.0 --global');
     });
 
-    it('lists singular config correctly', () => {
+    it('warns when config still set globally', () => {
       const res = execCmd('config:unset apiVersion --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal({
+        result: {
+          failures: [],
+          successes: [
+            {
+              name: 'org-api-version',
+              success: true,
+            },
+          ],
+        },
+        status: 0,
+        warnings: [
+          'Deprecated config name: apiVersion. Please use org-api-version instead.',
+          'The org-api-version config variable is still set globally, unset it by using the --global flag.',
+        ],
+      });
+    });
+
+    it('unsets the config globally', () => {
+      const res = execCmd('config:unset apiVersion --global --json', { ensureExitCode: 0 });
       expect(res.jsonOutput).to.deep.equal({
         result: {
           failures: [],
@@ -101,7 +121,9 @@ describe('config:unset NUTs', async () => {
         warnings: [
           'Deprecated config name: restDeploy. Please use org-metadata-rest-deploy instead.',
           'Deprecated config name: apiVersion. Please use org-api-version instead.',
+          'The org-api-version config variable is still set globally, unset it by using the --global flag.',
           'Deprecated config name: maxQueryLimit. Please use org-max-query-limit instead.',
+          'The org-max-query-limit config variable is still set globally, unset it by using the --global flag.',
         ],
       });
     });
