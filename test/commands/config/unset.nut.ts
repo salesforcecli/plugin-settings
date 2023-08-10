@@ -36,25 +36,67 @@ describe('config unset NUTs', async () => {
       execCmd('config set org-api-version=51.0 --global');
     });
 
-    it('lists singular config correctly', () => {
-      const result = execCmd<SetOrUnsetConfigCommandResult>('config unset org-api-version --json', {
-        ensureExitCode: 0,
-      }).jsonOutput?.result.successes;
-      expect(result).to.deep.equal([
-        {
-          name: 'org-api-version',
-          success: true,
-        },
-      ]);
-    });
-
-    it('lists singular result correctly stdout', () => {
+    it('displays correct stdout on success', () => {
       const res = execCmd('config unset org-api-version').shellOutput.stdout;
       expect(res).to.include('Unset Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('Name');
       expect(res).to.include('Success');
       expect(res).to.include('true');
+    });
+
+    it('unsets the config globally', () => {
+      const res = execCmd('config:unset apiVersion --global --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal({
+        result: {
+          failures: [],
+          successes: [
+            {
+              name: 'org-api-version',
+              success: true,
+            },
+          ],
+        },
+        status: 0,
+        warnings: ['Deprecated config name: apiVersion. Please use org-api-version instead.'],
+      });
+    });
+
+    it('warns when nothing unset locally and config still set globally', () => {
+      const res = execCmd('config:unset org-api-version --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal({
+        result: {
+          failures: [],
+          successes: [
+            {
+              name: 'org-api-version',
+              success: true,
+            },
+          ],
+        },
+        status: 0,
+        warnings: ['The org-api-version config variable is still set globally, unset it by using the --global flag.'],
+      });
+    });
+
+    it('warns when unset locally and config still set globally', () => {
+      // This will result in apiVersion being set both globally and locally
+      execCmd('config:set org-api-version=52.0', { ensureExitCode: 0 });
+
+      const res = execCmd('config:unset org-api-version --json', { ensureExitCode: 0 });
+      expect(res.jsonOutput).to.deep.equal({
+        result: {
+          failures: [],
+          successes: [
+            {
+              name: 'org-api-version',
+              success: true,
+            },
+          ],
+        },
+        status: 0,
+        warnings: ['The org-api-version config variable is still set globally, unset it by using the --global flag.'],
+      });
     });
   });
 
