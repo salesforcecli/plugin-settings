@@ -37,7 +37,7 @@ export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
       throw messages.createError('error.NoConfigKeysFound');
     }
     const config = await Config.create(Config.getDefaultOptions(flags.global));
-    const globalConfig = await Config.create(Config.getDefaultOptions(true));
+    const globalConfig = flags.global ? config : await Config.create(Config.getDefaultOptions(true));
 
     await globalConfig.read();
     await config.read();
