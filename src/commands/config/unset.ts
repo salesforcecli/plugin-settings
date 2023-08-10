@@ -45,7 +45,7 @@ export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
         config.unset(resolvedName);
 
         if (!flags.global && this.configAggregator.getLocation(resolvedName) === 'Global') {
-          // if the user wanted to unset a global value, and it's not in the global, warn them
+          // If the config var is still set globally after an unset and the user didn't have the `--global` flag set, warn them.
           this.warn(messages.getMessage('unsetGlobalWarning', [resolvedName]));
         }
         this.responses.successes.push({ name: resolvedName, success: true });
