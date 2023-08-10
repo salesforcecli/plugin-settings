@@ -1,3 +1,17 @@
+## [1.4.25](https://github.com/salesforcecli/plugin-settings/compare/1.4.24...1.4.25) (2023-08-10)
+
+
+### Bug Fixes
+
+* adds more tests to non-sfdx nuts ([5a0573f](https://github.com/salesforcecli/plugin-settings/commit/5a0573f39380afd04d963d3cd85628cde5f5c9f9))
+* warn when attempting to unset a global config without flag ([1b946f3](https://github.com/salesforcecli/plugin-settings/commit/1b946f35f3efbe5cb8849a3642c6c391c4a02d41))
+
+
+
+## [1.4.24](https://github.com/salesforcecli/plugin-settings/compare/1.4.23...1.4.24) (2023-08-07)
+
+
+
 ## [1.4.23](https://github.com/salesforcecli/plugin-settings/compare/1.4.22...1.4.23) (2023-08-06)
 
 
