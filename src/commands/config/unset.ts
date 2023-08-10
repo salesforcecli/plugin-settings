@@ -37,14 +37,16 @@ export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
       throw messages.createError('error.NoConfigKeysFound');
     }
     const config = await Config.create(Config.getDefaultOptions(flags.global));
+    const globalConfig = await Config.create(Config.getDefaultOptions(true));
 
+    await globalConfig.read();
     await config.read();
     for (const key of argv as string[]) {
       try {
         const resolvedName = this.configAggregator.getPropertyMeta(key)?.newKey ?? key;
         config.unset(resolvedName);
 
-        if (!flags.global && this.configAggregator.getLocation(resolvedName) === 'Global') {
+        if (!flags.global && globalConfig.has(resolvedName)) {
           // If the config var is still set globally after an unset and the user didn't have the `--global` flag set, warn them.
           this.warn(messages.getMessage('unsetGlobalWarning', [resolvedName]));
         }
