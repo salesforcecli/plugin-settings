@@ -48,7 +48,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
 }
 
 const hook: Hook<'init'> = ({ config }): Promise<void> => {
-  const flattenedConfigMetas = (config.plugins || [])
+  const flattenedConfigMetas = (config.getPluginsList() || [])
     .flatMap((plugin) => {
       const configMeta = loadConfigMeta(plugin);
       if (!configMeta) {
