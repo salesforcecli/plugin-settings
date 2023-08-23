@@ -1,3 +1,12 @@
+## [1.4.27](https://github.com/salesforcecli/plugin-settings/compare/1.4.26...1.4.27) (2023-08-23)
+
+
+### Bug Fixes
+
+* use getPluginsList to prep for oclif/core v3 ([517f31a](https://github.com/salesforcecli/plugin-settings/commit/517f31ac512e28cad0fd467545a97a2f36da6e0a))
+
+
+
 ## [1.4.26](https://github.com/salesforcecli/plugin-settings/compare/1.4.25...1.4.26) (2023-08-20)
 
 
