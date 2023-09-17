@@ -74,10 +74,127 @@ sf plugins
 
 <!-- commands -->
 
+- [`sf alias list`](#sf-alias-list)
+- [`sf alias set`](#sf-alias-set)
+- [`sf alias unset`](#sf-alias-unset)
 - [`sf config get`](#sf-config-get)
 - [`sf config list`](#sf-config-list)
 - [`sf config set`](#sf-config-set)
 - [`sf config unset`](#sf-config-unset)
+
+## `sf alias list`
+
+List all aliases currently set on your local computer.
+
+```
+USAGE
+  $ sf alias list [--json]
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  List all aliases currently set on your local computer.
+
+  Aliases are global, which means that you can use all the listed aliases in any Salesforce DX project on your computer.
+
+ALIASES
+  $ sf force alias list
+
+EXAMPLES
+  List all the aliases you've set:
+
+    $ sf alias list
+```
+
+_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/alias/list.ts)_
+
+## `sf alias set`
+
+Set one or more aliases on your local computer.
+
+```
+USAGE
+  $ sf alias set [--json]
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Set one or more aliases on your local computer.
+
+  Aliases are user-defined short names that make it easier to use the CLI. For example, users often set an alias for a
+  scratch org usernames because they're long and unintuitive.  Check the --help of a CLI command to determine where you
+  can use an alias.
+
+  You can associate an alias with only one value at a time. If you set an alias multiple times, the alias points to the
+  most recent value. Aliases are global; after you set an alias, you can use it in any Salesforce DX project on your
+  computer.
+
+  Use quotes to specify an alias value that contains spaces. You typically use an equal sign to set your alias, although
+  you don't need it if you're setting a single alias in a command.
+
+ALIASES
+  $ sf force alias set
+
+EXAMPLES
+  Set an alias for a scratch org username:
+
+    $ sf alias set my-scratch-org=test-sadbiytjsupn@example.com
+
+  Set multiple aliases with a single command:
+
+    $ sf alias set my-scratch-org=test-sadbiytjsupn@example.com my-other-scratch-org=test-ss0xut7txzxf@example.com
+
+  Set an alias that contains spaces:
+
+    $ sf alias set my-alias='alias with spaces'
+
+  Set a single alias without using an equal sign:
+
+    $ sf alias set my-scratch-org test-ss0xut7txzxf@example.com
+```
+
+_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/alias/set.ts)_
+
+## `sf alias unset`
+
+Unset one or more aliases that are currently set on your local computer.
+
+```
+USAGE
+  $ sf alias unset [--json] [-a] [-p]
+
+FLAGS
+  -a, --all        Unset all currently set aliases.
+  -p, --no-prompt  Don't prompt the user for confirmation when unsetting all aliases.
+
+GLOBAL FLAGS
+  --json  Format output as json.
+
+DESCRIPTION
+  Unset one or more aliases that are currently set on your local computer.
+
+  Aliases are global, so when you unset one it's no longer available in any Salesforce DX project.
+
+ALIASES
+  $ sf force alias unset
+
+EXAMPLES
+  Unset an alias:
+
+    $ sf alias unset my-alias
+
+  Unset multiple aliases with a single command:
+
+    $ sf alias unset my-alias my-other-alias
+
+  Unset all aliases:
+
+    $ sf alias unset --all [--no-prompt]
+```
+
+_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/alias/unset.ts)_
 
 ## `sf config get`
 
@@ -100,6 +217,9 @@ DESCRIPTION
   displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a
   configuration variable.
 
+ALIASES
+  $ sf force config get
+
 EXAMPLES
   Get the value of the "target-org" configuration variable.
 
@@ -109,6 +229,8 @@ EXAMPLES
 
     $ sf config get target-org api-version --verbose
 ```
+
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/config/get.ts)_
 
 ## `sf config list`
 
@@ -124,14 +246,19 @@ GLOBAL FLAGS
 DESCRIPTION
   List the configuration variables that you've previously set.
 
-  Global configuration variables apply to any directory and are always displayed. If you run this command from a project
-  directory, local configuration variables are also displayed.
+  Global configuration variables apply to any Salesforce DX project and are always displayed. If you run this command
+  from a project directory, local configuration variables are also displayed.
+
+ALIASES
+  $ sf force config list
 
 EXAMPLES
   List both global configuration variables and those local to your project:
 
     $ sf config list
 ```
+
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/config/list.ts)_
 
 ## `sf config set`
 
@@ -142,7 +269,7 @@ USAGE
   $ sf config set [--json] [-g]
 
 FLAGS
-  -g, --global  Set the configuration variables globally, so they can be used from any directory.
+  -g, --global  Set the configuration variables globally, so they can be used from any Salesforce DX project.
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -155,17 +282,18 @@ DESCRIPTION
   metadata" flag if you're deploying to your default org.
 
   Local configuration variables apply only to your current project. Global variables, specified with the --global flag,
-  apply in any directory.
+  apply in any Salesforce DX project.
 
   The resolution order if you've set a flag value in multiple ways is as follows:
 
   1. Flag value specified at the command line.
-
   2. Local (project-level) configuration variable.
-
   3. Global configuration variable.
 
   Run "sf config list" to see the configuration variables you've already set and their level (local or global).
+
+ALIASES
+  $ sf force config set
 
 EXAMPLES
   Set the local target-org configuration variable to an org username:
@@ -179,7 +307,14 @@ EXAMPLES
   Set the global target-org configuration variable:
 
     $ sf config set --global target-org=my-scratch-org
+
+  Set a single configuration variable without using an equal sign; this syntax doesn't work when setting multiple
+  configuration variables:
+
+    $ sf config set target-org me@my.com
 ```
+
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/config/set.ts)_
 
 ## `sf config unset`
 
@@ -190,7 +325,8 @@ USAGE
   $ sf config unset [--json] [-g]
 
 FLAGS
-  -g, --global  Unset the configuration variables globally, so they can no longer be used from any directory.
+  -g, --global  Unset the configuration variables globally, so they can no longer be used from any Salesforce DX
+                project.
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -199,7 +335,10 @@ DESCRIPTION
   Unset local or global configuration variables.
 
   Local configuration variables apply only to your current project. Global configuration variables apply in any
-  directory.
+  Salesforce DX project.
+
+ALIASES
+  $ sf force config unset
 
 EXAMPLES
   Unset the local "target-org" configuration variable:
@@ -210,5 +349,7 @@ EXAMPLES
 
     $ sf config unset target-org api-version --global
 ```
+
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.29/src/commands/config/unset.ts)_
 
 <!-- commandsstop -->
