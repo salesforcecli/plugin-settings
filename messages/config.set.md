@@ -16,6 +16,8 @@ The resolution order if you've set a flag value in multiple ways is as follows:
 
 Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
+For the full list of available configuration variables, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 # examples
 
 - Set the local target-org configuration variable to an org username:
