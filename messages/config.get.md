@@ -6,6 +6,8 @@ Get the value of a configuration variable.
 
 Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a configuration variable.
 
+For the full list of available configuration variables, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 # examples
 
 - Get the value of the "target-org" configuration variable.

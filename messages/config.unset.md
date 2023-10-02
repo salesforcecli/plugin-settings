@@ -6,6 +6,8 @@ Unset local or global configuration variables.
 
 Local configuration variables apply only to your current project. Global configuration variables apply in any Salesforce DX project.
 
+For the full list of available configuration variables, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 # examples
 
 - Unset the local "target-org" configuration variable:
