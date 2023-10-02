@@ -1,3 +1,9 @@
+## [1.4.33](https://github.com/salesforcecli/plugin-settings/compare/1.4.32...1.4.33) (2023-10-02)
+
+### Bug Fixes
+
+- add link to doc with full list of config vars ([0c218a2](https://github.com/salesforcecli/plugin-settings/commit/0c218a20682b890b5b552caa28cf236f3b93d5d5))
+
 ## [1.4.32](https://github.com/salesforcecli/plugin-settings/compare/1.4.31...1.4.32) (2023-09-30)
 
 ### Bug Fixes

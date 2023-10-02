@@ -107,7 +107,7 @@ EXAMPLES
     $ sf alias list
 ```
 
-_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/alias/list.ts)_
+_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/list.ts)_
 
 ## `sf alias set`
 
@@ -155,7 +155,7 @@ EXAMPLES
     $ sf alias set my-scratch-org test-ss0xut7txzxf@example.com
 ```
 
-_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/alias/set.ts)_
+_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/set.ts)_
 
 ## `sf alias unset`
 
@@ -194,7 +194,7 @@ EXAMPLES
     $ sf alias unset --all [--no-prompt]
 ```
 
-_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/alias/unset.ts)_
+_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/unset.ts)_
 
 ## `sf config get`
 
@@ -217,6 +217,9 @@ DESCRIPTION
   displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a
   configuration variable.
 
+  For the full list of available configuration variables, see
+  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 ALIASES
   $ sf force config get
 
@@ -230,7 +233,7 @@ EXAMPLES
     $ sf config get target-org api-version --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/get.ts)_
 
 ## `sf config list`
 
@@ -249,6 +252,9 @@ DESCRIPTION
   Global configuration variables apply to any Salesforce DX project and are always displayed. If you run this command
   from a project directory, local configuration variables are also displayed.
 
+  For the full list of available configuration variables, see
+  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 ALIASES
   $ sf force config list
 
@@ -258,7 +264,7 @@ EXAMPLES
     $ sf config list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/list.ts)_
 
 ## `sf config set`
 
@@ -292,6 +298,9 @@ DESCRIPTION
 
   Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
+  For the full list of available configuration variables, see
+  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 ALIASES
   $ sf force config set
 
@@ -314,7 +323,7 @@ EXAMPLES
     $ sf config set target-org me@my.com
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/set.ts)_
 
 ## `sf config unset`
 
@@ -337,6 +346,9 @@ DESCRIPTION
   Local configuration variables apply only to your current project. Global configuration variables apply in any
   Salesforce DX project.
 
+  For the full list of available configuration variables, see
+  https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
+
 ALIASES
   $ sf force config unset
 
@@ -350,6 +362,6 @@ EXAMPLES
     $ sf config unset target-org api-version --global
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.32/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/unset.ts)_
 
 <!-- commandsstop -->
