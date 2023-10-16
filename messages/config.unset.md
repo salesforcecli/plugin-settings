@@ -20,7 +20,7 @@ For the full list of available configuration variables, see https://developer.sa
 
 # flags.global.summary
 
-Unset the configuration variables globally, so they can no longer be used from any Salesforce DX project.
+Unset the configuration variables globally.
 
 # error.NoConfigKeysFound
 
