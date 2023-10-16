@@ -107,7 +107,7 @@ EXAMPLES
     $ sf alias list
 ```
 
-_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/list.ts)_
+_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/alias/list.ts)_
 
 ## `sf alias set`
 
@@ -155,7 +155,7 @@ EXAMPLES
     $ sf alias set my-scratch-org test-ss0xut7txzxf@example.com
 ```
 
-_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/set.ts)_
+_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/alias/set.ts)_
 
 ## `sf alias unset`
 
@@ -194,7 +194,7 @@ EXAMPLES
     $ sf alias unset --all [--no-prompt]
 ```
 
-_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/alias/unset.ts)_
+_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/alias/unset.ts)_
 
 ## `sf config get`
 
@@ -213,11 +213,9 @@ GLOBAL FLAGS
 DESCRIPTION
   Get the value of a configuration variable.
 
-  Run "sf config list" to see all the configuration variables you've set. Global configuration variable are always
-  displayed; local ones are displayed if you run the command in a project directory. Run "sf config set" to set a
-  configuration variable.
+  Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
-  For the full list of available configuration variables, see
+  Run "sf config set" to set a configuration variable. For the full list of available configuration variables, see
   https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
 
 ALIASES
@@ -233,7 +231,7 @@ EXAMPLES
     $ sf config get target-org api-version --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/config/get.ts)_
 
 ## `sf config list`
 
@@ -249,8 +247,16 @@ GLOBAL FLAGS
 DESCRIPTION
   List the configuration variables that you've previously set.
 
-  Global configuration variables apply to any Salesforce DX project and are always displayed. If you run this command
-  from a project directory, local configuration variables are also displayed.
+  A config variable can be global or local, depending on whether you used the --global flag when you set it. Local
+  config variables apply only to the current project and override global config variables, which apply to all projects.
+  You can set all config variables as environment variables. Environment variables override their equivalent local and
+  global config variables.
+
+  The output of this command takes into account your current context. For example, let's say you run this command from a
+  Salesforce DX project in which you've locally set the "target-org" config variable. The command displays the local
+  value, even if you've also set "target-org" globally. If you haven't set the config variable locally, then the global
+  value is displayed, if set. If you set the SF_TARGET_ORG environment variable, it's displayed as such and overrides
+  any locally or globally set "target-org" config variable.
 
   For the full list of available configuration variables, see
   https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
@@ -259,12 +265,12 @@ ALIASES
   $ sf force config list
 
 EXAMPLES
-  List both global configuration variables and those local to your project:
+  List the global and local configuration variables that apply to your current context:
 
     $ sf config list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/config/list.ts)_
 
 ## `sf config set`
 
@@ -298,6 +304,9 @@ DESCRIPTION
 
   Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
+  If you're setting a single config variable, you don't need to use an equal sign between the variable and value. But
+  you must use the equal sign if setting multiple config variables.
+
   For the full list of available configuration variables, see
   https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
 
@@ -307,23 +316,18 @@ ALIASES
 EXAMPLES
   Set the local target-org configuration variable to an org username:
 
-    $ sf config set target-org=me@my.org
+    $ sf config set target-org me@my.org
 
   Set the local target-org configuration variable to an alias:
 
-    $ sf config set target-org=my-scratch-org
+    $ sf config set target-org my-scratch-org
 
-  Set the global target-org configuration variable:
+  Set the global target-org and target-dev-hub configuration variables using aliases:
 
-    $ sf config set --global target-org=my-scratch-org
-
-  Set a single configuration variable without using an equal sign; this syntax doesn't work when setting multiple
-  configuration variables:
-
-    $ sf config set target-org me@my.com
+    $ sf config set --global target-org=my-scratch-org target-dev-hub=my-dev-hub
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/config/set.ts)_
 
 ## `sf config unset`
 
@@ -334,8 +338,7 @@ USAGE
   $ sf config unset [--json] [-g]
 
 FLAGS
-  -g, --global  Unset the configuration variables globally, so they can no longer be used from any Salesforce DX
-                project.
+  -g, --global  Unset the configuration variables globally.
 
 GLOBAL FLAGS
   --json  Format output as json.
@@ -362,6 +365,6 @@ EXAMPLES
     $ sf config unset target-org api-version --global
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.33/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/1.4.34/src/commands/config/unset.ts)_
 
 <!-- commandsstop -->

@@ -1,3 +1,9 @@
+## [1.4.34](https://github.com/salesforcecli/plugin-settings/compare/1.4.33...1.4.34) (2023-10-16)
+
+### Bug Fixes
+
+- clean up help ([58f7267](https://github.com/salesforcecli/plugin-settings/commit/58f72670798ec1d98f9260079fb5e8857f9756cb))
+
 ## [1.4.33](https://github.com/salesforcecli/plugin-settings/compare/1.4.32...1.4.33) (2023-10-02)
 
 ### Bug Fixes
