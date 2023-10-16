@@ -16,25 +16,23 @@ The resolution order if you've set a flag value in multiple ways is as follows:
 
 Run "sf config list" to see the configuration variables you've already set and their level (local or global).
 
+If you're setting a single config variable, you don't need to use an equal sign between the variable and value. But you must use the equal sign if setting multiple config variables.
+
 For the full list of available configuration variables, see https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_dev_cli_config_values.htm.
 
 # examples
 
 - Set the local target-org configuration variable to an org username:
 
-  <%= config.bin %> <%= command.id %> target-org=me@my.org
+  <%= config.bin %> <%= command.id %> target-org me@my.org
 
 - Set the local target-org configuration variable to an alias:
 
-  <%= config.bin %> <%= command.id %> target-org=my-scratch-org
+  <%= config.bin %> <%= command.id %> target-org my-scratch-org
 
-- Set the global target-org configuration variable:
+- Set the global target-org and target-dev-hub configuration variables using aliases:
 
-  <%= config.bin %> <%= command.id %> --global target-org=my-scratch-org
-
-- Set a single configuration variable without using an equal sign; this syntax doesn't work when setting multiple configuration variables:
-
-  <%= config.bin %> <%= command.id %> target-org me@my.com
+  <%= config.bin %> <%= command.id %> --global target-org=my-scratch-org target-dev-hub=my-dev-hub
 
 # flags.global.summary
 
