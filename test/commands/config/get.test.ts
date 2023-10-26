@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'path';
+import * as path from 'node:path';
 import { test, expect } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
