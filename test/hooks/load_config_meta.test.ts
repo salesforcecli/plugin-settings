@@ -50,7 +50,7 @@ describe('hooks', () => {
           key: 'customKey',
         },
       ]);
-      // modified since devPlugins now includes plugin-deploy-retrive to exercise a config-meta that it includes.
+      // modified since devPlugins now includes plugin-deploy-retrieve to exercise a config-meta that it includes.
       // see https://github.com/salesforcecli/plugin-deploy-retrieve/blob/main/src/configMeta.ts
       expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock);
     })

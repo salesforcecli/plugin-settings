@@ -35,6 +35,8 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
     return;
   }
 
+  configMetaRequireLocation += configMetaRequireLocation.endsWith('.js') ? '' : '.js';
+
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const configMetaPathModule = await import(configMetaRequireLocation);
