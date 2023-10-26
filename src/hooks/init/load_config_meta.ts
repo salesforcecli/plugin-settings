@@ -13,7 +13,7 @@ import { tsPath } from '@oclif/core/lib/config/index.js';
 const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
-function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefined {
+async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta | undefined> {
   let configMetaRequireLocation: string | undefined;
 
   try {
@@ -37,8 +37,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-    const configMetaPathModule = require(configMetaRequireLocation);
-    // import configMetaPathModule from configMetaRequireLocation
+    const configMetaPathModule = await import(configMetaRequireLocation);
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return configMetaPathModule?.default ?? configMetaPathModule;
@@ -48,20 +47,20 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
   }
 }
 
-const hook: Hook<'init'> = ({ config }): Promise<void> => {
+const hook: Hook<'init'> = async ({ config }): Promise<void> => {
   const flattenedConfigMetas = (config.getPluginsList() || [])
-    .flatMap((plugin) => {
-      const configMeta = loadConfigMeta(plugin);
+    .flatMap(async (plugin) => {
+      const configMeta = await loadConfigMeta(plugin);
       if (!configMeta) {
         log.info(`No config meta found for ${plugin.name}`);
       }
 
       return configMeta;
     })
-    .filter<ConfigPropertyMeta>(isObject);
+    .filter<Promise<ConfigPropertyMeta>>(isObject);
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(flattenedConfigMetas);
+    Config.addAllowedProperties(await Promise.all(flattenedConfigMetas));
   }
   return Promise.resolve();
 };

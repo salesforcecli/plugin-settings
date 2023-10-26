@@ -41,7 +41,7 @@ describe('hooks', () => {
         root: mockPluginRoot,
         hooks: {},
         pjson: path.resolve(mockPluginRoot, 'package.json'),
-      } as Plugin);
+      } as unknown as Plugin);
     })
     .hook('init')
     .do(() => {
@@ -68,7 +68,7 @@ describe('hooks', () => {
         root: mockPluginRoot,
         hooks: {},
         pjson: path.resolve(mockPluginRoot, 'package.json'),
-      } as Plugin);
+      } as unknown as Plugin);
     })
     .hook('init')
     .do(() => {
