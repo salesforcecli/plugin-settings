@@ -6,9 +6,9 @@
  */
 
 import type { Hook, Interfaces } from '@oclif/core';
-import { tsPath } from '@oclif/core';
 import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
+import { tsPath } from '@oclif/core/lib/config/index.js';
 
 const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
@@ -38,6 +38,7 @@ function loadConfigMeta(plugin: Interfaces.Plugin): ConfigPropertyMeta | undefin
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
     const configMetaPathModule = require(configMetaRequireLocation);
+    // import configMetaPathModule from configMetaRequireLocation
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return configMetaPathModule?.default ?? configMetaPathModule;

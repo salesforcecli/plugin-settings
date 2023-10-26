@@ -5,12 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { getNumber, getString } from '@salesforce/ts-types';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.set');
 
 function unsetAll() {

@@ -6,7 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { SetOrUnsetConfigCommandResult } from '../../../src/commands/config/set';
+import { SetOrUnsetConfigCommandResult } from '../../../src/commands/config/set.js';
 
 let testSession: TestSession;
 

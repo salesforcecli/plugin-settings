@@ -6,8 +6,8 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect } from 'chai';
-import { ConfigResponses } from '../../../../src/config';
-import { removePath } from '../../../shared/removePath';
+import { ConfigResponses } from '../../../../src/config.js';
+import { removePath } from '../../../shared/removePath.js';
 let testSession: TestSession;
 
 describe('config:list NUTs', async () => {

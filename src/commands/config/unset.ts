@@ -5,12 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'path';
 import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { Config, Messages } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, buildFailureMsg, calculateSuggestion, output } from '../../config';
-import { SetOrUnsetConfigCommandResult } from './set';
+import { CONFIG_HELP_SECTION, buildFailureMsg, calculateSuggestion, output } from '../../config.js';
+import { SetOrUnsetConfigCommandResult } from './set.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.unset');
 
 export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {

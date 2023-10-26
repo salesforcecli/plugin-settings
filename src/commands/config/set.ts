@@ -5,11 +5,14 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'path';
 import { parseVarArgs, Flags, loglevel, Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
-import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output } from '../../config';
+import { HelpSection } from '@oclif/core';
+import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output } from '../../config.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 export type SetOrUnsetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
@@ -29,7 +32,7 @@ export class Set extends SfCommand<SetOrUnsetConfigCommandResult> {
     }),
   };
 
-  public static configurationVariablesSection = CONFIG_HELP_SECTION;
+  public static configurationVariablesSection: HelpSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<SetOrUnsetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);

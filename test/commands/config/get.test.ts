@@ -5,20 +5,20 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'path';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
 import { test, expect } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { Plugin } from '@oclif/core';
-import * as sinon from 'sinon';
-import { SinonSandbox } from 'sinon';
-import { SfConfigProperties } from '@salesforce/core/lib/config/config';
-import { calculateSuggestion } from '../../../src/config';
+import sinon from 'sinon';
+import { SfConfigProperties } from '@salesforce/core';
+import { calculateSuggestion } from '../../../src/config.js';
 
 process.env.NODE_ENV = 'development';
 
 describe('config:get', () => {
-  let sandbox: SinonSandbox;
+  let sandbox: sinon.SinonSandbox;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
   });
@@ -120,11 +120,14 @@ describe('config:get', () => {
     test
       .loadConfig()
       .do((ctx) => {
-        const mockPluginRoot = path.resolve(__dirname, '../../config-meta-mocks/typescript-src');
-        ctx.config.plugins.push({
+        const mockPluginRoot = path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '../../config-meta-mocks/typescript-src'
+        );
+        ctx.config.plugins.set('sfdx-cli-ts-plugin', {
           root: mockPluginRoot,
           hooks: {},
-          pjson: require(path.resolve(mockPluginRoot, 'package.json')),
+          pjson: path.resolve(mockPluginRoot, 'package.json'),
           name: 'sfdx-cli-ts-plugin',
           commands: [],
         } as unknown as Plugin);

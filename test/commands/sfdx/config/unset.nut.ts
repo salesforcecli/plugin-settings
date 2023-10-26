@@ -6,7 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { expect } from 'chai';
-import { ConfigResponses } from '../../../../src/config';
+import { ConfigResponses } from '../../../../src/config.js';
 let testSession: TestSession;
 
 describe('config:unset NUTs', async () => {

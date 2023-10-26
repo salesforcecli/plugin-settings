@@ -4,6 +4,8 @@
  * Licensed under the BSD 3-Clause license.
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'path';
 import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { ConfigAggregator, Messages } from '@salesforce/core';
 import {
@@ -13,9 +15,9 @@ import {
   buildSuccessMsg,
   output,
   ConfigResponses,
-} from '../../config';
+} from '../../config.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.get');
 
 export class Get extends SfCommand<ConfigResponses> {

@@ -5,16 +5,17 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import * as path from 'path';
+import path from 'path';
+import { fileURLToPath } from 'node:url';
 import { test, expect } from '@oclif/test';
 import { Plugin } from '@oclif/core';
 import { Config } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
-import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta';
+import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta.js';
 // @ts-expect-error because it's js
-import jsLibConfigMetaMock from '../config-meta-mocks/javascript-lib/lib/config-meta';
+import jsLibConfigMetaMock from '../config-meta-mocks/javascript-lib/lib/config-meta.js';
 
 process.env.NODE_ENV = 'development';
 
@@ -32,11 +33,14 @@ describe('hooks', () => {
     .stdout()
     .loadConfig()
     .do((ctx) => {
-      const mockPluginRoot = path.resolve(__dirname, '../config-meta-mocks/typescript-src');
-      ctx.config.plugins.push({
+      const mockPluginRoot = path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../config-meta-mocks/typescript-src'
+      );
+      ctx.config.plugins.set('sfdx-cli-ts-plugin', {
         root: mockPluginRoot,
         hooks: {},
-        pjson: require(path.resolve(mockPluginRoot, 'package.json')),
+        pjson: path.resolve(mockPluginRoot, 'package.json'),
       } as Plugin);
     })
     .hook('init')
@@ -48,7 +52,7 @@ describe('hooks', () => {
       ]);
       // modified since devPlugins now includes plugin-deploy-retrive to exercise a config-meta that it includes.
       // see https://github.com/salesforcecli/plugin-deploy-retrieve/blob/main/src/configMeta.ts
-      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock[0]);
+      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock);
     })
     .it('loads config metas from a ts src directory');
 
@@ -56,11 +60,14 @@ describe('hooks', () => {
     .stdout()
     .loadConfig()
     .do((ctx) => {
-      const mockPluginRoot = path.resolve(__dirname, '../config-meta-mocks/javascript-lib');
-      ctx.config.plugins.push({
+      const mockPluginRoot = path.resolve(
+        path.dirname(fileURLToPath(import.meta.url)),
+        '../config-meta-mocks/javascript-lib'
+      );
+      ctx.config.plugins.set('sfdx-cli-ts-plugin', {
         root: mockPluginRoot,
         hooks: {},
-        pjson: require(path.resolve(mockPluginRoot, 'package.json')),
+        pjson: path.resolve(mockPluginRoot, 'package.json'),
       } as Plugin);
     })
     .hook('init')

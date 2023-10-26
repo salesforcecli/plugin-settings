@@ -6,8 +6,8 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect, config as chaiConfig } from 'chai';
-import { Msg } from '../../../../src/config';
-import { SetOrUnsetConfigCommandResult } from '../../../../src/commands/config/set';
+import { Msg } from '../../../../src/config.js';
+import { SetOrUnsetConfigCommandResult } from '../../../../src/commands/config/set.js';
 chaiConfig.truncateThreshold = 0;
 
 let testSession: TestSession;

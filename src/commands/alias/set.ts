@@ -5,11 +5,13 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'path';
 import { loglevel, parseVarArgs } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasCommand, AliasResults } from '../../alias';
+import { AliasCommand, AliasResults } from '../../alias.js';
 
-Messages.importMessagesDirectory(__dirname);
+Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.set');
 
 export default class AliasSet extends AliasCommand<AliasResults> {

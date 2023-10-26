@@ -8,8 +8,9 @@
 import { Ux } from '@salesforce/sf-plugins-core';
 import { ConfigInfo, SfError, Config } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
-import * as Levenshtein from 'fast-levenshtein';
+import Levenshtein from 'fast-levenshtein';
 import { isJsonMap } from '@salesforce/ts-types';
+import { HelpSection } from '@oclif/core';
 
 export type Msg = {
   name: string;
@@ -27,7 +28,7 @@ export type Msg = {
 };
 export type ConfigResponses = Msg[];
 
-export const CONFIG_HELP_SECTION = toHelpSection(
+export const CONFIG_HELP_SECTION: HelpSection = toHelpSection(
   'CONFIGURATION VARIABLES',
   ...new Set(Config.getAllowedProperties().map((k) => k.newKey ?? k.key))
 );
