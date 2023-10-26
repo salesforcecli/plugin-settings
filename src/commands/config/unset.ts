@@ -6,7 +6,7 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { Config, Messages } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, buildFailureMsg, calculateSuggestion, output } from '../../config.js';

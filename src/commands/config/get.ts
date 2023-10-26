@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import { Flags, loglevel, SfCommand, Ux } from '@salesforce/sf-plugins-core';
 import { ConfigAggregator, Messages } from '@salesforce/core';
 import {

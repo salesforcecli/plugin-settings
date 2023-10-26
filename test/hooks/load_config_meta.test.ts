@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import path from 'path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
 import { test, expect } from '@oclif/test';
@@ -15,8 +15,6 @@ import { stubMethod } from '@salesforce/ts-sinon';
 import sinon from 'sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
 import tsSrcConfigMetaMock from '../config-meta-mocks/typescript-src/src/config-meta.js';
-// @ts-expect-error because it's js
-import jsLibConfigMetaMock from '../config-meta-mocks/javascript-lib/lib/config-meta.js';
 
 process.env.NODE_ENV = 'development';
 
@@ -46,39 +44,14 @@ describe('hooks', () => {
     })
     .hook('init')
     .do(() => {
-      expect(tsSrcConfigMetaMock).to.deep.equal([
+      expect(tsSrcConfigMetaMock.default).to.deep.equal([
         {
           key: 'customKey',
         },
       ]);
       // modified since devPlugins now includes plugin-deploy-retrieve to exercise a config-meta that it includes.
       // see https://github.com/salesforcecli/plugin-deploy-retrieve/blob/main/src/configMeta.ts
-      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock);
+      expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock.default);
     })
     .it('loads config metas from a ts src directory');
-
-  // test
-  //   .stdout()
-  //   .loadConfig()
-  //   .do(async (ctx) => {
-  //     const mockPluginRoot = path.resolve(
-  //       path.dirname(fileURLToPath(import.meta.url)),
-  //       '../config-meta-mocks/javascript-lib'
-  //     );
-  //     ctx.config.plugins.set('sfdx-cli-ts-plugin', {
-  //       root: mockPluginRoot,
-  //       hooks: {},
-  //       pjson: JSON.parse(readFileSync(path.resolve(mockPluginRoot, 'package.json'), 'utf-8')),
-  //     } as unknown as Plugin);
-  //   })
-  //   .hook('init')
-  //   .do(() => {
-  //     expect(jsLibConfigMetaMock).to.deep.equal([
-  //       {
-  //         key: 'customKey',
-  //       },
-  //     ]);
-  //     expect((Config.addAllowedProperties as SinonStub).firstCall.args[0][1]).to.equal(jsLibConfigMetaMock[0]);
-  //   })
-  //   .it('loads config metas from a js lib directory');
 });

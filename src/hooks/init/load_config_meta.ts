@@ -25,26 +25,28 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
 
     log.info(x);
 
-    return x.default;
+    return x.default ?? x;
   } catch {
     return;
   }
 }
 
 const hook: Hook<'init'> = async ({ config }): Promise<void> => {
-  const flattenedConfigMetas = (config.getPluginsList() || [])
-    .flatMap(async (plugin) => {
-      const configMeta = await loadConfigMeta(plugin);
-      if (!configMeta) {
-        log.info(`No config meta found for ${plugin.name}`);
-      }
+  const flattenedConfigMetas = (
+    await Promise.all(
+      (config.getPluginsList() || []).flatMap(async (plugin) => {
+        const configMeta = await loadConfigMeta(plugin);
+        if (!configMeta) {
+          log.info(`No config meta found for ${plugin.name}`);
+        }
 
-      return configMeta;
-    })
-    .filter<Promise<ConfigPropertyMeta>>(isObject);
+        return configMeta;
+      })
+    )
+  ).filter<ConfigPropertyMeta>(isObject);
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(await Promise.all(flattenedConfigMetas));
+    Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
 };
