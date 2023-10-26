@@ -6,11 +6,10 @@
  */
 
 import type { Hook, Interfaces } from '@oclif/core';
-import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
+import { Config, ConfigPropertyMeta } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
-import { load } from '@oclif/core/lib/module-loader.js';
+import { ModuleLoader } from '@oclif/core';
 
-const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
 async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta | undefined> {
@@ -21,25 +20,21 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
       return;
     }
 
-    const x = (await load(plugin, configMetaPath)) as { default: ConfigPropertyMeta };
-
-    log.info(x);
-
-    return x.default ?? x;
-  } catch {
+    const module = await ModuleLoader.load<{ default?: ConfigPropertyMeta }>(plugin, configMetaPath);
+    return module.default;
+  } catch (err) {
     return;
   }
 }
 
-const hook: Hook<'init'> = async ({ config }): Promise<void> => {
+const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
   const flattenedConfigMetas = (
     await Promise.all(
       (config.getPluginsList() || []).flatMap(async (plugin) => {
         const configMeta = await loadConfigMeta(plugin);
         if (!configMeta) {
-          log.info(`No config meta found for ${plugin.name}`);
+          context.debug(`No config meta found for ${plugin.name}`);
         }
-
         return configMeta;
       })
     )
