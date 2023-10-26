@@ -8,14 +8,12 @@
 import type { Hook, Interfaces } from '@oclif/core';
 import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
-import { tsPath } from '@oclif/core/lib/config/index.js';
+import { load } from '@oclif/core/lib/module-loader.js';
 
 const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
 async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta | undefined> {
-  let configMetaRequireLocation: string | undefined;
-
   try {
     const configMetaPath = get(plugin, `pjson.oclif.${OCLIF_META_PJSON_KEY}`, null);
 
@@ -23,28 +21,12 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
       return;
     }
 
-    const relativePath = tsPath(plugin.root, configMetaPath);
+    const x = (await load(plugin, configMetaPath)) as { default: ConfigPropertyMeta };
 
-    // use relative path if it exists, require string as is
-    configMetaRequireLocation = relativePath ?? configMetaPath;
+    log.info(x);
+
+    return x.default;
   } catch {
-    return;
-  }
-
-  if (!configMetaRequireLocation) {
-    return;
-  }
-
-  configMetaRequireLocation += configMetaRequireLocation.endsWith('.js') ? '' : '.js';
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-    const configMetaPathModule = await import(configMetaRequireLocation);
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-    return configMetaPathModule?.default ?? configMetaPathModule;
-  } catch {
-    log.error(`Error trying to load config meta from ${configMetaRequireLocation}`);
     return;
   }
 }
