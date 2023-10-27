@@ -6,16 +6,13 @@
  */
 
 import type { Hook, Interfaces } from '@oclif/core';
-import { Config, ConfigPropertyMeta, Logger } from '@salesforce/core';
+import { Config, ConfigPropertyMeta } from '@salesforce/core';
 import { isObject, get } from '@salesforce/ts-types';
-import { tsPath } from '@oclif/core/lib/config/index.js';
+import { ModuleLoader } from '@oclif/core';
 
-const log = Logger.childFromRoot('plugin-settings:load_config_meta');
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
 async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta | undefined> {
-  let configMetaRequireLocation: string | undefined;
-
   try {
     const configMetaPath = get(plugin, `pjson.oclif.${OCLIF_META_PJSON_KEY}`, null);
 
@@ -23,44 +20,28 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
       return;
     }
 
-    const relativePath = tsPath(plugin.root, configMetaPath);
-
-    // use relative path if it exists, require string as is
-    configMetaRequireLocation = relativePath ?? configMetaPath;
-  } catch {
-    return;
-  }
-
-  if (!configMetaRequireLocation) {
-    return;
-  }
-
-  try {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-var-requires
-    const configMetaPathModule = await import(configMetaRequireLocation);
-
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-    return configMetaPathModule?.default ?? configMetaPathModule;
-  } catch {
-    log.error(`Error trying to load config meta from ${configMetaRequireLocation}`);
+    const module = await ModuleLoader.load<{ default?: ConfigPropertyMeta }>(plugin, configMetaPath);
+    return module.default;
+  } catch (err) {
     return;
   }
 }
 
-const hook: Hook<'init'> = async ({ config }): Promise<void> => {
-  const flattenedConfigMetas = (config.getPluginsList() || [])
-    .flatMap(async (plugin) => {
-      const configMeta = await loadConfigMeta(plugin);
-      if (!configMeta) {
-        log.info(`No config meta found for ${plugin.name}`);
-      }
-
-      return configMeta;
-    })
-    .filter<Promise<ConfigPropertyMeta>>(isObject);
+const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
+  const flattenedConfigMetas = (
+    await Promise.all(
+      (config.getPluginsList() || []).flatMap(async (plugin) => {
+        const configMeta = await loadConfigMeta(plugin);
+        if (!configMeta) {
+          context.debug(`No config meta found for ${plugin.name}`);
+        }
+        return configMeta;
+      })
+    )
+  ).filter<ConfigPropertyMeta>(isObject);
 
   if (flattenedConfigMetas.length) {
-    Config.addAllowedProperties(await Promise.all(flattenedConfigMetas));
+    Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
 };

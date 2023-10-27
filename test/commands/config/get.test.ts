@@ -7,12 +7,12 @@
 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@oclif/test';
-import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
+import { ConfigAggregator, OrgConfigProperties, SfConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { Plugin } from '@oclif/core';
 import sinon from 'sinon';
-import { SfConfigProperties } from '@salesforce/core';
 import { calculateSuggestion } from '../../../src/config.js';
 
 process.env.NODE_ENV = 'development';
@@ -124,11 +124,11 @@ describe('config:get', () => {
           path.dirname(fileURLToPath(import.meta.url)),
           '../../config-meta-mocks/typescript-src'
         );
-        ctx.config.plugins.set('sfdx-cli-ts-plugin', {
+        ctx.config.plugins.set('sfdx-cli-ts-plugin-2', {
           root: mockPluginRoot,
           hooks: {},
-          pjson: path.resolve(mockPluginRoot, 'package.json'),
-          name: 'sfdx-cli-ts-plugin',
+          pjson: JSON.parse(readFileSync(path.resolve(mockPluginRoot, 'package.json'), 'utf-8')),
+          name: 'sfdx-cli-ts-plugin-2',
           commands: [],
         } as unknown as Plugin);
       })
