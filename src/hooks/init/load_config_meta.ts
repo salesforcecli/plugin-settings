@@ -12,7 +12,7 @@ import { ModuleLoader } from '@oclif/core';
 
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
-async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta | undefined> {
+async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigPropertyMeta[] | undefined> {
   try {
     const configMetaPath = get(plugin, `pjson.oclif.${OCLIF_META_PJSON_KEY}`, null);
 
@@ -20,7 +20,7 @@ async function loadConfigMeta(plugin: Interfaces.Plugin): Promise<ConfigProperty
       return;
     }
 
-    const module = await ModuleLoader.load<{ default?: ConfigPropertyMeta }>(plugin, configMetaPath);
+    const module = await ModuleLoader.load<{ default?: ConfigPropertyMeta[] }>(plugin, configMetaPath);
     return module.default;
   } catch (err) {
     return;
@@ -38,7 +38,9 @@ const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
         return configMeta;
       })
     )
-  ).filter<ConfigPropertyMeta>(isObject);
+  )
+    .flatMap((d) => d)
+    .filter<ConfigPropertyMeta>(isObject);
 
   if (flattenedConfigMetas.length) {
     Config.addAllowedProperties(flattenedConfigMetas);

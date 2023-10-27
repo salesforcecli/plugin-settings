@@ -51,7 +51,7 @@ describe('hooks', () => {
     );
 
     await config.runHook('init', { argv: [], id: 'test' });
-    expect(addAllowedPropertiesStub.firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock.default);
+    expect(addAllowedPropertiesStub.firstCall.args[0][1]).to.equal(tsSrcConfigMetaMock.default[0]);
   });
 
   it('should load config metas from a js lib directory', async () => {
@@ -70,6 +70,6 @@ describe('hooks', () => {
     );
 
     await config.runHook('init', { argv: [], id: 'test' });
-    expect(addAllowedPropertiesStub.firstCall.args[0][1]).to.equal(jsLibConfigMetaMock.default);
+    expect(addAllowedPropertiesStub.firstCall.args[0][1]).to.equal(jsLibConfigMetaMock.default[0]);
   });
 });
