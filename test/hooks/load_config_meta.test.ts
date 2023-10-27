@@ -5,7 +5,7 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import path from 'path';
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { test, expect } from '@oclif/test';
 import { Plugin } from '@oclif/core';

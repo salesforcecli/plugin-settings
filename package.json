@@ -5,7 +5,7 @@
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
-    "@oclif/core": "^3.8.0",
+    "@oclif/core": "^3.9.0",
     "@salesforce/core": "^5.3.10",
     "@salesforce/sf-plugins-core": "^4.0.0",
     "fast-levenshtein": "^3.0.0"
@@ -15,7 +15,7 @@
     "@oclif/test": "^3.0.3",
     "@salesforce/cli-plugins-testkit": "^4.4.7",
     "@salesforce/dev-config": "^4.1.0",
-    "@salesforce/dev-scripts": "^5.11.0",
+    "@salesforce/dev-scripts": "^5.12.2",
     "@salesforce/kit": "^3.0.11",
     "@salesforce/plugin-command-reference": "^3.0.40",
     "@salesforce/plugin-deploy-retrieve": "^1.18.7",
@@ -29,14 +29,14 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "chai": "^4.3.10",
-    "eslint": "^8.51.0",
+    "eslint": "^8.52.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-config-salesforce": "^2.0.2",
     "eslint-config-salesforce-license": "^0.2.0",
-    "eslint-config-salesforce-typescript": "^1.1.2",
+    "eslint-config-salesforce-typescript": "^2.0.0",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-jsdoc": "^43.0.5",
+    "eslint-plugin-jsdoc": "^46.8.2",
     "eslint-plugin-sf-plugin": "^1.16.9",
     "fs-extra": "^10.1.0",
     "husky": "^7.0.4",
@@ -50,7 +50,7 @@
     "sinon": "10.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "wireit": "^0.14.0"
+    "wireit": "^0.14.1"
   },
   "config": {},
   "engines": {
@@ -61,6 +61,7 @@
     "/messages",
     "/oclif.manifest.json",
     "/schemas",
+    "/oclif.lock",
     "/oclif.lock"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-settings",
@@ -198,7 +199,7 @@
       "output": []
     },
     "test:command-reference": {
-      "command": "\"./bin/dev\" commandreference:generate --erroronwarnings",
+      "command": "ts-node \"./bin/dev.js\" commandreference:generate --erroronwarnings",
       "files": [
         "src/**/*.ts",
         "messages/**",
@@ -209,7 +210,7 @@
       ]
     },
     "test:deprecation-policy": {
-      "command": "\"./bin/dev\" snapshot:compare",
+      "command": "ts-node \"./bin/dev.js\" snapshot:compare",
       "files": [
         "src/**/*.ts"
       ],
@@ -219,7 +220,7 @@
       ]
     },
     "test:json-schema": {
-      "command": "\"./bin/dev\" schema:compare",
+      "command": "ts-node \"./bin/dev.js\" schema:compare",
       "files": [
         "src/**/*.ts",
         "schemas"

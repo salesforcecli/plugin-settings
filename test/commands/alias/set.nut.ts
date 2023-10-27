@@ -6,7 +6,7 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { getNumber, getString } from '@salesforce/ts-types';
 import { expect } from 'chai';

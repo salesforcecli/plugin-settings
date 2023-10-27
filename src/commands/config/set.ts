@@ -6,7 +6,7 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import { parseVarArgs, Flags, loglevel, Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { HelpSection } from '@oclif/core';

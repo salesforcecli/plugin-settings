@@ -6,7 +6,7 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'path';
+import { dirname } from 'node:path';
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
 import { AliasCommand, AliasResults } from '../../alias.js';
