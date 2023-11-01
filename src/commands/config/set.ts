@@ -9,7 +9,6 @@ import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { parseVarArgs, Flags, loglevel, Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
-import { HelpSection } from '@oclif/core';
 import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output } from '../../config.js';
 
 Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
@@ -32,7 +31,7 @@ export class Set extends SfCommand<SetOrUnsetConfigCommandResult> {
     }),
   };
 
-  public static configurationVariablesSection: HelpSection = CONFIG_HELP_SECTION;
+  public static configurationVariablesSection = CONFIG_HELP_SECTION;
 
   public async run(): Promise<SetOrUnsetConfigCommandResult> {
     const { args, argv, flags } = await this.parse(Set);

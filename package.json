@@ -60,7 +60,6 @@
     "/messages",
     "/oclif.manifest.json",
     "/schemas",
-    "/oclif.lock",
     "/oclif.lock"
   ],
   "homepage": "https://github.com/salesforcecli/plugin-settings",
