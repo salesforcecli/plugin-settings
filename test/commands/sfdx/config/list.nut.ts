@@ -103,12 +103,12 @@ describe('config:list NUTs', async () => {
 
   describe('config:list with multiple results', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
-      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0 });
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0, cli: 'dev' });
+      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0, cli: 'dev' });
     });
 
     it('lists multiple results correctly JSON', () => {
-      execCmd('config:set restDeploy=false', { ensureExitCode: 0 });
+      execCmd('config:set restDeploy=false', { ensureExitCode: 0, cli: 'dev' });
       const res = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
       assert(res.jsonOutput);
       res.jsonOutput.result = removePath(res.jsonOutput?.result);
@@ -136,8 +136,8 @@ describe('config:list NUTs', async () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config:set restDeploy=false');
-      const res: string = execCmd('config:list', { ensureExitCode: 0 }).shellOutput.stdout;
+      execCmd('config:set restDeploy=false', { cli: 'dev' });
+      const res: string = execCmd('config:list', { ensureExitCode: 0, cli: 'dev' }).shellOutput.stdout;
       expect(res).to.include('List Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');

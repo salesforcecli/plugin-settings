@@ -120,8 +120,8 @@ describe('config:unset NUTs', async () => {
     });
 
     it('unset multiple configs correctly JSON', () => {
-      execCmd('config:set restDeploy=false');
-      const res = execCmd('config:unset restDeploy apiVersion maxQueryLimit --json', { ensureExitCode: 0 });
+      execCmd('config:set restDeploy=false', { cli: 'dev' });
+      const res = execCmd('config:unset restDeploy apiVersion maxQueryLimit --json', { ensureExitCode: 0, cli: 'dev' });
       expect(res.jsonOutput).to.deep.equal({
         status: 0,
         result: {
@@ -152,9 +152,9 @@ describe('config:unset NUTs', async () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      execCmd('config:set restDeploy=false');
-      const res: string = execCmd('config:unset restDeploy apiVersion maxQueryLimit', { ensureExitCode: 0 }).shellOutput
-        .stdout;
+      execCmd('config:set restDeploy=false', { cli: 'dev' });
+      const res = execCmd('config:unset restDeploy apiVersion maxQueryLimit', { ensureExitCode: 0, cli: 'dev' })
+        .shellOutput.stdout;
       expect(res).to.include('Unset Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('org-max-query-limit');
