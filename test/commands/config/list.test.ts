@@ -9,8 +9,8 @@ import { test, expect } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SinonSandbox } from 'sinon';
-import * as sinon from 'sinon';
-import { SfConfigProperties } from '@salesforce/core/lib/config/config';
+import sinon from 'sinon';
+import { SfConfigProperties } from '@salesforce/core/lib/config/config.js';
 
 describe('config:list', () => {
   let sandbox: SinonSandbox;

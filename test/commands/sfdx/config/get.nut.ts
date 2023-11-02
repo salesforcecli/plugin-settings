@@ -6,7 +6,7 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect, config as chaiConfig } from 'chai';
-import { ConfigResponses } from '../../../../src/config';
+import { ConfigResponses } from '../../../../src/config.js';
 let testSession: TestSession;
 chaiConfig.truncateThreshold = 0;
 
@@ -34,11 +34,14 @@ describe('config:get NUTs', async () => {
 
   describe('config:get with singular result', () => {
     before(() => {
-      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0, cli: 'sf' });
     });
 
     it('gets singular config correctly', () => {
-      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
+      const res = execCmd<ConfigResponses>('config:get apiVersion --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
       assert(res?.result[0]);
       const result = res.result[0];
       // the path variable will change machine to machine, ensure it has the config file and then delete it
@@ -53,8 +56,11 @@ describe('config:get NUTs', async () => {
     });
 
     it('properly overwrites config values, with local > global', () => {
-      execCmd('config:set apiVersion=52.0', { ensureExitCode: 0 });
-      const res = execCmd<ConfigResponses>('config:get apiVersion --json', { ensureExitCode: 0 }).jsonOutput;
+      execCmd('config:set apiVersion=52.0', { ensureExitCode: 0, cli: 'sf' });
+      const res = execCmd<ConfigResponses>('config:get apiVersion --json', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).jsonOutput;
       // the path variable will change machine to machine, ensure it has the config file and then delete it
       expect(res?.result[0].path).to.include('config.json');
       delete res?.result[0].path;
@@ -75,7 +81,8 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets singular result correctly stdout', () => {
-      const res: string = execCmd<ConfigResponses>('config:get apiVersion', { ensureExitCode: 0 }).shellOutput.stdout;
+      const res: string = execCmd<ConfigResponses>('config:get apiVersion', { ensureExitCode: 0, cli: 'sf' })
+        .shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('52.0');
@@ -84,15 +91,16 @@ describe('config:get NUTs', async () => {
 
   describe('config:get with multiple results', () => {
     beforeEach(() => {
-      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0 });
-      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0 });
+      execCmd('config:set apiVersion=51.0 --global', { ensureExitCode: 0, cli: 'sf' });
+      execCmd('config:set maxQueryLimit=100 --global', { ensureExitCode: 0, cli: 'sf' });
     });
 
     it('gets multiple results correctly', () => {
-      execCmd('config:set restDeploy=false', { ensureExitCode: 0 });
-      execCmd('config:set apiVersion=51.0', { ensureExitCode: 0 });
+      execCmd('config:set restDeploy=false', { ensureExitCode: 0, cli: 'sf' });
+      execCmd('config:set apiVersion=51.0', { ensureExitCode: 0, cli: 'sf' });
       const res = execCmd<ConfigResponses>('config:get apiVersion maxQueryLimit restDeploy --json', {
         ensureExitCode: 0,
+        cli: 'sf',
       });
       Object.values(res.jsonOutput?.result ?? []).forEach((result) => {
         expect(result.path).to.include('config.json');
@@ -132,8 +140,10 @@ describe('config:get NUTs', async () => {
     });
 
     it('gets multiple results correctly stdout', () => {
-      const res = execCmd<ConfigResponses>('config:get  apiVersion maxQueryLimit restDeploy', { ensureExitCode: 0 })
-        .shellOutput.stdout;
+      const res = execCmd<ConfigResponses>('config:get  apiVersion maxQueryLimit restDeploy', {
+        ensureExitCode: 0,
+        cli: 'sf',
+      }).shellOutput.stdout;
       expect(res).to.include('Get Config');
       expect(res).to.include('org-api-version');
       expect(res).to.include('51.0');

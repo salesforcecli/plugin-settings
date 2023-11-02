@@ -9,7 +9,7 @@ import { test, expect } from '@oclif/test';
 import { Config, Org, OrgConfigProperties } from '@salesforce/core';
 import { StubbedType, stubInterface, stubMethod } from '@salesforce/ts-sinon';
 import { SinonSandbox, SinonStub } from 'sinon';
-import * as sinon from 'sinon';
+import sinon from 'sinon';
 
 describe('config:set', () => {
   let configStub: StubbedType<Config>;

@@ -6,8 +6,8 @@
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
 import { assert, expect, config as chaiConfig } from 'chai';
-import { Msg } from '../../../../src/config';
-import { SetOrUnsetConfigCommandResult } from '../../../../src/commands/config/set';
+import { Msg } from '../../../../src/config.js';
+import { SetOrUnsetConfigCommandResult } from '../../../../src/commands/config/set.js';
 chaiConfig.truncateThreshold = 0;
 
 let testSession: TestSession;
@@ -31,7 +31,7 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
     status: 1,
     warnings: [`Deprecated config name: ${key}. Please use ${newKey} instead.`],
   };
-  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`, { cli: 'dev' }).jsonOutput;
   assert(res?.result.failures, 'there were no failures');
   const failures = res?.result.failures;
   // validate error message / failures error message here and delete, it will vary based on the value.
@@ -42,7 +42,7 @@ function verifyValidationError(key: string, value: string | number, newKey: stri
 }
 
 function verifyValidationStartsWith(key: string, value: string | number, message: string) {
-  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`).jsonOutput;
+  const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`, { cli: 'dev' }).jsonOutput;
   expect(res?.result).to.have.property('successes').with.length(0);
   expect(res?.result).to.have.property('failures').with.length(1);
   const result = res?.result.failures[0] as Msg;
@@ -52,6 +52,7 @@ function verifyValidationStartsWith(key: string, value: string | number, message
 
 function verifyKeysAndValuesJson(key: string, value: string | boolean, newKey: string) {
   const res = execCmd<SetOrUnsetConfigCommandResult>(`config:set ${key}=${value} --json`, {
+    cli: 'dev',
     ensureExitCode: 0,
   }).jsonOutput;
   assert(res);
@@ -72,7 +73,7 @@ function verifyKeysAndValuesJson(key: string, value: string | boolean, newKey: s
   execCmd(`config:unset ${key}`);
 }
 function verifyKeysAndValuesStdout(key: string, value: string | boolean, assertions: string[]) {
-  const res = execCmd(`config:set ${key}=${value}`).shellOutput.stdout;
+  const res = execCmd(`config:set ${key}=${value}`, { cli: 'dev' }).shellOutput.stdout;
   expect(res).to.include('Set Config');
   assertions.forEach((assertion) => {
     expect(res).to.include(assertion);
