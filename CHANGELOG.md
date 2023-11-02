@@ -1,3 +1,5 @@
+## [2.0.1](https://github.com/salesforcecli/plugin-settings/compare/1.4.37...2.0.1) (2023-11-02)
+
 ## [1.4.37](https://github.com/salesforcecli/plugin-settings/compare/1.4.36...1.4.37) (2023-10-28)
 
 ### Bug Fixes
