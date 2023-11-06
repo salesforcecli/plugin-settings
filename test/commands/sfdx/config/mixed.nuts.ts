@@ -48,9 +48,9 @@ describe('e2e scenario tests', async () => {
           listResult.jsonOutput?.result.some((r) => r.name === 'org-max-query-limit' && r.value === '500')
         ).to.equal(true);
         expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(1);
-        expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-          0
-        );
+        expect(
+          listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+        ).to.have.length(0);
       });
     });
 
@@ -80,9 +80,9 @@ describe('e2e scenario tests', async () => {
           listResult.jsonOutput?.result.some((r) => r.name === 'org-max-query-limit' && r.value === '499')
         ).to.equal(true);
         expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(1);
-        expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-          0
-        );
+        expect(
+          listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+        ).to.have.length(0);
       });
     });
 
@@ -112,9 +112,9 @@ describe('e2e scenario tests', async () => {
           listResult.jsonOutput?.result.some((r) => r.name === 'org-max-query-limit' && r.value === '501')
         ).to.equal(true);
         expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(1);
-        expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-          0
-        );
+        expect(
+          listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+        ).to.have.length(0);
       });
     });
   });
@@ -131,9 +131,9 @@ describe('e2e scenario tests', async () => {
       const listResult = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
 
       expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(0);
-      expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-        0
-      );
+      expect(
+        listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+      ).to.have.length(0);
     });
 
     it('set the config back using its new name', () => {
@@ -144,9 +144,9 @@ describe('e2e scenario tests', async () => {
       const listResult = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
 
       expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(1);
-      expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-        0
-      );
+      expect(
+        listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+      ).to.have.length(0);
     });
 
     it('should unset the config using its old name', () => {
@@ -163,9 +163,9 @@ describe('e2e scenario tests', async () => {
       const listResult = execCmd<ConfigResponses>('config:list --json', { ensureExitCode: 0 });
 
       expect(listResult.jsonOutput?.result.filter((r) => r.name === 'org-max-query-limit')).to.have.length(0);
-      expect(listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT)).to.have.length(
-        0
-      );
+      expect(
+        listResult.jsonOutput?.result.filter((r) => r.name === SfdxPropertyKeys.MAX_QUERY_LIMIT.toString())
+      ).to.have.length(0);
     });
   });
 });
