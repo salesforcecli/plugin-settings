@@ -6,8 +6,7 @@
  */
 
 import type { Hook } from '@oclif/core';
-import { Config, ConfigPropertyMeta } from '@salesforce/core';
-import { isObject, get } from '@salesforce/ts-types';
+import type { ConfigPropertyMeta } from '@salesforce/core';
 import { ModuleLoader } from '@oclif/core';
 
 const OCLIF_META_PJSON_KEY = 'configMeta';
@@ -16,11 +15,9 @@ const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
   const flattenedConfigMetas = (
     await Promise.all(
       (config.getPluginsList() || []).flatMap(async (plugin) => {
-        const configMetaPath = get(plugin, `pjson.oclif.${OCLIF_META_PJSON_KEY}`, null);
-
-        if (typeof configMetaPath !== 'string') {
-          return;
-        }
+        const oclif = (plugin.pjson.oclif ?? {}) as { [OCLIF_META_PJSON_KEY]?: string };
+        const configMetaPath = oclif[OCLIF_META_PJSON_KEY];
+        if (!configMetaPath) return;
 
         const module = await ModuleLoader.load<{ default?: ConfigPropertyMeta[] }>(plugin, configMetaPath);
         const configMeta = module.default;
@@ -33,9 +30,10 @@ const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
     )
   )
     .flatMap((d) => d)
-    .filter<ConfigPropertyMeta>(isObject);
+    .filter((d): d is ConfigPropertyMeta => !!d);
 
   if (flattenedConfigMetas.length) {
+    const { Config } = await import('@salesforce/core/lib/config/config.js');
     Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
