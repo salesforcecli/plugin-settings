@@ -1,3 +1,9 @@
+## [2.0.3](https://github.com/salesforcecli/plugin-settings/compare/2.0.2...2.0.3) (2023-11-09)
+
+### Bug Fixes
+
+- only import Config if necessary ([587c588](https://github.com/salesforcecli/plugin-settings/commit/587c588d69d564b6ae4c076e916e45090378daa6))
+
 ## [2.0.2](https://github.com/salesforcecli/plugin-settings/compare/2.0.1...2.0.2) (2023-11-05)
 
 ### Bug Fixes
