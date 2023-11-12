@@ -23,7 +23,7 @@
     "@types/fast-levenshtein": "^0.0.3",
     "@types/fs-extra": "^9.0.13",
     "@types/shelljs": "^0.8.14",
-    "eslint-plugin-sf-plugin": "^1.16.9",
+    "eslint-plugin-sf-plugin": "^1.16.14",
     "fs-extra": "^10.1.0",
     "oclif": "^4.0.3",
     "shelljs": "^0.8.5",
