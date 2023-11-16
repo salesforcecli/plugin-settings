@@ -1,3 +1,9 @@
+## [2.0.6](https://github.com/salesforcecli/plugin-settings/compare/2.0.5...2.0.6) (2023-11-16)
+
+### Bug Fixes
+
+- updates from devScripts ([#436](https://github.com/salesforcecli/plugin-settings/issues/436)) ([9f49d42](https://github.com/salesforcecli/plugin-settings/commit/9f49d42a9e05b8b2ce01df49246e0a4856e67950))
+
 ## [2.0.5](https://github.com/salesforcecli/plugin-settings/compare/2.0.4...2.0.5) (2023-11-12)
 
 ### Bug Fixes
