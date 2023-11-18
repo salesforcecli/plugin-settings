@@ -22,7 +22,7 @@
     "@salesforce/ts-types": "^2.0.9",
     "@types/fast-levenshtein": "^0.0.3",
     "@types/fs-extra": "^9.0.13",
-    "@types/shelljs": "^0.8.14",
+    "@types/shelljs": "^0.8.15",
     "eslint-plugin-sf-plugin": "^1.16.15",
     "fs-extra": "^10.1.0",
     "oclif": "^4.0.3",
