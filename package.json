@@ -16,7 +16,7 @@
     "@salesforce/cli-plugins-testkit": "^5.0.4",
     "@salesforce/dev-scripts": "^7.1.1",
     "@salesforce/kit": "^3.0.15",
-    "@salesforce/plugin-command-reference": "^3.0.44",
+    "@salesforce/plugin-command-reference": "^3.0.46",
     "@salesforce/plugin-deploy-retrieve": "^1.20.3",
     "@salesforce/ts-sinon": "^1.4.17",
     "@salesforce/ts-types": "^2.0.9",
