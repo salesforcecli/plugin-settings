@@ -21,12 +21,8 @@
     "@salesforce/ts-sinon": "^1.4.17",
     "@salesforce/ts-types": "^2.0.9",
     "@types/fast-levenshtein": "^0.0.3",
-    "@types/fs-extra": "^9.0.13",
-    "@types/shelljs": "^0.8.14",
     "eslint-plugin-sf-plugin": "^1.16.15",
-    "fs-extra": "^10.1.0",
     "oclif": "^4.0.4",
-    "shelljs": "^0.8.5",
     "shx": "0.3.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
