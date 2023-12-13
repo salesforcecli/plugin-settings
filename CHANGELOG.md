@@ -1,3 +1,27 @@
+## [2.0.9](https://github.com/salesforcecli/plugin-settings/compare/2.0.8...2.0.9) (2023-11-26)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 5.0.1 to 5.0.3 ([ec19a33](https://github.com/salesforcecli/plugin-settings/commit/ec19a33e1f2d24d1385a123dfda1e9b877df3dae))
+
+## [2.0.8](https://github.com/salesforcecli/plugin-settings/compare/2.0.7...2.0.8) (2023-11-26)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 6.1.3 to 6.2.0 ([bd290ef](https://github.com/salesforcecli/plugin-settings/commit/bd290efb8b43fe5ea8e26bb238d22f223ad8c979))
+
+## [2.0.7](https://github.com/salesforcecli/plugin-settings/compare/2.0.6...2.0.7) (2023-11-25)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 3.11.0 to 3.12.0 ([f87f7ca](https://github.com/salesforcecli/plugin-settings/commit/f87f7ca884587816d97eeca3c5570987aeecb2aa))
+
+## [2.0.6](https://github.com/salesforcecli/plugin-settings/compare/2.0.5...2.0.6) (2023-11-16)
+
+### Bug Fixes
+
+- updates from devScripts ([#436](https://github.com/salesforcecli/plugin-settings/issues/436)) ([9f49d42](https://github.com/salesforcecli/plugin-settings/commit/9f49d42a9e05b8b2ce01df49246e0a4856e67950))
+
 ## [2.0.5](https://github.com/salesforcecli/plugin-settings/compare/2.0.4...2.0.5) (2023-11-12)
 
 ### Bug Fixes
