@@ -9,7 +9,6 @@ import { Ux } from '@salesforce/sf-plugins-core';
 import { ConfigInfo, SfError, Config } from '@salesforce/core';
 import { toHelpSection } from '@salesforce/sf-plugins-core';
 import Levenshtein from 'fast-levenshtein';
-import { isJsonMap } from '@salesforce/ts-types';
 import { HelpSection } from '@oclif/core';
 
 export type Msg = {
@@ -59,7 +58,7 @@ export const buildSuccessMsg = (configInfo: ConfigInfo): Msg => {
   if (Array.isArray(configInfo.value)) {
     throw new SfError(`Config ${configInfo.key} is an Array.  It should be a primitive.`);
   }
-  if (isJsonMap(configInfo.value)) {
+  if (typeof configInfo.value === 'object') {
     throw new SfError(`Config ${configInfo.key} is an Object.  It should be a primitive.`);
   }
   return {

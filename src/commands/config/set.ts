@@ -5,13 +5,11 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
 import { parseVarArgs, Flags, loglevel, Ux, SfCommand } from '@salesforce/sf-plugins-core';
 import { Config, Messages, Org, SfError, OrgConfigProperties } from '@salesforce/core';
 import { CONFIG_HELP_SECTION, Msg, buildFailureMsg, calculateSuggestion, output } from '../../config.js';
 
-Messages.importMessagesDirectory(dirname(fileURLToPath(import.meta.url)));
+Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'config.set');
 
 export type SetOrUnsetConfigCommandResult = { successes: Msg[]; failures: Msg[] };
