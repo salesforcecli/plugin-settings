@@ -8,7 +8,6 @@
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { getNumber, getString } from '@salesforce/ts-types';
 import { expect } from 'chai';
 import { Messages } from '@salesforce/core';
 
@@ -157,11 +156,11 @@ describe('alias set NUTs', () => {
     it('alias set --json', () => {
       // access each member individually because the stack trace will be different
       const res = execCmd('alias set  --json');
-      expect(getNumber(res.jsonOutput, 'status')).to.equal(1);
-      expect(getString(res.jsonOutput, 'name')).to.equal('ArgumentsRequiredError');
-      expect(getString(res.jsonOutput, 'stack')).to.contain('ArgumentsRequiredError');
-      expect(getString(res.jsonOutput, 'message')).to.include(messages.getMessages('error.ArgumentsRequired'));
-      expect(getNumber(res.jsonOutput, 'exitCode')).to.equal(1);
+      expect(res.jsonOutput?.status).to.equal(1);
+      expect(res.jsonOutput?.name).to.equal('ArgumentsRequiredError');
+      expect(res.jsonOutput?.stack).to.contain('ArgumentsRequiredError');
+      expect(res.jsonOutput?.message).to.include(messages.getMessages('error.ArgumentsRequired'));
+      expect(res.jsonOutput?.exitCode).to.equal(1);
     });
 
     it('alias set without varargs stdout', () => {

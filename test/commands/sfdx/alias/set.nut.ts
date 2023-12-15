@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 import { execCmd, TestSession } from '@salesforce/cli-plugins-testkit';
-import { getNumber, getString } from '@salesforce/ts-types';
 import { expect } from 'chai';
 let testSession: TestSession;
 
@@ -101,14 +100,13 @@ describe('alias:set NUTs', async () => {
     it('alias:set --json', () => {
       // access each member individually because the stack trace will be different
       const res = execCmd('alias:set  --json');
-      expect(getNumber(res.jsonOutput, 'status')).to.equal(1);
-      expect(getString(res.jsonOutput, 'name')).to.equal('ArgumentsRequiredError');
-      expect(getString(res.jsonOutput, 'stack')).to.contain('ArgumentsRequiredError');
-      expect(getString(res.jsonOutput, 'message')).to.contain(
+      expect(res.jsonOutput?.status).to.equal(1);
+      expect(res.jsonOutput?.name).to.equal('ArgumentsRequiredError');
+      expect(res.jsonOutput?.stack).to.contain('ArgumentsRequiredError');
+      expect(res.jsonOutput?.message).to.contain(
         'You must provide one or more aliases to set. Use the --help flag to see examples.'
       );
-      expect(getNumber(res.jsonOutput, 'exitCode')).to.equal(1);
-      expect(getNumber(res.jsonOutput, 'status')).to.equal(1);
+      expect(res.jsonOutput?.exitCode).to.equal(1);
     });
 
     it('alias:set without varargs stdout', () => {
