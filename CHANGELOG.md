@@ -1,3 +1,9 @@
+## [2.0.10](https://github.com/salesforcecli/plugin-settings/compare/2.0.9...2.0.10) (2023-12-15)
+
+### Bug Fixes
+
+- **deps:** remove dep ([#464](https://github.com/salesforcecli/plugin-settings/issues/464)) ([968f6df](https://github.com/salesforcecli/plugin-settings/commit/968f6dfdeb7bb0bfe3a7af898a50a0d646bddee6))
+
 ## [2.0.9](https://github.com/salesforcecli/plugin-settings/compare/2.0.8...2.0.9) (2023-11-26)
 
 ### Bug Fixes
