@@ -51,7 +51,7 @@ export class Get extends SfCommand<ConfigResponses> {
         if (err instanceof Error && err.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
           const suggestion = calculateSuggestion(configName);
           // eslint-disable-next-line no-await-in-loop
-          const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+          const answer = await this.confirm({ message: messages.getMessage('didYouMean', [suggestion]) });
           if (answer) {
             responses.push(buildSuccessMsg(aggregator.getInfo(suggestion, false)));
           }

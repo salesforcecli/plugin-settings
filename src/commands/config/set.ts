@@ -64,7 +64,7 @@ export class Set extends SfCommand<SetOrUnsetConfigCommandResult> {
           } else {
             const suggestion = calculateSuggestion(name);
             // eslint-disable-next-line no-await-in-loop
-            const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+            const answer = (await this.confirm({ message: messages.getMessage('didYouMean', [suggestion]) })) ?? false;
             if (answer && value) {
               const key = Config.getPropertyConfigMeta(suggestion)?.key ?? suggestion;
               config.set(key, value);

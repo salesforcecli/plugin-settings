@@ -55,7 +55,7 @@ export class UnSet extends SfCommand<SetOrUnsetConfigCommandResult> {
         if (error instanceof Error && error.name.includes('UnknownConfigKeyError') && !this.jsonEnabled()) {
           const suggestion = calculateSuggestion(key);
           // eslint-disable-next-line no-await-in-loop
-          const answer = (await this.confirm(messages.getMessage('didYouMean', [suggestion]), 10 * 1000)) ?? false;
+          const answer = await this.confirm({ message: messages.getMessage('didYouMean', [suggestion]) });
           if (answer) {
             config.unset(suggestion);
             this.responses.successes.push({
