@@ -49,7 +49,11 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
     }
 
     // Confirm the users wants to remove all aliases. Supports --no-prompt.
-    if (flags.all && !flags['no-prompt'] && !(await this.confirm(messages.getMessage('prompt.RemoveAllAliases')))) {
+    if (
+      flags.all &&
+      !flags['no-prompt'] &&
+      !(await this.confirm({ message: messages.getMessage('prompt.RemoveAllAliases') }))
+    ) {
       return [];
     }
 
