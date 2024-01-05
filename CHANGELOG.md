@@ -1,3 +1,9 @@
+## [2.0.15](https://github.com/salesforcecli/plugin-settings/compare/2.0.14...2.0.15) (2024-01-05)
+
+### Bug Fixes
+
+- use new inquirer via sf-plugins-core ([#484](https://github.com/salesforcecli/plugin-settings/issues/484)) ([c65edb7](https://github.com/salesforcecli/plugin-settings/commit/c65edb73de03a6823f447a16d55aabd765ad259e))
+
 ## [2.0.14](https://github.com/salesforcecli/plugin-settings/compare/2.0.13...2.0.14) (2023-12-31)
 
 ### Bug Fixes
