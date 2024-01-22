@@ -1,3 +1,9 @@
+## [2.0.19](https://github.com/salesforcecli/plugin-settings/compare/2.0.18...2.0.19) (2024-01-22)
+
+### Bug Fixes
+
+- bump version of core to 6.5.0 ([986a6ad](https://github.com/salesforcecli/plugin-settings/commit/986a6ad434eba92b48bad69d9d466c1e4b139817))
+
 ## [2.0.18](https://github.com/salesforcecli/plugin-settings/compare/2.0.17...2.0.18) (2024-01-21)
 
 ### Bug Fixes
