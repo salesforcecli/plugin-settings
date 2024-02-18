@@ -1,3 +1,9 @@
+## [2.0.25](https://github.com/salesforcecli/plugin-settings/compare/2.0.24...2.0.25) (2024-02-18)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 7.1.4 to 7.1.9 ([5041ccf](https://github.com/salesforcecli/plugin-settings/commit/5041ccfe85262a3078c35cc466ff06421be36030))
+
 ## [2.0.24](https://github.com/salesforcecli/plugin-settings/compare/2.0.23...2.0.24) (2024-02-11)
 
 ### Bug Fixes
