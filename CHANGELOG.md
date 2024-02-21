@@ -1,3 +1,9 @@
+## [2.0.27](https://github.com/salesforcecli/plugin-settings/compare/2.0.26...2.0.27) (2024-02-21)
+
+### Bug Fixes
+
+- **deps:** bump ip from 1.1.8 to 1.1.9 ([925cbe6](https://github.com/salesforcecli/plugin-settings/commit/925cbe6552c1bb561945132d9fd9b497e3c5cdfe))
+
 ## [2.0.26](https://github.com/salesforcecli/plugin-settings/compare/2.0.25...2.0.26) (2024-02-18)
 
 ### Bug Fixes
