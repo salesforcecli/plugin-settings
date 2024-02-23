@@ -9,9 +9,9 @@ import { expect } from 'chai';
 let testSession: TestSession;
 
 function unsetAll() {
-  execCmd('sfdx alias:unset DevHub');
-  execCmd('sfdx alias:unset Admin');
-  execCmd('sfdx alias:unset user');
+  execCmd('alias:unset DevHub');
+  execCmd('alias:unset Admin');
+  execCmd('alias:unset user');
 }
 
 describe('alias:list NUTs', async () => {
