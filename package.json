@@ -20,7 +20,7 @@
     "@salesforce/plugin-deploy-retrieve": "^1.20.3",
     "@salesforce/ts-sinon": "^1.4.17",
     "@types/fast-levenshtein": "^0.0.4",
-    "eslint-plugin-sf-plugin": "^1.17.3",
+    "eslint-plugin-sf-plugin": "^1.17.4",
     "oclif": "^4.4.19",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
