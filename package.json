@@ -7,7 +7,7 @@
   "dependencies": {
     "@oclif/core": "^3.20.0",
     "@salesforce/core": "^6.7.3",
-    "@salesforce/sf-plugins-core": "^7.1.14",
+    "@salesforce/sf-plugins-core": "^7.1.16",
     "fast-levenshtein": "^3.0.0"
   },
   "devDependencies": {
