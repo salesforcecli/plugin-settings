@@ -1,58 +1,58 @@
 [
   {
-    "command": "alias:list",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["json", "loglevel"],
     "alias": ["force:alias:list"],
+    "command": "alias:list",
+    "flagAliases": [],
     "flagChars": [],
-    "flagAliases": []
+    "flags": ["flags-dir", "json", "loglevel"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "alias:set",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["json", "loglevel"],
     "alias": ["force:alias:set"],
+    "command": "alias:set",
+    "flagAliases": [],
     "flagChars": [],
-    "flagAliases": []
+    "flags": ["flags-dir", "json", "loglevel"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "alias:unset",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["all", "json", "loglevel", "no-prompt"],
     "alias": ["force:alias:unset"],
+    "command": "alias:unset",
+    "flagAliases": [],
     "flagChars": ["a", "p"],
-    "flagAliases": []
+    "flags": ["all", "flags-dir", "json", "loglevel", "no-prompt"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "config:get",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["json", "loglevel", "verbose"],
     "alias": ["force:config:get"],
+    "command": "config:get",
+    "flagAliases": [],
     "flagChars": [],
-    "flagAliases": []
+    "flags": ["flags-dir", "json", "loglevel", "verbose"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "config:list",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["json", "loglevel"],
     "alias": ["force:config:list"],
+    "command": "config:list",
+    "flagAliases": [],
     "flagChars": [],
-    "flagAliases": []
+    "flags": ["flags-dir", "json", "loglevel"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "config:set",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["global", "json", "loglevel"],
     "alias": ["force:config:set"],
+    "command": "config:set",
+    "flagAliases": [],
     "flagChars": ["g"],
-    "flagAliases": []
+    "flags": ["flags-dir", "global", "json", "loglevel"],
+    "plugin": "@salesforce/plugin-settings"
   },
   {
-    "command": "config:unset",
-    "plugin": "@salesforce/plugin-settings",
-    "flags": ["global", "json", "loglevel"],
     "alias": ["force:config:unset"],
+    "command": "config:unset",
+    "flagAliases": [],
     "flagChars": ["g"],
-    "flagAliases": []
+    "flags": ["flags-dir", "global", "json", "loglevel"],
+    "plugin": "@salesforce/plugin-settings"
   }
 ]
