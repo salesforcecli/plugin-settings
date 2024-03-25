@@ -1,3 +1,9 @@
+# [2.1.0](https://github.com/salesforcecli/plugin-settings/compare/2.0.33...2.1.0) (2024-03-25)
+
+### Features
+
+- bump sf-plugins-core ([786f8b5](https://github.com/salesforcecli/plugin-settings/commit/786f8b5e13dc6e66fc967d30534350af11df0a22))
+
 ## [2.0.33](https://github.com/salesforcecli/plugin-settings/compare/2.0.32...2.0.33) (2024-03-24)
 
 ### Bug Fixes
