@@ -1,3 +1,9 @@
+## [2.1.2](https://github.com/salesforcecli/plugin-settings/compare/2.1.1...2.1.2) (2024-04-02)
+
+### Bug Fixes
+
+- remove deprecated sfdx-core references ([#562](https://github.com/salesforcecli/plugin-settings/issues/562)) ([70a36ac](https://github.com/salesforcecli/plugin-settings/commit/70a36ac2848a5f3de21eda52d723d47ef0bc1324))
+
 ## [2.1.1](https://github.com/salesforcecli/plugin-settings/compare/2.1.0...2.1.1) (2024-03-31)
 
 ### Bug Fixes
