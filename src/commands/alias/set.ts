@@ -7,7 +7,7 @@
 
 import { loglevel, parseVarArgs } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasCommand, AliasResults } from '../../alias.js';
+import { AliasCommand, AliasResults, setUnsetErrorHandler } from '../../alias.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.set');
@@ -43,13 +43,7 @@ export default class AliasSet extends AliasCommand<AliasResults> {
           }
           return { alias, success: true, value };
         } catch (err) {
-          const { name, message } =
-            err instanceof Error
-              ? err
-              : typeof err === 'string'
-              ? new Error(err)
-              : { name: 'UnknownError', message: 'Unknown Error' };
-          return { alias, success: false, error: { name, message }, value };
+          return setUnsetErrorHandler(err, alias, value);
         }
       })
     );

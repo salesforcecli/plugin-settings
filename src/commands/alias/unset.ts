@@ -7,7 +7,7 @@
 
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasCommand, AliasResults } from '../../alias.js';
+import { AliasCommand, AliasResults, setUnsetErrorHandler } from '../../alias.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.unset');
@@ -67,13 +67,7 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
             await stateAggregator.aliases.unsetAndSave(alias);
             return { alias, value, success: true };
           } catch (err) {
-            const { name, message } =
-              err instanceof Error
-                ? err
-                : typeof err === 'string'
-                ? new Error(err)
-                : { name: 'UnknownError', message: 'Unknown Error' };
-            return { alias, value, success: false, error: { name, message } };
+            return setUnsetErrorHandler(err, alias, value);
           }
         })
     );
