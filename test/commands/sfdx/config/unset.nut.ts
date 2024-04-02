@@ -11,7 +11,7 @@ let testSession: TestSession;
 
 describe('config:unset NUTs', async () => {
   testSession = await TestSession.create({
-    project: { name: 'configUnsetNUTs' },
+    project: { name: 'configUnsetNUTs-sfdx' },
   });
 
   describe('config:unset without keys', () => {

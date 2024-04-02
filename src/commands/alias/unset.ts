@@ -7,7 +7,7 @@
 
 import { Flags, loglevel } from '@salesforce/sf-plugins-core';
 import { StateAggregator, Messages } from '@salesforce/core';
-import { AliasCommand, AliasResults } from '../../alias.js';
+import { AliasCommand, AliasResults, aliasErrorHandler } from '../../alias.js';
 
 Messages.importMessagesDirectoryFromMetaUrl(import.meta.url);
 const messages = Messages.loadMessages('@salesforce/plugin-settings', 'alias.unset');
@@ -57,24 +57,20 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
       return [];
     }
 
-    const results = toRemove.map((alias) => {
-      // We will log the value in the output in case an alias was unset by mistake.
-      const value = aliases[alias];
-      try {
-        stateAggregator.aliases.unset(alias);
-        return { alias, value, success: true };
-      } catch (err) {
-        const { name, message } =
-          err instanceof Error
-            ? err
-            : typeof err === 'string'
-            ? new Error(err)
-            : { name: 'UnknownError', message: 'Unknown Error' };
-        return { alias, value, success: false, error: { name, message } };
-      }
-    });
-
-    await stateAggregator.aliases.write();
+    const results = await Promise.all(
+      toRemove
+        // We will log the value in the output in case an alias was unset by mistake.
+        .map((alias) => ({ alias, value: aliases[alias] }))
+        .map(async ({ alias, value }) => {
+          try {
+            // safe to parallelize because of file locking
+            await stateAggregator.aliases.unsetAndSave(alias);
+            return { alias, value, success: true };
+          } catch (err) {
+            return aliasErrorHandler(err, alias, value);
+          }
+        })
+    );
 
     this.output('Alias Unset', results);
 

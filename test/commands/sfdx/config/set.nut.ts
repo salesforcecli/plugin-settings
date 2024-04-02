@@ -84,7 +84,7 @@ function verifyKeysAndValuesStdout(key: string, value: string | boolean, asserti
 
 describe('config:set NUTs', async () => {
   testSession = await TestSession.create({
-    project: { name: 'configSetNUTs' },
+    project: { name: 'configSetNUTs-sfdx' },
     devhubAuthStrategy: 'NONE',
   });
 

@@ -49,3 +49,13 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
     this.table(results, columns, { title, 'no-truncate': true });
   }
 }
+
+export const aliasErrorHandler = (err: unknown, alias: string, value?: string): AliasResult => {
+  const { name, message } =
+    err instanceof Error
+      ? err
+      : typeof err === 'string'
+      ? new Error(err)
+      : { name: 'UnknownError', message: 'Unknown Error' };
+  return { alias, success: false, error: { name, message }, value };
+};

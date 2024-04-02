@@ -12,7 +12,7 @@ let testSession: TestSession;
 
 describe('config:list NUTs', async () => {
   testSession = await TestSession.create({
-    project: { name: 'configListNUTs' },
+    project: { name: 'configListNUTs-sfdx' },
     devhubAuthStrategy: 'NONE',
   });
   describe('config:list with no configs set', () => {
