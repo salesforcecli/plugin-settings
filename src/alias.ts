@@ -50,7 +50,7 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
   }
 }
 
-export const setUnsetErrorHandler = (err: unknown, alias: string, value?: string): AliasResult => {
+export const aliasErrorHandler = (err: unknown, alias: string, value?: string): AliasResult => {
   const { name, message } =
     err instanceof Error
       ? err
