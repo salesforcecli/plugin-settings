@@ -57,24 +57,26 @@ export default class AliasUnset extends AliasCommand<AliasResults> {
       return [];
     }
 
-    const results = toRemove.map((alias) => {
-      // We will log the value in the output in case an alias was unset by mistake.
-      const value = aliases[alias];
-      try {
-        stateAggregator.aliases.unset(alias);
-        return { alias, value, success: true };
-      } catch (err) {
-        const { name, message } =
-          err instanceof Error
-            ? err
-            : typeof err === 'string'
-            ? new Error(err)
-            : { name: 'UnknownError', message: 'Unknown Error' };
-        return { alias, value, success: false, error: { name, message } };
-      }
-    });
-
-    await stateAggregator.aliases.write();
+    const results = await Promise.all(
+      toRemove
+        // We will log the value in the output in case an alias was unset by mistake.
+        .map((alias) => ({ alias, value: aliases[alias] }))
+        .map(async ({ alias, value }) => {
+          try {
+            // safe to parallelize because of file locking
+            await stateAggregator.aliases.unsetAndSave(alias);
+            return { alias, value, success: true };
+          } catch (err) {
+            const { name, message } =
+              err instanceof Error
+                ? err
+                : typeof err === 'string'
+                ? new Error(err)
+                : { name: 'UnknownError', message: 'Unknown Error' };
+            return { alias, value, success: false, error: { name, message } };
+          }
+        })
+    );
 
     this.output('Alias Unset', results);
 

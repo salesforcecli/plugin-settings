@@ -31,28 +31,28 @@ export default class AliasSet extends AliasCommand<AliasResults> {
 
     const parsed = parseVarArgs(args, argv as string[]);
 
-    const results = Object.entries(parsed).map(([alias, value]) => {
-      try {
-        // to support plugin-settings in sfdx, which allowed setting an alias to undefined, when that happens we'll unset the alias
-        // which is what the user wants
-        if (!value) {
-          stateAggregator.aliases.unset(alias);
-        } else {
-          stateAggregator.aliases.set(alias, value);
+    const results = await Promise.all(
+      Object.entries(parsed).map(async ([alias, value]) => {
+        try {
+          // to support plugin-settings in sfdx, which allowed setting an alias to undefined, when that happens we'll unset the alias
+          // which is what the user wants
+          if (!value) {
+            await stateAggregator.aliases.unsetAndSave(alias);
+          } else {
+            await stateAggregator.aliases.setAndSave(alias, value);
+          }
+          return { alias, success: true, value };
+        } catch (err) {
+          const { name, message } =
+            err instanceof Error
+              ? err
+              : typeof err === 'string'
+              ? new Error(err)
+              : { name: 'UnknownError', message: 'Unknown Error' };
+          return { alias, success: false, error: { name, message }, value };
         }
-        return { alias, success: true, value };
-      } catch (err) {
-        const { name, message } =
-          err instanceof Error
-            ? err
-            : typeof err === 'string'
-            ? new Error(err)
-            : { name: 'UnknownError', message: 'Unknown Error' };
-        return { alias, success: false, error: { name, message }, value };
-      }
-    });
-
-    await stateAggregator.aliases.write();
+      })
+    );
 
     this.output('Alias Set', results);
 
