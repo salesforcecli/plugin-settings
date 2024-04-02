@@ -76,7 +76,8 @@ describe('alias list NUTs', () => {
 
     it('lists multiple results correctly JSON', () => {
       const result = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
-      expect(result).to.deep.equal([
+      expect(result).lengthOf(3);
+      [
         {
           alias: 'DevHub',
           value: 'mydevhuborg@salesforce.com',
@@ -89,7 +90,7 @@ describe('alias list NUTs', () => {
           alias: 'user',
           value: 'user@salesforce.com',
         },
-      ]);
+      ].map((expected) => expect(result).to.deep.include(expected));
     });
 
     it('lists multiple results correctly stdout', () => {

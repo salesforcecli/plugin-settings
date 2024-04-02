@@ -68,8 +68,8 @@ describe('alias unset NUTs', () => {
       ]);
 
       const res = execCmd<AliasResults>('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
-
-      expect(res).to.deep.equal([
+      expect(res).lengthOf(2);
+      [
         {
           alias: 'Admin',
           value: 'admin@salesforce.com',
@@ -78,7 +78,7 @@ describe('alias unset NUTs', () => {
           alias: 'user',
           value: 'user@salesforce.com',
         },
-      ]);
+      ].map((expected) => expect(res).to.deep.include(expected));
     });
 
     it('alias unset DevHub', () => {
@@ -118,8 +118,8 @@ describe('alias unset NUTs', () => {
 
     it('alias unset --json', () => {
       const result = execCmd('alias unset DevHub user --json', { ensureExitCode: 0 }).jsonOutput?.result;
-
-      expect(result).to.deep.equal([
+      expect(result).lengthOf(2);
+      [
         {
           alias: 'DevHub',
           success: true,
@@ -130,7 +130,7 @@ describe('alias unset NUTs', () => {
           success: true,
           value: 'user@salesforce.com',
         },
-      ]);
+      ].map((expected) => expect(result).to.deep.include(expected));
 
       const res = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
@@ -155,8 +155,8 @@ describe('alias unset NUTs', () => {
 
     it('removes all aliases when passing --all', () => {
       const result = execCmd('alias unset --all --no-prompt --json', { ensureExitCode: 0 }).jsonOutput?.result;
-
-      expect(result).to.deep.equal([
+      expect(result).lengthOf(3);
+      [
         {
           alias: 'Admin',
           success: true,
@@ -172,7 +172,7 @@ describe('alias unset NUTs', () => {
           success: true,
           value: 'user@salesforce.com',
         },
-      ]);
+      ].map((expected) => expect(result).to.deep.include(expected));
 
       const res = execCmd('alias list --json', { ensureExitCode: 0 }).jsonOutput?.result;
 
