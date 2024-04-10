@@ -6,7 +6,7 @@
  */
 
 import type { Hook } from '@oclif/core';
-import type { ConfigPropertyMeta } from '@salesforce/core';
+import type { ConfigPropertyMeta } from '@salesforce/core/config';
 import { ModuleLoader } from '@oclif/core';
 
 const OCLIF_META_PJSON_KEY = 'configMeta';
@@ -33,7 +33,7 @@ const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
     .filter((d): d is ConfigPropertyMeta => !!d);
 
   if (flattenedConfigMetas.length) {
-    const { Config } = await import('@salesforce/core/lib/config/config.js');
+    const { Config } = await import('@salesforce/core/config');
     Config.addAllowedProperties(flattenedConfigMetas);
   }
   return Promise.resolve();
