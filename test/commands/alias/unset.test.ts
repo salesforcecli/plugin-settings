@@ -6,7 +6,7 @@
  */
 
 import { expect, test } from '@oclif/test';
-import { TestContext } from '@salesforce/core/lib/testSetup.js';
+import { TestContext } from '@salesforce/core/testSetup';
 
 describe('alias unset', () => {
   const $$ = new TestContext();

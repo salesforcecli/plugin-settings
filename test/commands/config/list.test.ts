@@ -10,7 +10,7 @@ import { ConfigAggregator, OrgConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
 import { SinonSandbox } from 'sinon';
 import sinon from 'sinon';
-import { SfConfigProperties } from '@salesforce/core/lib/config/config.js';
+import { SfConfigProperties } from '@salesforce/core/config';
 
 describe('config:list', () => {
   let sandbox: SinonSandbox;
