@@ -1,3 +1,9 @@
+# [2.2.0](https://github.com/salesforcecli/plugin-settings/compare/2.1.2...2.2.0) (2024-04-10)
+
+### Features
+
+- core7 ([938c99f](https://github.com/salesforcecli/plugin-settings/commit/938c99ff1ed1620e1a07bd8d4387c634b57750c1))
+
 ## [2.1.2](https://github.com/salesforcecli/plugin-settings/compare/2.1.1...2.1.2) (2024-04-02)
 
 ### Bug Fixes
