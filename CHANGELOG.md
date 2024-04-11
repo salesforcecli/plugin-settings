@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/salesforcecli/plugin-settings/compare/2.2.0...2.2.1) (2024-04-11)
+
+### Bug Fixes
+
+- **deps:** bump devDeps ([#574](https://github.com/salesforcecli/plugin-settings/issues/574)) ([02bac14](https://github.com/salesforcecli/plugin-settings/commit/02bac14e8d4de31a373a8b6a13b2325ea567c47b))
+
 # [2.2.0](https://github.com/salesforcecli/plugin-settings/compare/2.1.2...2.2.0) (2024-04-10)
 
 ### Features
