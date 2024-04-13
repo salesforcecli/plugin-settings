@@ -1520,10 +1520,10 @@
     debug "^4.3.4"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.6.1":
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.6.1.tgz#9d470c49e2c52c27477771791e130cac1b450529"
-  integrity sha512-Fp2yTVCNx/QC93Pm4To43eC+2DKdNB5PSgGzhrmeCv7+F4hZR6ks4he277c8geaH1BNKGbMrXxaHeXpggTfo6g==
+"@salesforce/plugin-deploy-retrieve@^3.6.2":
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.6.2.tgz#661758d7ec8f2134cbdcc4b68282e173e3491612"
+  integrity sha512-N1avieqQZf33zE8TojlHW2miclkSRKNsq4ouvMQ5/i639P3UtYHoDdtI7iGJG4BBc5Xhx9xiGfkx5gsoFrI8nA==
   dependencies:
     "@oclif/core" "^3.26.2"
     "@salesforce/apex-node" "^5.0.0-beta.0"
