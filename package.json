@@ -20,7 +20,7 @@
     "@salesforce/ts-sinon": "^1.4.17",
     "@types/fast-levenshtein": "^0.0.4",
     "eslint-plugin-sf-plugin": "^1.18.1",
-    "oclif": "^4.8.2",
+    "oclif": "^4.9.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   },
