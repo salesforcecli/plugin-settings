@@ -1,3 +1,9 @@
+## [2.2.5](https://github.com/salesforcecli/plugin-settings/compare/2.2.4...2.2.5) (2024-05-05)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 7.3.2 to 7.3.3 ([560ade0](https://github.com/salesforcecli/plugin-settings/commit/560ade08826b4a631242bdf90bb0d51ab1d585a1))
+
 ## [2.2.4](https://github.com/salesforcecli/plugin-settings/compare/2.2.3...2.2.4) (2024-05-04)
 
 ### Bug Fixes
