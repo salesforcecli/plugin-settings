@@ -11,7 +11,7 @@
     "fast-levenshtein": "^3.0.0"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.1.7",
+    "@oclif/plugin-command-snapshot": "^5.1.8",
     "@oclif/test": "^3.2.11",
     "@salesforce/cli-plugins-testkit": "^5.2.1",
     "@salesforce/dev-scripts": "^9.0.0",
