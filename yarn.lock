@@ -1644,7 +1644,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oclif/core@3.26.6", "@oclif/core@^3.21.0", "@oclif/core@^3.26.0", "@oclif/core@^3.26.2", "@oclif/core@^3.26.4", "@oclif/core@^3.26.5":
+"@oclif/core@3.26.6", "@oclif/core@^3.21.0", "@oclif/core@^3.26.0", "@oclif/core@^3.26.2", "@oclif/core@^3.26.4", "@oclif/core@^3.26.5", "@oclif/core@^3.26.6":
   version "3.26.6"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-3.26.6.tgz#f371868cfa0fe150a6547e6af98b359065d2f971"
   integrity sha512-+FiTw1IPuJTF9tSAlTsY8bGK4sgthehjz7c2SvYdgQncTkxI2xvUch/8QpjNYGLEmUneNygvYMRBax2KJcLccA==
@@ -1721,12 +1721,12 @@
     http-call "^5.2.2"
     lodash.template "^4.5.0"
 
-"@oclif/test@^3.2.11":
-  version "3.2.11"
-  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-3.2.11.tgz#356ed6f10c8e20128f807362e2a227038b9ea2cc"
-  integrity sha512-+bjUTI12kgqFYJtlNCYk0F+aIuYh4GDPZIviwSe9+rzd9kJMWEC3phUiviT41rroZzaPUcshnTVoZ5hyq+EIkg==
+"@oclif/test@^3.2.14":
+  version "3.2.14"
+  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-3.2.14.tgz#fdc760969e84b56cdc9030a7f972e13484055da2"
+  integrity sha512-k0SmNoBLI76aJAfqhTye69gkv7TK3SBVptLkhbu+74/P44GXHxaxcCB727QpMpdFZeVqaPfKYz1ns7halBHaSw==
   dependencies:
-    "@oclif/core" "^3.26.4"
+    "@oclif/core" "^3.26.6"
     chai "^4.4.1"
     fancy-test "^3.0.14"
 
