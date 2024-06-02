@@ -16,7 +16,7 @@
     "@salesforce/cli-plugins-testkit": "^5.3.6",
     "@salesforce/dev-scripts": "^9.1.2",
     "@salesforce/plugin-command-reference": "^3.0.85",
-    "@salesforce/plugin-deploy-retrieve": "^3.7.9",
+    "@salesforce/plugin-deploy-retrieve": "^3.8.3",
     "@salesforce/ts-sinon": "^1.4.17",
     "@types/fast-levenshtein": "^0.0.4",
     "eslint-plugin-sf-plugin": "^1.18.4",
