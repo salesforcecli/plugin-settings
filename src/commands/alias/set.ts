@@ -34,6 +34,9 @@ export default class AliasSet extends AliasCommand<AliasResults> {
     const results = await Promise.all(
       Object.entries(parsed).map(async ([alias, value]) => {
         try {
+          if (alias.includes(' ')) {
+            this.warn(messages.getMessage('warning.spaceAlias', [alias, alias]));
+          }
           // to support plugin-settings in sfdx, which allowed setting an alias to undefined, when that happens we'll unset the alias
           // which is what the user wants
           if (!value) {
