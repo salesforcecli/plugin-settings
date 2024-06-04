@@ -66,6 +66,18 @@ describe('alias set NUTs', () => {
       expect(result).to.deep.equal([{ alias: 'foo', success: true, value: 'alias with spaces' }]);
     });
 
+    it('alias set with spaces in alias (produces warning)', () => {
+      const value = 'bar';
+      const result = execCmd(`alias set "foo with space"=${value} --json`, {
+        ensureExitCode: 0,
+      }).jsonOutput;
+
+      expect(result?.result).to.deep.equal([{ alias: 'foo with space', success: true, value }]);
+      expect(result?.warnings).to.deep.equal([
+        messages.getMessage('warning.spaceAlias', ['foo with space', 'foo with space']),
+      ]);
+    });
+
     it('allow setting a single alias without an equal sign', () => {
       const result = execCmd('alias set theKey theValue --json', {
         ensureExitCode: 0,
