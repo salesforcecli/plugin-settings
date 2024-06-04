@@ -40,4 +40,4 @@ You must provide a value when setting an alias. Use `sf alias unset my-alias-nam
 
 The alias "%s" includes a space. We recommend aliases without spaces.
 
-If you decide to keep "%s" to always wrap it in double quotes when using it in any CLI command.
+If you decide to keep "%s", you must wrap it in double quotes when using it in any CLI command.  For example:  sf project deploy start --target-org "my scratch". 
