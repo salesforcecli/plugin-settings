@@ -1,3 +1,9 @@
+# [2.3.0](https://github.com/salesforcecli/plugin-settings/compare/2.2.7...2.3.0) (2024-06-04)
+
+### Features
+
+- warning about alias with spaces ([5b0938b](https://github.com/salesforcecli/plugin-settings/commit/5b0938b8901e919d363e6a0843a2c635cb5bbd9f))
+
 ## [2.2.7](https://github.com/salesforcecli/plugin-settings/compare/2.2.6...2.2.7) (2024-05-26)
 
 ### Bug Fixes

@@ -108,7 +108,7 @@ EXAMPLES
     $ sf alias list
 ```
 
-_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/alias/list.ts)_
+_See code: [src/commands/alias/list.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/alias/list.ts)_
 
 ## `sf alias set`
 
@@ -126,7 +126,7 @@ DESCRIPTION
   Set one or more aliases on your local computer.
 
   Aliases are user-defined short names that make it easier to use the CLI. For example, users often set an alias for a
-  scratch org usernames because they're long and unintuitive.  Check the --help of a CLI command to determine where you
+  scratch org usernames because they're long and unintuitive. Check the --help of a CLI command to determine where you
   can use an alias.
 
   You can associate an alias with only one value at a time. If you set an alias multiple times, the alias points to the
@@ -157,7 +157,7 @@ EXAMPLES
     $ sf alias set my-scratch-org test-ss0xut7txzxf@example.com
 ```
 
-_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/alias/set.ts)_
+_See code: [src/commands/alias/set.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/alias/set.ts)_
 
 ## `sf alias unset`
 
@@ -197,7 +197,7 @@ EXAMPLES
     $ sf alias unset --all [--no-prompt]
 ```
 
-_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/alias/unset.ts)_
+_See code: [src/commands/alias/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/alias/unset.ts)_
 
 ## `sf config get`
 
@@ -235,7 +235,7 @@ EXAMPLES
     $ sf config get target-org api-version --verbose
 ```
 
-_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/config/get.ts)_
+_See code: [src/commands/config/get.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/config/get.ts)_
 
 ## `sf config list`
 
@@ -275,7 +275,7 @@ EXAMPLES
     $ sf config list
 ```
 
-_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/config/list.ts)_
+_See code: [src/commands/config/list.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/config/list.ts)_
 
 ## `sf config set`
 
@@ -333,7 +333,7 @@ EXAMPLES
     $ sf config set --global target-org=my-scratch-org target-dev-hub=my-dev-hub
 ```
 
-_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/config/set.ts)_
+_See code: [src/commands/config/set.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/config/set.ts)_
 
 ## `sf config unset`
 
@@ -372,6 +372,6 @@ EXAMPLES
     $ sf config unset target-org api-version --global
 ```
 
-_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/2.2.7/src/commands/config/unset.ts)_
+_See code: [src/commands/config/unset.ts](https://github.com/salesforcecli/plugin-settings/blob/2.3.0/src/commands/config/unset.ts)_
 
 <!-- commandsstop -->
