@@ -73,9 +73,9 @@ describe('alias set NUTs', () => {
       }).jsonOutput;
 
       expect(result?.result).to.deep.equal([{ alias: 'foo with space', success: true, value }]);
-      expect(result?.warnings).to.deep.equal([
-        messages.getMessage('warning.spaceAlias', ['foo with space', 'foo with space']),
-      ]);
+      expect(result?.warnings?.map(stripLineEndings)).to.deep.equal(
+        [messages.getMessage('warning.spaceAlias', ['foo with space', 'foo with space'])].map(stripLineEndings)
+      );
     });
 
     it('allow setting a single alias without an equal sign', () => {
@@ -182,3 +182,5 @@ describe('alias set NUTs', () => {
     });
   });
 });
+
+const stripLineEndings = (str?: string): string => str?.replace(/\r?\n|\r/g, '') ?? '';
