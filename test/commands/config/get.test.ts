@@ -8,28 +8,22 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readFileSync } from 'node:fs';
-import { test, expect } from '@oclif/test';
+import { expect } from 'chai';
+import { runCommand } from '@oclif/test';
 import { ConfigAggregator, OrgConfigProperties, SfConfigProperties } from '@salesforce/core';
 import { stubMethod } from '@salesforce/ts-sinon';
-import { Plugin } from '@oclif/core';
+import { Config, Plugin } from '@oclif/core';
 import sinon from 'sinon';
-import { calculateSuggestion } from '../../../src/config.js';
-
-process.env.NODE_ENV = 'development';
+import { ConfigResponses, calculateSuggestion } from '../../../src/config.js';
 
 describe('config:get', () => {
-  let sandbox: sinon.SinonSandbox;
-  beforeEach(() => {
-    sandbox = sinon.createSandbox();
-  });
-
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   async function prepareStubs(global = true) {
     const location = global ? 'Global' : 'Local';
-    stubMethod(sandbox, ConfigAggregator.prototype, 'getInfo')
+    stubMethod(sinon, ConfigAggregator.prototype, 'getInfo')
       .withArgs(OrgConfigProperties.TARGET_DEV_HUB)
       .returns({ key: OrgConfigProperties.TARGET_DEV_HUB, value: 'MyDevhub', location })
       .withArgs(OrgConfigProperties.TARGET_ORG)
@@ -40,115 +34,118 @@ describe('config:get', () => {
       .throws('FAILED');
   }
 
-  test
-    .do(async () => prepareStubs(true))
-    .stdout()
-    .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
-    .it('should return values for globally configured properties', (ctx) => {
-      const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        {
-          name: OrgConfigProperties.TARGET_DEV_HUB,
-          key: OrgConfigProperties.TARGET_DEV_HUB,
-          value: 'MyDevhub',
-          location: 'Global',
-          success: true,
-        },
-        {
-          name: OrgConfigProperties.TARGET_ORG,
-          key: OrgConfigProperties.TARGET_ORG,
-          value: 'MyUser',
-          location: 'Global',
-          success: true,
-        },
-      ]);
-    });
+  it('should return values for globally configured properties', async () => {
+    await prepareStubs(true);
+    const { result } = await runCommand([
+      'config:get',
+      OrgConfigProperties.TARGET_DEV_HUB,
+      OrgConfigProperties.TARGET_ORG,
+      '--json',
+    ]);
+    expect(result).to.deep.equal([
+      {
+        name: OrgConfigProperties.TARGET_DEV_HUB,
+        key: OrgConfigProperties.TARGET_DEV_HUB,
+        value: 'MyDevhub',
+        location: 'Global',
+        path: undefined,
+        success: true,
+      },
+      {
+        name: OrgConfigProperties.TARGET_ORG,
+        key: OrgConfigProperties.TARGET_ORG,
+        value: 'MyUser',
+        location: 'Global',
+        path: undefined,
+        success: true,
+      },
+    ]);
+  });
 
-  test
-    .do(async () => prepareStubs(false))
-    .stdout()
-    .command(['config:get', OrgConfigProperties.TARGET_DEV_HUB, OrgConfigProperties.TARGET_ORG, '--json'])
-    .it('should return values for locally configured properties', (ctx) => {
-      const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        {
-          name: OrgConfigProperties.TARGET_DEV_HUB,
-          key: OrgConfigProperties.TARGET_DEV_HUB,
-          value: 'MyDevhub',
-          location: 'Local',
-          success: true,
-        },
-        {
-          name: OrgConfigProperties.TARGET_ORG,
-          key: OrgConfigProperties.TARGET_ORG,
-          value: 'MyUser',
-          location: 'Local',
-          success: true,
-        },
-      ]);
-    });
+  it('should return values for locally configured properties', async () => {
+    await prepareStubs(false);
+    const { result } = await runCommand([
+      'config:get',
+      OrgConfigProperties.TARGET_DEV_HUB,
+      OrgConfigProperties.TARGET_ORG,
+      '--json',
+    ]);
+    expect(result).to.deep.equal([
+      {
+        name: OrgConfigProperties.TARGET_DEV_HUB,
+        key: OrgConfigProperties.TARGET_DEV_HUB,
+        value: 'MyDevhub',
+        location: 'Local',
+        path: undefined,
+        success: true,
+      },
+      {
+        name: OrgConfigProperties.TARGET_ORG,
+        key: OrgConfigProperties.TARGET_ORG,
+        value: 'MyUser',
+        location: 'Local',
+        path: undefined,
+        success: true,
+      },
+    ]);
+  });
 
-  test
-    .do(async () => prepareStubs())
-    .stdout()
-    .command(['config:get', OrgConfigProperties.ORG_API_VERSION, '--json'])
-    .it('should gracefully handle unconfigured properties', (ctx) => {
-      const { result } = JSON.parse(ctx.stdout);
-      expect(result).to.deep.equal([
-        { key: OrgConfigProperties.ORG_API_VERSION, name: OrgConfigProperties.ORG_API_VERSION, success: true },
-      ]);
-    });
+  it('should gracefully handle un-configured properties', async () => {
+    await prepareStubs();
+    const { result } = await runCommand(['config:get', OrgConfigProperties.ORG_API_VERSION, '--json']);
+    expect(result).to.deep.equal([
+      {
+        key: OrgConfigProperties.ORG_API_VERSION,
+        name: OrgConfigProperties.ORG_API_VERSION,
+        success: true,
+        value: undefined,
+        path: undefined,
+        location: undefined,
+      },
+    ]);
+  });
 
-  test
-    .do(async () => prepareStubs())
-    .stdout()
-    .command(['config:get', SfConfigProperties.DISABLE_TELEMETRY, '--json'])
-    .it('should gracefully handle failed attempts to ConfigAggregator.getInfo', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.result[0].error.name).to.equal('FAILED');
-    });
+  it('should gracefully handle failed attempts to ConfigAggregator.getInfo', async () => {
+    await prepareStubs();
+    const { result } = await runCommand<ConfigResponses>([
+      'config:get',
+      SfConfigProperties.DISABLE_TELEMETRY,
+      '--json',
+    ]);
+    expect(result?.[0].error?.name).to.equal('FAILED');
+  });
 
   describe('load custom config meta', () => {
-    test
-      .stdout()
-      .command(['config:get', 'customKey', '--json'])
-      .it('fails when there is no matching loaded custom key', (ctx) => {
-        const response = JSON.parse(ctx.stdout);
-        expect(response.result[0].message).to.equal('Unknown config name: customKey.');
-      });
+    it('fails when there is no matching loaded custom key', async () => {
+      const { result } = await runCommand<ConfigResponses>(['config:get', 'customKey', '--json']);
+      expect(result?.[0].message).to.equal('Unknown config name: customKey.');
+    });
 
-    test
-      .loadConfig()
-      .do((ctx) => {
-        const mockPluginRoot = path.resolve(
-          path.dirname(fileURLToPath(import.meta.url)),
-          '../../config-meta-mocks/javascript-lib'
-        );
+    it('should allow custom config meta for allowedProperties', async () => {
+      const root = path.dirname(fileURLToPath(import.meta.url));
+      const mockPluginRoot = path.resolve(root, '../../config-meta-mocks/javascript-lib');
+      const config = await Config.load(root);
+      config.plugins.set('sfdx-cli-js-plugin-2', {
+        root: mockPluginRoot,
+        hooks: {},
+        pjson: JSON.parse(readFileSync(path.resolve(mockPluginRoot, 'package.json'), 'utf-8')),
+        name: 'sfdx-cli-js-plugin-2',
+        commands: [],
+        topics: [],
+      } as unknown as Plugin);
 
-        // @ts-expect-error because oclif/test v3 uses oclif/core v3 but plugin-settings is using oclif/core v4
-        // We can resolve the type error once we migrate these tests to oclif/test v4
-        ctx.config.plugins.set('sfdx-cli-js-plugin-2', {
-          root: mockPluginRoot,
-          hooks: {},
-          pjson: JSON.parse(readFileSync(path.resolve(mockPluginRoot, 'package.json'), 'utf-8')),
-          name: 'sfdx-cli-js-plugin-2',
-          commands: [],
-          topics: [],
-        } as unknown as Plugin);
-      })
-      .stdout()
-      .stderr()
-      .command(['config:get', 'customKey', '--json'])
-      .it('should allow custom config meta for allowedProperties', (ctx) => {
-        const response = JSON.parse(ctx.stdout);
-        expect(response.result).to.deep.equal([
-          {
-            key: 'customKey',
-            name: 'customKey',
-            success: true,
-          },
-        ]);
-      });
+      const { result } = await runCommand<ConfigResponses>(['config:get', 'customKey', '--json'], config);
+      expect(result).to.deep.equal([
+        {
+          key: 'customKey',
+          location: undefined,
+          name: 'customKey',
+          path: undefined,
+          success: true,
+          value: undefined,
+        },
+      ]);
+    });
   });
 
   describe('calculate suggestion', () => {

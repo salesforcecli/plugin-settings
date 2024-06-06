@@ -5,20 +5,19 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { expect, test } from '@oclif/test';
+import { expect } from 'chai';
+import { runCommand } from '@oclif/test';
 
 describe('alias set', () => {
-  test
-    .stdout()
-    .command(['alias set', 'Coffee=espresso', '--json'])
-    .it('returns new alias', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.result).to.deep.equal([
-        {
-          alias: 'Coffee',
-          success: true,
-          value: 'espresso',
-        },
-      ]);
-    });
+  it('returns new alias', async () => {
+    const { stdout } = await runCommand('alias set Coffee=espresso --json');
+    const response = JSON.parse(stdout);
+    expect(response.result).to.deep.equal([
+      {
+        alias: 'Coffee',
+        success: true,
+        value: 'espresso',
+      },
+    ]);
+  });
 });
