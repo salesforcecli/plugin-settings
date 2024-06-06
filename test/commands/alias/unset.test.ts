@@ -5,7 +5,8 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { expect, test } from '@oclif/test';
+import { expect } from 'chai';
+import { runCommand } from '@oclif/test';
 import { TestContext } from '@salesforce/core/testSetup';
 
 describe('alias unset', () => {
@@ -18,28 +19,22 @@ describe('alias unset', () => {
     $$.SANDBOX.restore();
   });
 
-  test
-    .stdout()
-    .command(['alias unset', 'Coffee', '--json'])
-    .it('removes alias', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.result).to.deep.equal([
-        {
-          alias: 'Coffee',
-          success: true,
-          value: 'espresso',
-        },
-      ]);
-    });
+  it('removes alias', async () => {
+    const { result } = await runCommand('alias unset Coffee --json');
+    expect(result).to.deep.equal([
+      {
+        alias: 'Coffee',
+        success: true,
+        value: 'espresso',
+      },
+    ]);
+  });
 
-  test
-    .stdout()
-    .command(['alias unset', 'Coffee', 'Bacon', '--json'])
-    .it('removes multiple aliases', (ctx) => {
-      const response = JSON.parse(ctx.stdout);
-      expect(response.result).to.deep.equal([
-        { alias: 'Coffee', success: true, value: 'espresso' },
-        { alias: 'Bacon', success: true, value: 'breakfast' },
-      ]);
-    });
+  it('removes multiple aliases', async () => {
+    const { result } = await runCommand('alias unset Coffee Bacon --json');
+    expect(result).to.deep.equal([
+      { alias: 'Coffee', success: true, value: 'espresso' },
+      { alias: 'Bacon', success: true, value: 'breakfast' },
+    ]);
+  });
 });
