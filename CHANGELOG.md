@@ -1,3 +1,9 @@
+## [2.3.1](https://github.com/salesforcecli/plugin-settings/compare/2.3.0...2.3.1) (2024-06-06)
+
+### Bug Fixes
+
+- compilation errors ([edcce5a](https://github.com/salesforcecli/plugin-settings/commit/edcce5a9a5cbb44e2b33b1ca0f09993264597dc6))
+
 # [2.3.0](https://github.com/salesforcecli/plugin-settings/compare/2.2.7...2.3.0) (2024-06-04)
 
 ### Features
