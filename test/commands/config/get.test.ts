@@ -122,14 +122,18 @@ describe('config:get', () => {
       .do((ctx) => {
         const mockPluginRoot = path.resolve(
           path.dirname(fileURLToPath(import.meta.url)),
-          '../../config-meta-mocks/typescript-src'
+          '../../config-meta-mocks/javascript-lib'
         );
-        ctx.config.plugins.set('sfdx-cli-ts-plugin-2', {
+
+        // @ts-expect-error because oclif/test v3 uses oclif/core v3 but plugin-settings is using oclif/core v4
+        // We can resolve the type error once we migrate these tests to oclif/test v4
+        ctx.config.plugins.set('sfdx-cli-js-plugin-2', {
           root: mockPluginRoot,
           hooks: {},
           pjson: JSON.parse(readFileSync(path.resolve(mockPluginRoot, 'package.json'), 'utf-8')),
-          name: 'sfdx-cli-ts-plugin-2',
+          name: 'sfdx-cli-js-plugin-2',
           commands: [],
+          topics: [],
         } as unknown as Plugin);
       })
       .stdout()

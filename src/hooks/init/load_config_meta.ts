@@ -11,7 +11,7 @@ import { ModuleLoader } from '@oclif/core';
 
 const OCLIF_META_PJSON_KEY = 'configMeta';
 
-const hook: Hook<'init'> = async ({ config, context }): Promise<void> => {
+const hook: Hook.Init = async ({ config, context }): Promise<void> => {
   const flattenedConfigMetas = (
     await Promise.all(
       (config.getPluginsList() || []).flatMap(async (plugin) => {
