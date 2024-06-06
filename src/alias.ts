@@ -5,7 +5,6 @@
  * For full license text, see LICENSE.txt file in the repo root or https://opensource.org/licenses/BSD-3-Clause
  */
 
-import { ux } from '@oclif/core';
 import { SfCommand } from '@salesforce/sf-plugins-core';
 
 export type AliasResult = {
@@ -21,6 +20,13 @@ export type AliasResult = {
 
 export type AliasResults = AliasResult[];
 
+type AliasColumns = {
+  alias: { header: string };
+  value: { header: string };
+  success?: { header: string };
+  message?: { header: string };
+};
+
 export abstract class AliasCommand<T> extends SfCommand<T> {
   protected output(title: string, results: AliasResults): void {
     if (results.length === 0) {
@@ -28,7 +34,7 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
       return;
     }
 
-    const columns: ux.Table.table.Columns<AliasResult> = {
+    const columns: AliasColumns = {
       alias: { header: 'Alias' },
       value: { header: 'Value' },
     };
@@ -43,6 +49,7 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
 
       columns.message = { header: 'Message' };
 
+      // results.map((r) => ({ ...r, message: r.error?.message }));
       results.map((result) => (result.message = result.error?.message));
     }
 
