@@ -111,9 +111,7 @@ describe('alias:set NUTs', async () => {
 
     it('alias:set without varargs stdout', () => {
       const res: string = execCmd('alias:set ').shellOutput.stderr;
-      expect(res).to.include(
-        'Error (1): You must provide one or more aliases to set. Use the --help flag to see examples.'
-      );
+      expect(res).to.include('You must provide one or more aliases to set. Use the --help flag to see examples.');
     });
   });
 });
