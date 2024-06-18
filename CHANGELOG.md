@@ -1,3 +1,9 @@
+## [2.3.4](https://github.com/salesforcecli/plugin-settings/compare/2.3.3...2.3.4) (2024-06-18)
+
+### Bug Fixes
+
+- update test expectations for new error codes ([4d167ac](https://github.com/salesforcecli/plugin-settings/commit/4d167ac4c762a6562bbfe95a90039d3435c5803e))
+
 ## [2.3.3](https://github.com/salesforcecli/plugin-settings/compare/2.3.2...2.3.3) (2024-06-16)
 
 ### Bug Fixes
