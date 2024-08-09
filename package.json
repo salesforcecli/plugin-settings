@@ -1,28 +1,28 @@
 {
   "name": "@salesforce/plugin-settings",
   "description": "configure the Salesforce CLI",
-  "version": "2.3.8",
+  "version": "2.3.11",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
     "@oclif/core": "^4",
-    "@salesforce/core": "^8.0.1",
-    "@salesforce/sf-plugins-core": "^11.1.2",
+    "@salesforce/core": "^8.2.8",
+    "@salesforce/sf-plugins-core": "^11.2.4",
     "fast-levenshtein": "^3.0.0"
   },
   "devDependencies": {
-    "@oclif/plugin-command-snapshot": "^5.2.5",
+    "@oclif/plugin-command-snapshot": "^5.2.9",
     "@oclif/test": "^4",
-    "@salesforce/cli-plugins-testkit": "^5.3.18",
-    "@salesforce/dev-scripts": "^10.2.2",
-    "@salesforce/plugin-command-reference": "^3.1.9",
-    "@salesforce/plugin-deploy-retrieve": "^3.9.9",
-    "@salesforce/ts-sinon": "^1.4.22",
+    "@salesforce/cli-plugins-testkit": "^5.3.20",
+    "@salesforce/dev-scripts": "^10.2.9",
+    "@salesforce/plugin-command-reference": "^3.1.13",
+    "@salesforce/plugin-deploy-retrieve": "^3.9.21",
+    "@salesforce/ts-sinon": "^1.4.23",
     "@types/fast-levenshtein": "^0.0.4",
     "eslint-plugin-sf-plugin": "^1.18.11",
-    "oclif": "^4.14.1",
+    "oclif": "^4.14.13",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.4"
   },
   "config": {},
   "engines": {

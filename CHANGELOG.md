@@ -1,3 +1,21 @@
+## [2.3.11](https://github.com/salesforcecli/plugin-settings/compare/2.3.10...2.3.11) (2024-08-04)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 8.2.7 to 8.2.8 ([f4e72a9](https://github.com/salesforcecli/plugin-settings/commit/f4e72a9c65b1ece8cd7bf40d48a5db39b2598c8a))
+
+## [2.3.10](https://github.com/salesforcecli/plugin-settings/compare/2.3.9...2.3.10) (2024-07-27)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/sf-plugins-core from 11.2.0 to 11.2.1 ([4aca848](https://github.com/salesforcecli/plugin-settings/commit/4aca84855aefbaccb60436b666c213ddd74394b7))
+
+## [2.3.9](https://github.com/salesforcecli/plugin-settings/compare/2.3.8...2.3.9) (2024-07-20)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.0.8 to 4.0.12 ([a56027e](https://github.com/salesforcecli/plugin-settings/commit/a56027e421ff63dead0836191110e2b3897d1cc5))
+
 ## [2.3.8](https://github.com/salesforcecli/plugin-settings/compare/2.3.7...2.3.8) (2024-07-07)
 
 ### Bug Fixes
