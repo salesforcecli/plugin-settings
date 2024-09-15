@@ -17,7 +17,7 @@
     "@salesforce/dev-scripts": "^10.2.10",
     "@salesforce/plugin-command-reference": "^3.1.23",
     "@salesforce/plugin-deploy-retrieve": "^3.12.7",
-    "@salesforce/ts-sinon": "^1.4.26",
+    "@salesforce/ts-sinon": "^1.4.27",
     "@types/fast-levenshtein": "^0.0.4",
     "eslint-plugin-sf-plugin": "^1.20.5",
     "oclif": "^4.14.33",
