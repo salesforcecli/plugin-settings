@@ -602,20 +602,12 @@
     "@smithy/types" "^3.4.0"
     tslib "^2.6.2"
 
-"@aws-sdk/types@3.649.0":
+"@aws-sdk/types@3.649.0", "@aws-sdk/types@^3.222.0":
   version "3.649.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.649.0.tgz#a6828e6338dc755e0c30b5f77321e63425a88aed"
   integrity sha512-PuPw8RysbhJNlaD2d/PzOTf8sbf4Dsn2b7hwyGh7YVG3S75yTpxSAZxrnhKsz9fStgqFmnw/jUfV/G+uQAeTVw==
   dependencies:
     "@smithy/types" "^3.4.0"
-    tslib "^2.6.2"
-
-"@aws-sdk/types@^3.222.0":
-  version "3.609.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.609.0.tgz#06b39d799c9f197a7b43670243e8e78a3bf7d6a5"
-  integrity sha512-+Tqnh9w0h2LcrUsdXyT1F8mNhXz+tVYBtP19LpeEGntmvHwa2XzvLUCWpoIAIVsHp5+HdB2X9Sn0KAtmbFXc2Q==
-  dependencies:
-    "@smithy/types" "^3.3.0"
     tslib "^2.6.2"
 
 "@aws-sdk/util-arn-parser@3.568.0":
@@ -1226,31 +1218,7 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.18", "@oclif/core@^4.0.19", "@oclif/core@^4.0.23":
-  version "4.0.27"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.27.tgz#686079df278e681e3097cea301d5558fdb490e88"
-  integrity sha512-9j92jHr6k2tjQ6/mIwNi46Gqw+qbPFQ02mxT5T8/nxO2fgsPL3qL0kb9SR1il5AVfqpgLIG3uLUcw87rgaioUg==
-  dependencies:
-    ansi-escapes "^4.3.2"
-    ansis "^3.3.2"
-    clean-stack "^3.0.1"
-    cli-spinners "^2.9.2"
-    debug "^4.3.7"
-    ejs "^3.1.10"
-    get-package-type "^0.1.0"
-    globby "^11.1.0"
-    indent-string "^4.0.0"
-    is-wsl "^3"
-    lilconfig "^3.1.2"
-    minimatch "^9.0.5"
-    semver "^7.6.3"
-    string-width "^4.2.3"
-    supports-color "^8"
-    widest-line "^3.1.0"
-    wordwrap "^1.0.0"
-    wrap-ansi "^7.0.0"
-
-"@oclif/core@^4.0.27":
+"@oclif/core@^4", "@oclif/core@^4.0.18", "@oclif/core@^4.0.19", "@oclif/core@^4.0.23", "@oclif/core@^4.0.27":
   version "4.0.29"
   resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.0.29.tgz#55f7a6b85e3e67dd1ce9fcef421dc2555e5ddf53"
   integrity sha512-WEbrRn+X9FG8Wk8U/JUAd4bTzCwOtKPqpCP4ijfqEK8g2ZXV1bGG3FSCTmZkZLNDt/WUYYJpC0Tjjqxn1T4Bzg==
@@ -2018,13 +1986,6 @@
     "@smithy/util-stream" "^3.1.6"
     tslib "^2.6.2"
 
-"@smithy/types@^3.3.0":
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/@smithy/types/-/types-3.3.0.tgz#fae037c733d09bc758946a01a3de0ef6e210b16b"
-  integrity sha512-IxvBBCTFDHbVoK7zIxqA1ZOdc4QfM5HM7rGleCuHi7L1wnKv5Pn69xXJQ9hgxH60ZVygH9/JG0jRgtUncE3QUA==
-  dependencies:
-    tslib "^2.6.2"
-
 "@smithy/types@^3.4.0", "@smithy/types@^3.4.2":
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/@smithy/types/-/types-3.4.2.tgz#aa2d087922d57205dbad68df8a45c848699c551e"
@@ -2327,12 +2288,12 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*":
-  version "22.2.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.2.0.tgz#7cf046a99f0ba4d628ad3088cb21f790df9b0c5b"
-  integrity sha512-bm6EG6/pCpkxDf/0gDNDdtDILMOHgaQBVOJGdwsqClnxA3xL6jtMv76rLBc006RVMWbmaf0xbmom4Z/5o2nRkQ==
+"@types/node@*", "@types/node@^22.5.2":
+  version "22.5.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.4.tgz#83f7d1f65bc2ed223bdbf57c7884f1d5a4fa84e8"
+  integrity sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==
   dependencies:
-    undici-types "~6.13.0"
+    undici-types "~6.19.2"
 
 "@types/node@20.5.1":
   version "20.5.1"
@@ -2345,13 +2306,6 @@
   integrity sha512-LX84pRJ+evD2e2nrgYCHObGWkiQJ1mL+meAgbvnwk/US6vmMY7S2ygBTGV2Jw91s9vUsLSXeDEkUHZIJGLrhsg==
   dependencies:
     undici-types "~5.26.4"
-
-"@types/node@^22.5.2":
-  version "22.5.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.5.4.tgz#83f7d1f65bc2ed223bdbf57c7884f1d5a4fa84e8"
-  integrity sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==
-  dependencies:
-    undici-types "~6.19.2"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.3"
@@ -7907,11 +7861,6 @@ undici-types@~5.26.4:
   version "5.26.5"
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
-
-undici-types@~6.13.0:
-  version "6.13.0"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.13.0.tgz#e3e79220ab8c81ed1496b5812471afd7cf075ea5"
-  integrity sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==
 
 undici-types@~6.19.2:
   version "6.19.8"
