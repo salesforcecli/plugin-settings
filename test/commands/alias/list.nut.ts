@@ -38,7 +38,7 @@ describe('alias list NUTs', () => {
     });
 
     it('lists no aliases stdout', () => {
-      const res: string = execCmd('alias list').shellOutput;
+      const res = execCmd('alias list').shellOutput;
       expect(res).to.include('No results');
     });
   });
@@ -60,10 +60,13 @@ describe('alias list NUTs', () => {
     });
 
     it('lists singular result correctly stdout', () => {
-      const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
-      expect(res).to.include('Alias List\n====='); // Table header
-      expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub mydevhuborg@salesforce.com');
+      const res = execCmd('alias list', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
+      }).shellOutput;
+      expect(res).to.include('Alias List'); // Table header
+      expect(res).to.include('alias    value');
+      expect(res).to.include('DevHub   mydevhuborg@salesforce.com');
     });
   });
 
@@ -94,12 +97,16 @@ describe('alias list NUTs', () => {
     });
 
     it('lists multiple results correctly stdout', () => {
-      const res: string = execCmd('alias list', { ensureExitCode: 0 }).shellOutput;
-      expect(res).to.include('Alias List\n====='); // Table header
-      expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub mydevhuborg@salesforce.com');
-      expect(res).to.include('Admin  admin@salesforce.com');
-      expect(res).to.include('user   user@salesforce.com');
+      const res = execCmd('alias list', {
+        ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
+      }).shellOutput;
+
+      expect(res).to.include('Alias List'); // Table header
+      expect(res).to.include('alias    value');
+      expect(res).to.include('DevHub   mydevhuborg@salesforce.com');
+      expect(res).to.include('Admin    admin@salesforce.com');
+      expect(res).to.include('user     user@salesforce.com');
     });
   });
 });

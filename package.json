@@ -86,6 +86,7 @@
     "reformat": "prettier --config .prettierrc --write './*.{js,json,md}' './**/*.{ts,json,md}'",
     "test": "wireit",
     "test:nuts": "nyc mocha \"test/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel --jobs 20",
+    "test:nuts:alias": "nyc mocha \"test/**/alias/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel --jobs 20",
     "test:nuts:config": "nyc mocha \"test/**/config/**/*.nut.ts\" --slow 4500 --timeout 600000 --parallel --jobs 20",
     "test:only": "wireit",
     "version": "oclif readme"

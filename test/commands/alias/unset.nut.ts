@@ -40,13 +40,14 @@ describe('alias unset NUTs', () => {
     });
 
     it('unsetting non-existent key is a success (stdout)', () => {
-      const res: string = execCmd('alias unset noAlias', {
+      const res = execCmd('alias unset noAlias', {
         ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
 
-      expect(res).to.include('Alias Unset\n====='); // Table header
-      expect(res).to.include('Alias   Value Success');
-      expect(res).to.include('noAlias       true');
+      expect(res).to.include('Alias Unset'); // Table header
+      expect(res).to.include('alias     value   success');
+      expect(res).to.include('noAlias           true');
     });
   });
 
@@ -82,13 +83,14 @@ describe('alias unset NUTs', () => {
     });
 
     it('alias unset DevHub', () => {
-      const res: string = execCmd('alias unset DevHub', {
+      const res = execCmd('alias unset DevHub', {
         ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
 
-      expect(res).to.include('Alias Unset\n====='); // Table header
-      expect(res).to.include('Alias  Value                      Success');
-      expect(res).to.include('DevHub mydevhuborg@salesforce.com true');
+      expect(res).to.include('Alias Unset'); // Table header
+      expect(res).to.include('alias    value                        success');
+      expect(res).to.include('DevHub   mydevhuborg@salesforce.com   true');
     });
   });
 
@@ -143,14 +145,15 @@ describe('alias unset NUTs', () => {
     });
 
     it('alias unset DevHub user', () => {
-      const res: string = execCmd('alias unset DevHub user', {
+      const res = execCmd('alias unset DevHub user', {
         ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
 
-      expect(res).to.include('Alias Unset\n====='); // Table header
-      expect(res).to.include('Alias  Value                      Success');
-      expect(res).to.include('DevHub mydevhuborg@salesforce.com true');
-      expect(res).to.include('user   user@salesforce.com        true');
+      expect(res).to.include('Alias Unset'); // Table header
+      expect(res).to.include('alias    value                        success');
+      expect(res).to.include('DevHub   mydevhuborg@salesforce.com   true');
+      expect(res).to.include('user     user@salesforce.com          true');
     });
 
     it('removes all aliases when passing --all', () => {
