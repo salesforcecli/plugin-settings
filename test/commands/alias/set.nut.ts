@@ -48,14 +48,15 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set multiple values stdout', () => {
-      const res: string = execCmd('alias set DevHub=devhuborg@salesforce.com Admin=admin@salesforce.com', {
+      const res = execCmd('alias set DevHub=devhuborg@salesforce.com Admin=admin@salesforce.com', {
         ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
 
-      expect(res).to.include('Alias Set\n====='); // Table header
-      expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub devhuborg@salesforce.com');
-      expect(res).to.include('Admin  admin@salesforce.com');
+      expect(res).to.include('Alias Set'); // Table header
+      expect(res).to.include('alias    value                      success');
+      expect(res).to.include('DevHub   devhuborg@salesforce.com   true');
+      expect(res).to.include('Admin    admin@salesforce.com       true');
     });
 
     it('alias set with spaces in value', () => {
@@ -101,36 +102,6 @@ describe('alias set NUTs', () => {
 
       expect(res).to.include('Found duplicate argument');
     });
-
-    // this behavior is now allowed to allow plugin-settings in sfdx
-    it.skip('alias set DevHub= shows error message to use alias unset command', () => {
-      const res = execCmd('alias set DevHub=', {
-        ensureExitCode: 1,
-      }).shellOutput;
-
-      expect(res).to.include('Alias Set\n====='); // Table header
-      expect(res).to.include('Alias  Value Success Message');
-      expect(res).to.include(`DevHub       false   ${messages.getMessages('error.ValueRequired')}`);
-    });
-
-    it.skip('alias set DevHub= shows error to use alias unset command (json)', () => {
-      const result = execCmd('alias set DevHub= --json', {
-        ensureExitCode: 1,
-      }).jsonOutput?.result;
-
-      expect(result).to.deep.equal([
-        {
-          alias: 'DevHub',
-          success: false,
-          error: {
-            name: 'ValueRequiredError',
-            exitCode: 1,
-          },
-          message:
-            'You must provide a value when setting an alias. Use `sf alias unset my-alias-name` to remove existing aliases.',
-        },
-      ]);
-    });
   });
 
   describe('alias set overwrites existing entry', () => {
@@ -151,14 +122,15 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set overwrites entry correctly stdout', () => {
-      const res: string = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com', {
+      const res = execCmd('alias set DevHub=newdevhub@salesforce.com Admin=admin@salesforce.com', {
         ensureExitCode: 0,
+        env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
 
-      expect(res).to.include('Alias Set\n====='); // Table header
-      expect(res).to.include('Alias  Value');
-      expect(res).to.include('DevHub newdevhub@salesforce.com');
-      expect(res).to.include('Admin  admin@salesforce.com');
+      expect(res).to.include('Alias Set'); // Table header
+      expect(res).to.include('alias    value                      success');
+      expect(res).to.include('DevHub   newdevhub@salesforce.com   true');
+      expect(res).to.include('Admin    admin@salesforce.com       true');
     });
   });
 
@@ -174,7 +146,7 @@ describe('alias set NUTs', () => {
     });
 
     it('alias set without varargs stdout', () => {
-      const res: string = execCmd('alias set', {
+      const res = execCmd('alias set', {
         ensureExitCode: 1,
       }).shellOutput.stderr;
 

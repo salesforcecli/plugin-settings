@@ -80,38 +80,22 @@ export const output = (ux: Ux, responses: Msg[], command: 'set' | 'unset' | 'lis
     return;
   }
 
-  ux.table(
-    responses,
-    {
-      name: { header: 'Name' },
-      ...(verbose
-        ? {
-            location: {
-              header: 'Location',
-              get: (row) => row.location ?? '',
-            },
-          }
-        : {}),
-      ...(command === 'unset'
-        ? {}
-        : {
-            value: {
-              header: 'Value',
-              get: (row) => row.value,
-            },
-          }),
-      ...(command === 'list' ? {} : { success: { header: 'Success' } }),
-      ...(responses.some((msg) => msg.error)
-        ? {
-            message: {
-              header: 'Message',
-              get: (row): string => row.error?.message ?? '',
-            },
-          }
-        : {}),
-    },
-    { title: commandToTitleMapping[command] }
-  );
+  const data = responses.map((response) => ({
+    name: response.name,
+    ...(verbose ? { location: response.location ?? '' } : {}),
+    ...(command === 'unset' ? {} : { value: response.value }),
+    ...(command === 'list' ? {} : { success: response.success }),
+    ...(responses.some((msg) => msg.error)
+      ? {
+          message: response.error?.message ?? '',
+        }
+      : {}),
+  }));
+
+  ux.table({
+    data,
+    title: commandToTitleMapping[command],
+  });
 };
 
 const commandToTitleMapping = {
