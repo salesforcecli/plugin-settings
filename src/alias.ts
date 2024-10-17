@@ -53,7 +53,11 @@ export abstract class AliasCommand<T> extends SfCommand<T> {
       results.map((result) => (result.message = result.error?.message));
     }
 
-    this.table(results, columns, { title, 'no-truncate': true });
+    // this.table(results, columns, { title, 'no-truncate': true });
+    this.table({
+      data: results,
+      title,
+    });
   }
 }
 
