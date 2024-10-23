@@ -20,40 +20,28 @@ export type AliasResult = {
 
 export type AliasResults = AliasResult[];
 
-type AliasColumns = {
-  alias: { header: string };
-  value: { header: string };
-  success?: { header: string };
-  message?: { header: string };
-};
-
 export abstract class AliasCommand<T> extends SfCommand<T> {
   protected output(title: string, results: AliasResults): void {
     if (results.length === 0) {
       this.log('No results');
       return;
     }
-
-    const columns: AliasColumns = {
-      alias: { header: 'Alias' },
-      value: { header: 'Value' },
-    };
-
-    if (title.includes('Set') || title.includes('Unset')) {
-      columns.success = { header: 'Success' };
-    }
-
     // If any result contains an Error, add the header and grab the message off of Error
     if (results.some((result) => result.error)) {
       process.exitCode = 1;
-
-      columns.message = { header: 'Message' };
-
-      // results.map((r) => ({ ...r, message: r.error?.message }));
-      results.map((result) => (result.message = result.error?.message));
     }
 
-    this.table(results, columns, { title, 'no-truncate': true });
+    const data = results.map((result) => ({
+      alias: result.alias,
+      value: result.value,
+      ...(title.includes('Set') || title.includes('Unset') ? { success: result.success } : {}),
+      ...(result.error ? { message: result.error.message } : {}),
+    }));
+
+    this.table({
+      data,
+      title,
+    });
   }
 }
 
