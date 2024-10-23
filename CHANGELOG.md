@@ -1,3 +1,9 @@
+# [2.4.0](https://github.com/salesforcecli/plugin-settings/compare/2.3.24...2.4.0) (2024-10-23)
+
+### Features
+
+- use new table ([0bd21ea](https://github.com/salesforcecli/plugin-settings/commit/0bd21ea2d369f78572d2d9e0e73c66c70731b89b))
+
 ## [2.3.24](https://github.com/salesforcecli/plugin-settings/compare/2.3.23...2.3.24) (2024-10-12)
 
 ### Bug Fixes
