@@ -54,9 +54,9 @@ describe('alias set NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias Set'); // Table header
-      expect(res).to.include('alias    value                      success');
-      expect(res).to.include('DevHub   devhuborg@salesforce.com   true');
-      expect(res).to.include('Admin    admin@salesforce.com       true');
+      expect(res).to.match(/alias\s+value\s+success/);
+      expect(res).to.match(/DevHub\s+devhuborg@salesforce.com\s+true/);
+      expect(res).to.match(/Admin\s+admin@salesforce.com\s+true/);
     });
 
     it('alias set with spaces in value', () => {
@@ -128,9 +128,9 @@ describe('alias set NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias Set'); // Table header
-      expect(res).to.include('alias    value                      success');
-      expect(res).to.include('DevHub   newdevhub@salesforce.com   true');
-      expect(res).to.include('Admin    admin@salesforce.com       true');
+      expect(res).to.match(/alias\s+value\s+success/);
+      expect(res).to.match(/DevHub\s+newdevhub@salesforce.com\s+true/);
+      expect(res).to.match(/Admin\s+admin@salesforce.com\s+true/);
     });
   });
 

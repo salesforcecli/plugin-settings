@@ -65,8 +65,8 @@ describe('alias list NUTs', () => {
         env: { ...process.env, SF_NO_TABLE_STYLE: 'true' },
       }).shellOutput;
       expect(res).to.include('Alias List'); // Table header
-      expect(res).to.include('alias    value');
-      expect(res).to.include('DevHub   mydevhuborg@salesforce.com');
+      expect(res).to.include('alias   value');
+      expect(res).to.include('DevHub  mydevhuborg@salesforce.com');
     });
   });
 
@@ -103,10 +103,10 @@ describe('alias list NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias List'); // Table header
-      expect(res).to.include('alias    value');
-      expect(res).to.include('DevHub   mydevhuborg@salesforce.com');
-      expect(res).to.include('Admin    admin@salesforce.com');
-      expect(res).to.include('user     user@salesforce.com');
+      expect(res).to.include('alias   value');
+      expect(res).to.include('DevHub  mydevhuborg@salesforce.com');
+      expect(res).to.include('Admin   admin@salesforce.com');
+      expect(res).to.include('user    user@salesforce.com');
     });
   });
 });

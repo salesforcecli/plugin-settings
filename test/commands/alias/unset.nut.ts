@@ -46,8 +46,8 @@ describe('alias unset NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias Unset'); // Table header
-      expect(res).to.include('alias     value   success');
-      expect(res).to.include('noAlias           true');
+      expect(res).to.match(/alias\s+value\s+success/);
+      expect(res).to.match(/noAlias\s+true/);
     });
   });
 
@@ -89,8 +89,8 @@ describe('alias unset NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias Unset'); // Table header
-      expect(res).to.include('alias    value                        success');
-      expect(res).to.include('DevHub   mydevhuborg@salesforce.com   true');
+      expect(res).to.match(/alias\s+value\s+success/);
+      expect(res).to.match(/DevHub\s+mydevhuborg@salesforce.com\s+true/);
     });
   });
 
@@ -151,9 +151,9 @@ describe('alias unset NUTs', () => {
       }).shellOutput;
 
       expect(res).to.include('Alias Unset'); // Table header
-      expect(res).to.include('alias    value                        success');
-      expect(res).to.include('DevHub   mydevhuborg@salesforce.com   true');
-      expect(res).to.include('user     user@salesforce.com          true');
+      expect(res).to.match(/alias\s+value\s+success/);
+      expect(res).to.match(/DevHub\s+mydevhuborg@salesforce.com\s+true/);
+      expect(res).to.match(/user\s+user@salesforce.com\s+true/);
     });
 
     it('removes all aliases when passing --all', () => {
