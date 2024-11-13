@@ -614,20 +614,12 @@
     "@smithy/types" "^3.6.0"
     tslib "^2.6.2"
 
-"@aws-sdk/types@3.686.0":
+"@aws-sdk/types@3.686.0", "@aws-sdk/types@^3.222.0":
   version "3.686.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.686.0.tgz#01aa5307c727de9e69969c538f99ae8b53f1074f"
   integrity sha512-xFnrb3wxOoJcW2Xrh63ZgFo5buIu9DF7bOHnwoUxHdNpUXicUh0AHw85TjXxyxIAd0d1psY/DU7QHoNI3OswgQ==
   dependencies:
     "@smithy/types" "^3.6.0"
-    tslib "^2.6.2"
-
-"@aws-sdk/types@^3.222.0":
-  version "3.649.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/types/-/types-3.649.0.tgz#a6828e6338dc755e0c30b5f77321e63425a88aed"
-  integrity sha512-PuPw8RysbhJNlaD2d/PzOTf8sbf4Dsn2b7hwyGh7YVG3S75yTpxSAZxrnhKsz9fStgqFmnw/jUfV/G+uQAeTVw==
-  dependencies:
-    "@smithy/types" "^3.4.0"
     tslib "^2.6.2"
 
 "@aws-sdk/util-arn-parser@3.679.0":
@@ -1145,12 +1137,7 @@
     "@inquirer/type" "^3.0.0"
     yoctocolors-cjs "^2.1.2"
 
-"@inquirer/figures@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@inquirer/figures/-/figures-1.0.5.tgz#57f9a996d64d3e3345d2a3ca04d36912e94f8790"
-  integrity sha512-79hP/VWdZ2UVc9bFGJnoQ/lQMpL74mGgzSYX1xUqCVk7/v73vJCMw1VuyWN1jGkZ9B3z7THAbySqGbCNefcjfA==
-
-"@inquirer/figures@^1.0.7":
+"@inquirer/figures@^1.0.5", "@inquirer/figures@^1.0.7":
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/@inquirer/figures/-/figures-1.0.7.tgz#d050ccc0eabfacc0248c4ff647a9dfba1b01594b"
   integrity sha512-m+Trk77mp54Zma6xLkLuY+mvanPxlE4A7yNKs2HBiyZ4UkVs28Mv5c/pgWrHeInx+USHeX/WEPzjrWrcJiQgjw==
@@ -1334,24 +1321,7 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@jsforce/jsforce-node@^3.2.2", "@jsforce/jsforce-node@^3.4.2":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.5.1.tgz#f350e8c3897cce42f6b1cdbfc437c1c66aa13dd2"
-  integrity sha512-P+pfsLL6AddDeBP3iswjlB1+YM4w2ZsWTqunGjMA0/Aj8Jt4gA+XycV+fGEbGzsm6DvSvbZUnyrfkRYNsT9F8Q==
-  dependencies:
-    "@sindresorhus/is" "^4"
-    base64url "^3.0.1"
-    csv-parse "^5.5.2"
-    csv-stringify "^6.4.4"
-    faye "^1.4.0"
-    form-data "^4.0.0"
-    https-proxy-agent "^5.0.0"
-    multistream "^3.1.0"
-    node-fetch "^2.6.1"
-    strip-ansi "^6.0.0"
-    xml2js "^0.6.2"
-
-"@jsforce/jsforce-node@^3.6.1":
+"@jsforce/jsforce-node@^3.2.2", "@jsforce/jsforce-node@^3.4.2", "@jsforce/jsforce-node@^3.6.1":
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@jsforce/jsforce-node/-/jsforce-node-3.6.1.tgz#cdd112a33b8139ca798dd4eef91d3dc2a5a0f291"
   integrity sha512-N294vrCY7bIdHzTNAHe0t20riTxozEyvCmYPM4rp/C7uGdBX3AYrPDBdojw7rsXOBsRtoFqr7L/tUwMbw1hRTg==
@@ -1580,10 +1550,10 @@
   resolved "https://registry.yarnpkg.com/@salesforce/dev-config/-/dev-config-4.3.1.tgz#4dac8245df79d675258b50e1d24e8c636eaa5e10"
   integrity sha512-rO6axodoRF2SA1kknGttIWuL7HhIwSmweGlBzM8y2m5TH8DeIv4xsqYc8Cu+SrR3JT1FN4nh6XgrogI83AJfKg==
 
-"@salesforce/dev-scripts@^10.2.10":
-  version "10.2.10"
-  resolved "https://registry.yarnpkg.com/@salesforce/dev-scripts/-/dev-scripts-10.2.10.tgz#6aca3c6a0926b5ed0710d1f21a940687ff994e58"
-  integrity sha512-4vYRV5PvssKWfsnOOAXDvYfHaj2M3bCprlGcZBGnPAi52cNzoj9GcOmC1RRrPdQmHL4vWZvSiqgRgVLKQQdfkw==
+"@salesforce/dev-scripts@^10.2.11":
+  version "10.2.11"
+  resolved "https://registry.yarnpkg.com/@salesforce/dev-scripts/-/dev-scripts-10.2.11.tgz#7f041c258bf8588f9847115cc7ad5a59b9865232"
+  integrity sha512-LyX8njw21aKsDbpKDDJwtjX2n+V2OvS3vLg9zXLYlZvy8c2Lu8TfKSsXHS7jGhRLkBEYkJ4cJR+ClHuB2xo81A==
   dependencies:
     "@commitlint/cli" "^17.1.2"
     "@commitlint/config-conventional" "^17.8.1"
@@ -2188,13 +2158,6 @@
     "@smithy/protocol-http" "^4.1.5"
     "@smithy/types" "^3.6.0"
     "@smithy/util-stream" "^3.2.1"
-    tslib "^2.6.2"
-
-"@smithy/types@^3.4.0":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@smithy/types/-/types-3.4.2.tgz#aa2d087922d57205dbad68df8a45c848699c551e"
-  integrity sha512-tHiFcfcVedVBHpmHUEUHOCCih8iZbIAYn9NvPsNzaPm/237I3imdDdZoOC8c87H5HBAVEa06tTgb+OcSWV9g5w==
-  dependencies:
     tslib "^2.6.2"
 
 "@smithy/types@^3.6.0":
