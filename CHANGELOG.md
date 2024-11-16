@@ -1,3 +1,9 @@
+## [2.4.5](https://github.com/salesforcecli/plugin-settings/compare/2.4.4...2.4.5) (2024-11-16)
+
+### Bug Fixes
+
+- **deps:** bump cross-spawn from 7.0.3 to 7.0.5 ([4130f4e](https://github.com/salesforcecli/plugin-settings/commit/4130f4e05618ff0ebd134fd0c77fab85151c31bc))
+
 ## [2.4.4](https://github.com/salesforcecli/plugin-settings/compare/2.4.3...2.4.4) (2024-11-02)
 
 ### Bug Fixes
