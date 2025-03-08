@@ -1650,11 +1650,11 @@
     wrap-ansi "^9.0.0"
 
 "@oclif/test@^4":
-  version "4.1.10"
-  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-4.1.10.tgz#2eccf034141f95fa1a7b1af0e8cfd68ebbc2d78b"
-  integrity sha512-46Uu4hXOa2JKrivE9b14R+QzV15z/d8ig4ZGyjhzf2oOV2b11HV6H7ZEXsupVLPS6Dp5TmIlVXo7/kdrlXmAHQ==
+  version "4.1.11"
+  resolved "https://registry.yarnpkg.com/@oclif/test/-/test-4.1.11.tgz#b05957153ff83c8eacff80f11b1032957693722e"
+  integrity sha512-j689R13E2so1Rj6jJUfQ67yJ4N7u6L5KFzv87cvUfD9AZ79xAtCxGrd34/iOLUDJmv1huFt/0QumBcjKoWUSYw==
   dependencies:
-    ansis "^3.14.0"
+    ansis "^3.16.0"
     debug "^4.4.0"
 
 "@pkgjs/parseargs@^0.11.0":
@@ -1719,6 +1719,30 @@
   version "8.8.4"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.8.4.tgz#1995d387a62c48810b4e0a66c68192ccdcf8001f"
   integrity sha512-TKioMWh/QWmXjnD0bMNvFHEqaH175TCYWNXUCO1CixdhhI0p1MQj4AnQsk8wuRJiH5kVhiYw6Z7NukcIxLtbUw==
+  dependencies:
+    "@jsforce/jsforce-node" "^3.6.5"
+    "@salesforce/kit" "^3.2.2"
+    "@salesforce/schemas" "^1.9.0"
+    "@salesforce/ts-types" "^2.0.10"
+    ajv "^8.17.1"
+    change-case "^4.1.2"
+    fast-levenshtein "^3.0.0"
+    faye "^1.4.0"
+    form-data "^4.0.0"
+    js2xmlparser "^4.0.1"
+    jsonwebtoken "9.0.2"
+    jszip "3.10.1"
+    pino "^9.4.0"
+    pino-abstract-transport "^1.2.0"
+    pino-pretty "^11.2.2"
+    proper-lockfile "^4.1.2"
+    semver "^7.6.3"
+    ts-retry-promise "^0.8.1"
+
+"@salesforce/core@^8.8.3":
+  version "8.8.5"
+  resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.8.5.tgz#4004e22523e4e45b42631733d06dc8aec9fdc23d"
+  integrity sha512-eCiiO4NptvKkz04A4ivBVLzEBy/6IIFmaXoZ4tnF1FcD5MESvC+Xuc+0RFSRiYmPi5oloKNl6njrfVCKAho2zQ==
   dependencies:
     "@jsforce/jsforce-node" "^3.6.5"
     "@salesforce/kit" "^3.2.2"
