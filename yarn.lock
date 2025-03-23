@@ -1803,10 +1803,10 @@
   dependencies:
     "@salesforce/ts-types" "^2.0.12"
 
-"@salesforce/plugin-command-reference@^3.1.46":
-  version "3.1.46"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.46.tgz#b930234b21f8d0d9b24b9aeeb9c2f9185dc8a3c2"
-  integrity sha512-xnl+OgqTBF8BViThKrvxpKjgw2GMb7qpm4uj70xysnGGCg4xnYGhSHpRC94pXGIPqNwJMFxVaAKZ2bUiNpk8cA==
+"@salesforce/plugin-command-reference@^3.1.48":
+  version "3.1.48"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.48.tgz#752c7913a63cd3bf42aec53a20fc55e5bfaf3c81"
+  integrity sha512-VNjHuBHyAbzr26FM2aandlIh4818A2sOTbe55RMBedWKa1npHM9m/HGwn31VGJzXIZv2n3kiaSwCZOz+PKHRrg==
   dependencies:
     "@oclif/core" "^4"
     "@salesforce/core" "^8.8.5"
@@ -1882,7 +1882,7 @@
     string-width "^7.2.0"
     terminal-link "^3.0.0"
 
-"@salesforce/sf-plugins-core@^12", "@salesforce/sf-plugins-core@^12.2.0", "@salesforce/sf-plugins-core@^12.2.1":
+"@salesforce/sf-plugins-core@^12", "@salesforce/sf-plugins-core@^12.2.1":
   version "12.2.1"
   resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-12.2.1.tgz#1048a5d1245f07f0e864f0f76e8818fd21a84fe6"
   integrity sha512-b3eRSzGO0weBLL1clHaJNgNP1aKkD1Qy2DQEc0ieteEm+fh1FfPA0QpJ9rh/hdmkJRip2x2R2zz9tflJ0wflbg==
