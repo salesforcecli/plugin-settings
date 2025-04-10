@@ -1,6 +1,6 @@
 # plugin-settings
 
-[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-settings.svg?label=@salesforce/plugin-settings)](https://www.npmjs.com/package/@salesforce/plugin-settings) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-settings.svg)](https://npmjs.org/package/@salesforce/plugin-settings) [![License](https://img.shields.io/badge/License-BSD%203--Clause-brightgreen.svg)](https://raw.githubusercontent.com/salesforcecli/plugin-settings/main/LICENSE.txt)
+[![NPM](https://img.shields.io/npm/v/@salesforce/plugin-settings.svg?label=@salesforce/plugin-settings)](https://www.npmjs.com/package/@salesforce/plugin-settings) [![CircleCI](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main.svg?style=shield)](https://circleci.com/gh/salesforcecli/plugin-settings/tree/main) [![Downloads/week](https://img.shields.io/npm/dw/@salesforce/plugin-settings.svg)](https://npmjs.org/package/@salesforce/plugin-settings) [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://opensource.org/license/apache-2-0)
 
 Config and alias commands for the `sf` Salesforce CLI
 
