@@ -1589,10 +1589,10 @@
     debug "^4.4.1"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.22.32":
-  version "3.22.32"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.22.32.tgz#81d247d76f60b5a2864bd60c0ec59b69c70fbc63"
-  integrity sha512-4YQRxVStOFDLMYl50D5fs8Of3eVi8mbhrPCzodA8NCvkq4cKqXad8lcfykD1WmJ2CelPnuKVFzfc50JiUzGeOw==
+"@salesforce/plugin-deploy-retrieve@^3.22.33":
+  version "3.22.33"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.22.33.tgz#31c505e7fd0bddfb43d1301040d480c54ad8c0bb"
+  integrity sha512-WwYPKE4bAQUH/DWWLuKRGSwg+uPnF1DDSNa97NaLCvM0Yix15cwNKrYy6iKYGu1E3rsEnuPDBOTT3tfZSR1dmg==
   dependencies:
     "@inquirer/prompts" "^7.5.3"
     "@oclif/core" "^4.3.0"
