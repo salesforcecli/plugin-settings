@@ -1,3 +1,9 @@
+## [2.4.43](https://github.com/salesforcecli/plugin-settings/compare/2.4.42...2.4.43) (2025-08-22)
+
+### Bug Fixes
+
+- **deps:** bump sha.js from 2.4.11 to 2.4.12 ([3d1d2f7](https://github.com/salesforcecli/plugin-settings/commit/3d1d2f7fd2afd3d004c7248dfedce1a7d28afbbe))
+
 ## [2.4.42](https://github.com/salesforcecli/plugin-settings/compare/2.4.41...2.4.42) (2025-08-10)
 
 ### Bug Fixes
