@@ -1355,7 +1355,7 @@
     "@inquirer/core" "^9.1.0"
     "@inquirer/type" "^1.5.3"
 
-"@inquirer/confirm@^5.1.14", "@inquirer/confirm@^5.1.15":
+"@inquirer/confirm@^5.1.15":
   version "5.1.15"
   resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-5.1.15.tgz#c502d5c642fdba0669b17442b40794c97bdbccb4"
   integrity sha512-SwHMGa8Z47LawQN0rog0sT+6JpiL0B7eW9p1Bb7iCeKDGTI5Ez25TSc2l8kw52VV7hA4sX/C78CGkMrKXfuspA==
@@ -1468,22 +1468,6 @@
     "@inquirer/core" "^10.1.15"
     "@inquirer/type" "^3.0.8"
     ansi-escapes "^4.3.2"
-
-"@inquirer/prompts@^7.5.3":
-  version "7.8.2"
-  resolved "https://registry.yarnpkg.com/@inquirer/prompts/-/prompts-7.8.2.tgz#5d9d8d7273831bd512e9cfaf3d827cce0f2eae0f"
-  integrity sha512-nqhDw2ZcAUrKNPwhjinJny903bRhI0rQhiDz1LksjeRxqa36i3l75+4iXbOy0rlDpLJGxqtgoPavQjmmyS5UJw==
-  dependencies:
-    "@inquirer/checkbox" "^4.2.1"
-    "@inquirer/confirm" "^5.1.14"
-    "@inquirer/editor" "^4.2.17"
-    "@inquirer/expand" "^4.0.17"
-    "@inquirer/input" "^4.2.1"
-    "@inquirer/number" "^3.0.17"
-    "@inquirer/password" "^4.0.17"
-    "@inquirer/rawlist" "^4.1.5"
-    "@inquirer/search" "^3.1.0"
-    "@inquirer/select" "^4.3.1"
 
 "@inquirer/prompts@^7.8.3":
   version "7.8.3"
@@ -1726,7 +1710,7 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/multi-stage-output@^0.8.19":
+"@oclif/multi-stage-output@^0.8.20":
   version "0.8.20"
   resolved "https://registry.yarnpkg.com/@oclif/multi-stage-output/-/multi-stage-output-0.8.20.tgz#193cef3d9fe323aa85909219ae84bca7fff9f666"
   integrity sha512-XrzuZ9aNjv+RSc0MsjtnX2nR3w9tJSNfBBg6uoOHZkWndPuPeS70gTseTt2dQJDHQE2ygNuDSPMQBf71bNoVuA==
@@ -1946,14 +1930,14 @@
     debug "^4.4.1"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.22.40":
-  version "3.22.40"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.22.40.tgz#fe4395451f4cbc9dad437bd0215754694416a2b0"
-  integrity sha512-0p45GVl2tMcORojdBZGP4VS5W43izkyPykqYHg4xSqmoWnQTkA6OWyVe3NdoW7MNJDNOi7v2sLeok79PoSP08g==
+"@salesforce/plugin-deploy-retrieve@^3.22.43":
+  version "3.22.43"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.22.43.tgz#ef30b4a1e98c284d2d9854c1962a43b548a1a657"
+  integrity sha512-U4bQ6JK1YDmGFGO9LGOfCr6JhWDMzUWX+GU600ZfyCND0B6aJyrjuW+t1MK+1w9OCsn1VBrd4XMS0Pf8gbkFZA==
   dependencies:
-    "@inquirer/prompts" "^7.5.3"
+    "@inquirer/prompts" "^7.8.3"
     "@oclif/core" "^4.5.2"
-    "@oclif/multi-stage-output" "^0.8.19"
+    "@oclif/multi-stage-output" "^0.8.20"
     "@salesforce/apex-node" "^8.2.8"
     "@salesforce/core" "^8.19.1"
     "@salesforce/kit" "^3.2.3"
