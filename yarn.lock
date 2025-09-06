@@ -1880,16 +1880,16 @@
     debug "^4.4.1"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.23.0":
-  version "3.23.0"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.23.0.tgz#ee73a160ee04f7a084ddb2fa8bab314d939cb620"
-  integrity sha512-l/bXi1TG6Ts98XyxD/Wp+P+0Zs4C2Q9Z2HkBXtYN9mTuZ82XDrjEyRQ1oqMli4Mw0/v0xEoA6pvzJtjyM9kj8w==
+"@salesforce/plugin-deploy-retrieve@^3.23.1":
+  version "3.23.1"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.23.1.tgz#8afda6f5cfe9ee4e201b000ef8f83e18fea9d92e"
+  integrity sha512-lE2Z5tdphQzscXRgJyoOb7j7kzij7a+m5i1XBHXfx2FSsk//ky988fSR1SgtGw6SkTsj9yM9WmKUcrWofYpG4g==
   dependencies:
     "@inquirer/prompts" "^7.8.3"
     "@oclif/core" "^4.5.2"
     "@oclif/multi-stage-output" "^0.8.20"
     "@salesforce/apex-node" "^8.2.8"
-    "@salesforce/core" "^8.19.1"
+    "@salesforce/core" "^8.23.0"
     "@salesforce/kit" "^3.2.3"
     "@salesforce/plugin-info" "^3.4.67"
     "@salesforce/sf-plugins-core" "^12.2.2"
