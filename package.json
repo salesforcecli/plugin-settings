@@ -1,7 +1,7 @@
 {
   "name": "@salesforce/plugin-settings",
   "description": "configure the Salesforce CLI",
-  "version": "2.4.47",
+  "version": "2.4.48",
   "author": "Salesforce",
   "bugs": "https://github.com/forcedotcom/cli/issues",
   "dependencies": {
