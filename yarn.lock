@@ -1952,10 +1952,10 @@
     debug "^4.4.3"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.23.11":
-  version "3.23.11"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.23.11.tgz#8e11d3aec0eab7f9623b9d2383548a55cb7a4faa"
-  integrity sha512-XzF9m6FieHIGqcrqCR4kuqIS2cH3a5pJ+F+Ghll3wjckydAoH4wzdRxZjWm/eMdf+lWz2SAJ+M4kq383v/vv0Q==
+"@salesforce/plugin-deploy-retrieve@^3.23.13":
+  version "3.23.13"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.23.13.tgz#21fd388f1bbb3f9814d986c99c5ba0783fb8834d"
+  integrity sha512-8Q+G5/EjCCpJI3PXfCxsC0H7JvFxpiyoYKg9spdvqUkcHA6EAcaTPUcF1lY9sZmuCK585wKHbV/TPeaGiqyshA==
   dependencies:
     "@inquirer/prompts" "^7.8.3"
     "@oclif/core" "^4.7.2"
@@ -1965,8 +1965,8 @@
     "@salesforce/kit" "^3.2.4"
     "@salesforce/plugin-info" "^3.4.93"
     "@salesforce/sf-plugins-core" "^12.2.5"
-    "@salesforce/source-deploy-retrieve" "^12.24.3"
-    "@salesforce/source-tracking" "^7.5.0"
+    "@salesforce/source-deploy-retrieve" "^12.25.0"
+    "@salesforce/source-tracking" "^7.5.1"
     "@salesforce/ts-types" "^2.0.12"
     ansis "^3.17.0"
     terminal-link "^3.0.0"
@@ -2033,7 +2033,7 @@
     cli-progress "^3.12.0"
     terminal-link "^3.0.0"
 
-"@salesforce/source-deploy-retrieve@^12.24.3", "@salesforce/source-deploy-retrieve@^12.25.0":
+"@salesforce/source-deploy-retrieve@^12.25.0":
   version "12.25.0"
   resolved "https://registry.yarnpkg.com/@salesforce/source-deploy-retrieve/-/source-deploy-retrieve-12.25.0.tgz#e3902e53b526888766a520fecef66787c57be884"
   integrity sha512-mNjgC6ol7ueQxCI3NdqpgWy5ofGUT/yeKP+mZiSiAArpc18f8GlhVACsRLODH8dbPungu9lBrP26LQ2SZaRA5Q==
@@ -2053,7 +2053,7 @@
     proxy-agent "^6.4.0"
     yaml "^2.8.1"
 
-"@salesforce/source-tracking@^7.5.0":
+"@salesforce/source-tracking@^7.5.1":
   version "7.5.1"
   resolved "https://registry.yarnpkg.com/@salesforce/source-tracking/-/source-tracking-7.5.1.tgz#b1128621179ff8ee70f7357806275982750766f1"
   integrity sha512-+KvEJN4IFhGF8PPHLnoUJt2Zu9yZIh2iJbJrjqMkqNUSB/sHUY756DulTsqspdPex4hLQ4hrTVjWp91SK/DD/w==
