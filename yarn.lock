@@ -1583,7 +1583,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.23.2", "@salesforce/core@^8.23.3", "@salesforce/core@^8.23.4", "@salesforce/core@^8.24.0", "@salesforce/core@^8.25.1", "@salesforce/core@^8.26.2", "@salesforce/core@^8.5.1", "@salesforce/core@^8.8.0":
+"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.23.2", "@salesforce/core@^8.23.3", "@salesforce/core@^8.23.4", "@salesforce/core@^8.24.0", "@salesforce/core@^8.26.0", "@salesforce/core@^8.26.2", "@salesforce/core@^8.5.1", "@salesforce/core@^8.8.0":
   version "8.26.2"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.26.2.tgz#1b82f7bc8e8598ba1ed8779759a5188b74841445"
   integrity sha512-P1otybl1d+sXg5FORl3PD82TzaOOP5aH1j0UVkpGf1p4BLw6VD0mJekS4mDc0pz6UKK2iIt0CFxXAEMKa/YtBA==
@@ -1666,16 +1666,16 @@
     debug "^4.4.3"
     handlebars "^4.7.8"
 
-"@salesforce/plugin-deploy-retrieve@^3.24.9":
-  version "3.24.9"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.24.9.tgz#3ff98bef04270381331f01866771b89c89ec7fb9"
-  integrity sha512-wrcDohc86Q468Ur+Wk0eVlCr05exrFATVkX43aj8dz1j9XWMSlevi3YQGIlrAyIBk1Z6dVc9IYMB7skfy3udZw==
+"@salesforce/plugin-deploy-retrieve@^3.24.11":
+  version "3.24.11"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-deploy-retrieve/-/plugin-deploy-retrieve-3.24.11.tgz#a882c99fe67b33369f914d7f8410eda4cfa72030"
+  integrity sha512-1pUn2XAPuryG/Fj5HoBd+PAii+4aadS5mq+nqnrZbl+sQCY2oQ/AE3jriHkB42Q57yrP1fd93JHtwrKzRfCWHg==
   dependencies:
     "@inquirer/prompts" "^7.8.3"
     "@oclif/core" "^4.8.0"
     "@oclif/multi-stage-output" "^0.8.28"
     "@salesforce/apex-node" "^8.3.5"
-    "@salesforce/core" "^8.25.1"
+    "@salesforce/core" "^8.26.0"
     "@salesforce/kit" "^3.2.4"
     "@salesforce/plugin-info" "^3.4.93"
     "@salesforce/sf-plugins-core" "^12.2.5"
