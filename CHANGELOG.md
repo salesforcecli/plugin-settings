@@ -1,3 +1,9 @@
+## [2.4.63](https://github.com/salesforcecli/plugin-settings/compare/2.4.62...2.4.63) (2026-03-27)
+
+### Bug Fixes
+
+- **deps:** bump handlebars from 4.7.8 to 4.7.9 ([8bc1f3a](https://github.com/salesforcecli/plugin-settings/commit/8bc1f3ae2c169f6d3d2ad454003618140ff05bfa))
+
 ## [2.4.62](https://github.com/salesforcecli/plugin-settings/compare/2.4.61...2.4.62) (2026-03-22)
 
 ### Bug Fixes
