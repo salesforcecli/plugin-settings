@@ -1897,7 +1897,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.23.2", "@salesforce/core@^8.23.3", "@salesforce/core@^8.27.1", "@salesforce/core@^8.28.1", "@salesforce/core@^8.5.1":
+"@salesforce/core@^8.18.7", "@salesforce/core@^8.23.1", "@salesforce/core@^8.23.2", "@salesforce/core@^8.27.1", "@salesforce/core@^8.28.1", "@salesforce/core@^8.5.1":
   version "8.28.1"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.28.1.tgz#d83f8d0a8a83057c5a363aa6b5211b583fb9206b"
   integrity sha512-k9lPsULo+lOEZvpm1J1nJOFwKp5O5IfNqya7pw627QdKGcsWZm6v9caVHKUX9IjyB+S3dasNqaZT5O7l76C4oQ==
@@ -1966,19 +1966,19 @@
   dependencies:
     "@salesforce/ts-types" "^2.0.12"
 
-"@salesforce/plugin-command-reference@^3.1.82":
-  version "3.1.82"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.82.tgz#45e439760b05b4b7232763172426ad22b90e52da"
-  integrity sha512-4aBLoT5r+gdWypIfEcfkvIZsyog91n+OpmmSY2yYUCr/zjT1HDUOqR4vTctIiz2pbsEe/La0bYxNJfcGePvIUg==
+"@salesforce/plugin-command-reference@^3.1.91":
+  version "3.1.91"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.91.tgz#be1415229b4f69d53fd3411aaf4bf514608416ae"
+  integrity sha512-1veOTwP+0BJ/1pLXZmEyvtLWQ/bVLRB2vkNOkwLF6AsHT/entwCfmTjQMxH/JSeAnAJulllIvFzC7AVzPPOcDQ==
   dependencies:
     "@oclif/core" "^4"
-    "@salesforce/core" "^8.23.3"
-    "@salesforce/kit" "^3.2.4"
+    "@salesforce/core" "^8.28.1"
+    "@salesforce/kit" "^3.2.6"
     "@salesforce/sf-plugins-core" "^11.3.12"
     "@salesforce/ts-types" "^2.0.11"
     chalk "^5.6.2"
     debug "^4.4.3"
-    handlebars "^4.7.8"
+    handlebars "^4.7.9"
 
 "@salesforce/plugin-deploy-retrieve@^3.24.27":
   version "3.24.27"
@@ -5547,7 +5547,7 @@ graphemer@^1.4.0:
   resolved "https://registry.yarnpkg.com/graphemer/-/graphemer-1.4.0.tgz#fb2f1d55e0e3a1849aeffc90c4fa0dd53a0e66c6"
   integrity sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==
 
-handlebars@^4.7.8:
+handlebars@^4.7.9:
   version "4.7.9"
   resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.9.tgz#6f139082ab58dc4e5a0e51efe7db5ae890d56a0f"
   integrity sha512-4E71E0rpOaQuJR2A3xDZ+GM1HyWYv1clR58tC8emQNeQe3RH7MAzSbat+V0wG78LQBo6m6bzSG/L4pBuCsgnUQ==
