@@ -1,3 +1,9 @@
+## [2.4.68](https://github.com/salesforcecli/plugin-settings/compare/2.4.67...2.4.68) (2026-04-11)
+
+### Bug Fixes
+
+- **deps:** bump basic-ftp from 5.2.1 to 5.2.2 ([92c2eb4](https://github.com/salesforcecli/plugin-settings/commit/92c2eb437f5e728b190821e4ee016121acacbd61))
+
 ## [2.4.67](https://github.com/salesforcecli/plugin-settings/compare/2.4.66...2.4.67) (2026-04-09)
 
 ### Bug Fixes
