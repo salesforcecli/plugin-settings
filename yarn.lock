@@ -1786,10 +1786,10 @@
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
 
-"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.10.3", "@oclif/core@^4.10.5", "@oclif/core@^4.11.0":
-  version "4.11.2"
-  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.11.2.tgz#c8062fc16f0d82c247f60670364026483a48d522"
-  integrity sha512-LWDalCgy+hYyAkLa9sMIXMXk6ws5RzQhVnkmfXtVIIyEEYigbXQ/9/x+s76p53MiXxNc6SJB7lfwkPF+SdzfMQ==
+"@oclif/core@^4", "@oclif/core@^4.0.27", "@oclif/core@^4.10.3", "@oclif/core@^4.10.5", "@oclif/core@^4.11.2":
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/@oclif/core/-/core-4.11.3.tgz#87ebe0d3a47d162359482ecf5f5a7220ac709a36"
+  integrity sha512-gQCSYAtUhJilGKaSaZhqejH9X1dDu+jWQjLmtGOgN/XcKaAEPPSeT2mu1UvlvtPox1/NNRdlBcUa8KRKo2HnJQ==
   dependencies:
     ansi-escapes "^4.3.2"
     ansis "^3.17.0"
@@ -1805,7 +1805,7 @@
     semver "^7.8.0"
     string-width "^4.2.3"
     supports-color "^8"
-    tinyglobby "^0.2.14"
+    tinyglobby "^0.2.16"
     widest-line "^3.1.0"
     wordwrap "^1.0.0"
     wrap-ansi "^7.0.0"
@@ -1948,7 +1948,7 @@
     strip-ansi "6.0.1"
     ts-retry-promise "^0.8.1"
 
-"@salesforce/core@^8.23.1", "@salesforce/core@^8.28.3", "@salesforce/core@^8.28.4", "@salesforce/core@^8.29.0", "@salesforce/core@^8.30.3", "@salesforce/core@^8.5.1":
+"@salesforce/core@^8.23.1", "@salesforce/core@^8.28.3", "@salesforce/core@^8.28.4", "@salesforce/core@^8.29.0", "@salesforce/core@^8.30.0", "@salesforce/core@^8.30.3", "@salesforce/core@^8.5.1":
   version "8.30.3"
   resolved "https://registry.yarnpkg.com/@salesforce/core/-/core-8.30.3.tgz#333315e9c0436abd2247df7b5b31375df4002cd6"
   integrity sha512-E3WPXxAEqvpZXp6nnkkoNRFGQ2c/5Mhnbl9s0ajQiLTpqQ1Una5PlPu0s2rRvu8qGKnT1AI7xT3RDy3pd/dULg==
@@ -2091,16 +2091,16 @@
     string-width "^7.2.0"
     terminal-link "^3.0.0"
 
-"@salesforce/sf-plugins-core@^12", "@salesforce/sf-plugins-core@^12.2.15", "@salesforce/sf-plugins-core@^12.2.6":
-  version "12.2.15"
-  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-12.2.15.tgz#a0741e0e4606bb8dfd194d0900aecb707f36aff2"
-  integrity sha512-5+hPx7Q9PV0iuKxHwM2MswDANJ5HH3FKTE2lCmgNjcQVx/5uq80qXPMG/Cga9ZoR3hJHSw2jvDHpew77LUpk4w==
+"@salesforce/sf-plugins-core@^12", "@salesforce/sf-plugins-core@^12.2.17", "@salesforce/sf-plugins-core@^12.2.6":
+  version "12.2.17"
+  resolved "https://registry.yarnpkg.com/@salesforce/sf-plugins-core/-/sf-plugins-core-12.2.17.tgz#a35d1f917122d377feae083bff6d6b816e3d1e34"
+  integrity sha512-a8wHzT4IPUxvqUcguTd6wXp4C7R2i+HTjjiCBNNEqL5/OFXmROlttalgxFceRsnfoi2Sq9jYuVIVWHOs43uEWQ==
   dependencies:
     "@inquirer/confirm" "^6.0.12"
     "@inquirer/password" "^5.0.12"
-    "@oclif/core" "^4.11.0"
+    "@oclif/core" "^4.11.2"
     "@oclif/table" "^0.5.7"
-    "@salesforce/core" "^8.29.0"
+    "@salesforce/core" "^8.30.0"
     "@salesforce/kit" "^3.2.3"
     "@salesforce/ts-types" "^2.0.12"
     ansis "^3.3.2"
@@ -5164,6 +5164,11 @@ fdir@^6.4.4:
   resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.4.5.tgz#328e280f3a23699362f95f2e82acf978a0c0cb49"
   integrity sha512-4BG7puHpVsIYxZUbiUE3RqGloLaSSwzYie5jvasC4LWuBWzZawynvYouhjbQKw2JuIGYdm0DzIxl8iVidKlUEw==
 
+fdir@^6.5.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/fdir/-/fdir-6.5.0.tgz#ed2ab967a331ade62f18d077dae192684d50d350"
+  integrity sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==
+
 figures@^6.1.0:
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-6.1.0.tgz#935479f51865fa7479f6fa94fc6fc7ac14e62c4a"
@@ -7572,6 +7577,11 @@ picomatch@^4.0.2:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.2.tgz#77c742931e8f3b8820946c76cd0c1f13730d1dab"
   integrity sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==
 
+picomatch@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-4.0.4.tgz#fd6f5e00a143086e074dffe4c924b8fb293b0589"
+  integrity sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==
+
 pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
@@ -8708,6 +8718,14 @@ tinyglobby@^0.2.14, tinyglobby@^0.2.9:
   dependencies:
     fdir "^6.4.4"
     picomatch "^4.0.2"
+
+tinyglobby@^0.2.16:
+  version "0.2.16"
+  resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.16.tgz#1c3b7eb953fce42b226bc5a1ee06428281aff3d6"
+  integrity sha512-pn99VhoACYR8nFHhxqix+uvsbXineAasWm5ojXoN8xEwK5Kd3/TrhNn1wByuD52UxWRLy8pu+kRMniEi6Eq9Zg==
+  dependencies:
+    fdir "^6.5.0"
+    picomatch "^4.0.4"
 
 to-buffer@^1.2.0:
   version "1.2.1"
