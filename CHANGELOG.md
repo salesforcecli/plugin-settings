@@ -1,3 +1,9 @@
+## [2.4.87](https://github.com/salesforcecli/plugin-settings/compare/2.4.86...2.4.87) (2026-06-17)
+
+### Bug Fixes
+
+- **deps:** bump @babel/core from 7.25.2 to 7.29.7 ([e80f6f7](https://github.com/salesforcecli/plugin-settings/commit/e80f6f7d89b7662a952fd1ee9a2b12333b0c795c))
+
 ## [2.4.86](https://github.com/salesforcecli/plugin-settings/compare/2.4.85...2.4.86) (2026-06-17)
 
 ### Bug Fixes
