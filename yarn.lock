@@ -1315,15 +1315,15 @@
   dependencies:
     "@salesforce/ts-types" "^2.0.12"
 
-"@salesforce/plugin-command-reference@^3.1.118":
-  version "3.1.118"
-  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.118.tgz#4d58e3f0df4c4167c0be63ebff32f097a976c328"
-  integrity sha512-skjL/B86BiJloS+3RSiZyjt/V+jU9EUdYhKwqAWvU+Fgb3e4N5vibIZ8GEc7briJC24hZOitSjnRMfw9839G1A==
+"@salesforce/plugin-command-reference@^3.1.122":
+  version "3.1.122"
+  resolved "https://registry.yarnpkg.com/@salesforce/plugin-command-reference/-/plugin-command-reference-3.1.122.tgz#084a0e19b3bd8b277044e1a492c462a36cd45a93"
+  integrity sha512-i0cUjxHbaZgIIAS+17zu2AaO/AHEFRIF/2T3LlRV2WOQ6kHxrVKu0nAwCwZc4L5fihUPk9H0sKEbwxh9Ln9F8g==
   dependencies:
     "@oclif/core" "^4"
-    "@salesforce/core" "^8.31.2"
+    "@salesforce/core" "^8.32.2"
     "@salesforce/kit" "^3.2.6"
-    "@salesforce/sf-plugins-core" "^12.2.25"
+    "@salesforce/sf-plugins-core" "^12.2.26"
     "@salesforce/ts-types" "^2.0.11"
     chalk "^5.6.2"
     debug "^4.4.3"
