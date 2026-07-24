@@ -1,3 +1,9 @@
+## [2.4.97](https://github.com/salesforcecli/plugin-settings/compare/2.4.96...2.4.97) (2026-07-24)
+
+### Bug Fixes
+
+- **deps:** bump linkify-it from 5.0.1 to 5.0.2 ([68f512b](https://github.com/salesforcecli/plugin-settings/commit/68f512b85fcecd0ff94ec27a45d35add743e4eec))
+
 ## [2.4.96](https://github.com/salesforcecli/plugin-settings/compare/2.4.95...2.4.96) (2026-07-19)
 
 ### Bug Fixes
