@@ -8,8 +8,8 @@
   "o11yUploadEndpoint": "https://794testsite.my.site.com/byolwr/webruntime/log/metrics",
   "dependencies": {
     "@oclif/core": "^4",
-    "@salesforce/core": "^8.32.6",
-    "@salesforce/sf-plugins-core": "^12.2.28",
+    "@salesforce/core": "^9.0.0",
+    "@salesforce/sf-plugins-core": "^13.0.0",
     "fast-levenshtein": "^3.0.0"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
   },
   "config": {},
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "files": [
     "/lib",
