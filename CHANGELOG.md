@@ -1,3 +1,9 @@
+## [3.0.1](https://github.com/salesforcecli/plugin-settings/compare/3.0.0...3.0.1) (2026-08-02)
+
+### Bug Fixes
+
+- **deps:** bump @oclif/core from 4.13.0 to 4.13.2 ([b8e36c4](https://github.com/salesforcecli/plugin-settings/commit/b8e36c4e2c21c5fbd536fed20d8ad87ede89d832))
+
 # [3.0.0](https://github.com/salesforcecli/plugin-settings/compare/2.4.101...3.0.0) (2026-07-30)
 
 - feat!: require Node >=22, drop EOL Node versions @W-23480655@ ([37d8da4](https://github.com/salesforcecli/plugin-settings/commit/37d8da4378404e39cdab2581f97afebc9de46f18))
