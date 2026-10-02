@@ -1,3 +1,9 @@
+## [3.0.8](https://github.com/salesforcecli/plugin-settings/compare/3.0.7...3.0.8) (2026-10-02)
+
+### Bug Fixes
+
+- **deps:** bump @salesforce/core from 9.1.9 to 9.1.11 ([db61ba1](https://github.com/salesforcecli/plugin-settings/commit/db61ba1e0f910a7ef6525a2b82732bd93122b211))
+
 ## [3.0.7](https://github.com/salesforcecli/plugin-settings/compare/3.0.6...3.0.7) (2026-09-01)
 
 ### Bug Fixes
