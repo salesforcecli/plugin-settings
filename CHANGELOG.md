@@ -1,3 +1,10 @@
+## [3.0.9](https://github.com/salesforcecli/plugin-settings/compare/3.0.8...3.0.9) (2026-10-05)
+
+### Bug Fixes
+
+- **deps:** bump fast-uri from 3.1.5 to 3.1.8 ([ffeab94](https://github.com/salesforcecli/plugin-settings/commit/ffeab9414c7ca1216ba7fdc222d5537838eaffb1))
+- **deps:** bump undici from 8.10.0 to 8.11.2 ([60a084e](https://github.com/salesforcecli/plugin-settings/commit/60a084ebbf60131e92f95090a4a9a56710370a6b))
+
 ## [3.0.8](https://github.com/salesforcecli/plugin-settings/compare/3.0.7...3.0.8) (2026-10-02)
 
 ### Bug Fixes
