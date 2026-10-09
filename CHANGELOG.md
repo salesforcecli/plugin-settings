@@ -1,3 +1,9 @@
+## [3.0.11](https://github.com/salesforcecli/plugin-settings/compare/3.0.10...3.0.11) (2026-10-09)
+
+### Bug Fixes
+
+- **deps:** bump source-map-js from 1.2.1 to 1.2.2 ([8e0f593](https://github.com/salesforcecli/plugin-settings/commit/8e0f593b6435b47598cf303689fbc29332e3af00))
+
 ## [3.0.10](https://github.com/salesforcecli/plugin-settings/compare/3.0.9...3.0.10) (2026-10-09)
 
 ### Bug Fixes
