@@ -7,7 +7,7 @@
   "enableO11y": true,
   "o11yUploadEndpoint": "https://794testsite.my.site.com/byolwr/webruntime/log/metrics",
   "dependencies": {
-    "@oclif/core": "^5.0.0",
+    "@oclif/core": "^5.1.2",
     "@salesforce/core": "^9.1.11",
     "@salesforce/sf-plugins-core": "^13.0.4",
     "fast-levenshtein": "^3.0.0"
