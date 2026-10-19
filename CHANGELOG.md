@@ -1,3 +1,9 @@
+## [3.0.17](https://github.com/salesforcecli/plugin-settings/compare/3.0.16...3.0.17) (2026-10-19)
+
+### Bug Fixes
+
+- bump core ([763d8ba](https://github.com/salesforcecli/plugin-settings/commit/763d8bab3bc06d081ebe7459de4f8111950f1214))
+
 ## [3.0.16](https://github.com/salesforcecli/plugin-settings/compare/3.0.15...3.0.16) (2026-10-18)
 
 ### Bug Fixes
