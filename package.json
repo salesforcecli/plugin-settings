@@ -19,7 +19,7 @@
     "@salesforce/dev-scripts": "^15.0.0",
     "@salesforce/plugin-command-reference": "^3.1.141",
     "@salesforce/plugin-deploy-retrieve": "^4.2.2",
-    "@salesforce/ts-sinon": "^1.4.36",
+    "@salesforce/ts-sinon": "^1.4.39",
     "@types/chai": "^4.3.17",
     "@types/fast-levenshtein": "^0.0.4",
     "@types/mocha": "^10.0.10",
