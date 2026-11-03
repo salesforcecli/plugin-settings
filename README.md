@@ -35,8 +35,7 @@ To build the plugin locally, make sure to have yarn installed and run the follow
 git clone git@github.com:salesforcecli/plugin-settings
 
 # Install the dependencies and compile
-yarn install
-yarn build
+yarn && yarn build
 ```
 
 To use your plugin, run using the local `./bin/dev.js` or `./bin/dev.cmd` file.
