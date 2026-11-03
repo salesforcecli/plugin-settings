@@ -15,7 +15,7 @@ We always recommend using the latest version of these commands bundled with the 
 ## Install
 
 ```bash
-sf plugins install settings@x.y.z
+sf plugins install @salesforce/plugin-settings@x.y.z
 ```
 
 ## Issues
