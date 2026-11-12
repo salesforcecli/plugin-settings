@@ -1,3 +1,9 @@
+## [3.0.28](https://github.com/salesforcecli/plugin-settings/compare/3.0.27...3.0.28) (2026-11-12)
+
+### Bug Fixes
+
+- **deps:** bump picomatch from 2.3.1 to 2.3.2 ([1f66bf5](https://github.com/salesforcecli/plugin-settings/commit/1f66bf5830e7f0fd2d051023611b61fb3447444e))
+
 ## [3.0.27](https://github.com/salesforcecli/plugin-settings/compare/3.0.26...3.0.27) (2026-11-12)
 
 ### Bug Fixes
